@@ -58,5 +58,19 @@
             </div>
             <img src="img/wave.png" alt="" class="mt-5 img-fluid w-full rotate-180 translate-y-1">
         </section>
+        <section class="pt-10 relative">
+            <div class="absolute left-0 top-3 translate-y-36 w-full">
+                <hr class="border-zinc-500">
+            </div>
+            <div class="flex justify-between items-center gap-10 maxcontainer padding-container">
+                <img src="img/collab.png" alt="" class="img-fluid">
+                <div class="flex flex-col gap-12">
+                    <h1 class="font-bold text-end text-gray-200 text-5xl"><span class="color-primary">></span>READY
+                        FOR<br>COLLABORATE<span class="color-primary">_</span></h1>
+                    <p class="font-semibold text-2xl text-gray-200 text-end">Are you an artist? into the band?<br>owning
+                        a brand? a skillful crafter?<br>or just a main character in ur life??</p>
+                </div>
+            </div>
+        </section>
     </main>
 </x-layout>
