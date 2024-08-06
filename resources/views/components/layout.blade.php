@@ -7,9 +7,11 @@
     @vite('resources/css/app.css')
     <script src="https://kit.fontawesome.com/cce5ebab8a.js" crossorigin="anonymous"></script>
     {{-- <link rel="stylesheet" href="{{ asset('css/global.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="build/assets/app-DdhvvE08.css"> --}}
     <title>bvcklesmiggle</title>
 </head>
-<body class="bg-[#343434]">
+<body class="bg-fixed">
+{{-- <body class="bg-[#343434]"> --}}
     <x-header />
     <x-navbar></x-navbar>
     {{ $slot }}

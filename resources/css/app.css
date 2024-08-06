@@ -4,7 +4,7 @@
 
 :root {
   --primary: #ff00ff;
-  --secondary: #666666;
+  --secondary: #00ccff;
   --text: #1E1E1E;
   --darkBlue: #20242F;
   --mute: #999999;
@@ -16,6 +16,11 @@
   box-sizing: border-box;
   color: var(--text);
   font-family: Verdana, sans-serif;
+  scroll-behavior: smooth;
+}
+
+.font-segoe {
+  font-family: SegoeUI-Semibold, 'Segoe UI' !important;
 }
 
 p {
@@ -24,6 +29,20 @@ p {
 }
 
 @layer utilities {
+  .bg-fixed {
+    background-image: url('../../public/img/download2.jpeg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+    /* filter: brightness(.2); */
+  }
+
+  .ads {
+    width: 336px;
+    height: 280px;
+  }
+
   .img-fluid {
     max-width:100%;
     height:auto

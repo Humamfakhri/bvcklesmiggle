@@ -1,8 +1,9 @@
 <x-layout>
     <main class="max-container padding-container">
-        <section>
+        <section class="max-h-screen">
             <img src="/img/partnership.png" alt="" class="img-fluid w-full my-4 border-2 border-gray-200">
-            <div class="grid grid-cols-7 border-b-2 border-gray-200 gap-6">
+            <div class="grid grid-cols-7 gap-6 max-h-full">
+            {{-- <div class="grid grid-cols-7 border-b-2 border-gray-200 gap-6"> --}}
                 <div class="col-span-4 gap-4 h-full">
                     <p class="font-semibold text-2xl text-gray-200">4 reasons<br>Why u should get a partnership with us?
                     </p>
@@ -52,22 +53,30 @@
                       <p class="text-gray-200 text-end mt-2">Send mail to <span class="color-primary">contact@bvcklesmiggle.com</span>, or just click the button above ^^^^^</p>
                     </div>
                 </div>
-                <div class="col-span-3 flex flex-col h-full">
+                <div class="col-span-3 flex flex-col max-h-full">
                     <p class="text-end font-semibold text-2xl text-gray-200">In they, we trust (each other)</p>
-                    <div class="scrolling-content w-full h-full max-h-full border-2 border-gray-200 mt-2 overflow-y-auto">
-                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id doloribus laudantium velit, atque temporibus corrupti amet officiis vero nostrum inventore nam similique reiciendis ab ducimus, et quidem iusto, eius ratione.</p>
-                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id doloribus laudantium velit, atque temporibus corrupti amet officiis vero nostrum inventore nam similique reiciendis ab ducimus, et quidem iusto, eius ratione.</p>
-                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id doloribus laudantium velit, atque temporibus corrupti amet officiis vero nostrum inventore nam similique reiciendis ab ducimus, et quidem iusto, eius ratione.</p>
-                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id doloribus laudantium velit, atque temporibus corrupti amet officiis vero nostrum inventore nam similique reiciendis ab ducimus, et quidem iusto, eius ratione.</p>
-                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id doloribus laudantium velit, atque temporibus corrupti amet officiis vero nostrum inventore nam similique reiciendis ab ducimus, et quidem iusto, eius ratione.</p>
-                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id doloribus laudantium velit, atque temporibus corrupti amet officiis vero nostrum inventore nam similique reiciendis ab ducimus, et quidem iusto, eius ratione.</p>
-                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id doloribus laudantium velit, atque temporibus corrupti amet officiis vero nostrum inventore nam similique reiciendis ab ducimus, et quidem iusto, eius ratione.</p>
+                    <div class="scrolling-content w-full h-full max-h-full border-2 border-gray-200 mt-2 overflow-y-scroll">
+                        <div class="grid grid-cols-2 gap-3 p-3">
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                            <div class="flex flexCenter bg-white text-center text-xs font-bold px-4 py-5 rounded-xl">Logo brand yg collab<br>(klo di klik link ke si dia nya)</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
-    <footer class="max-container padding-container">
-      <p class="text-end text-xs text-gray-200 my-2">COPYRIGHT ©2024<br>BVCKLESMIGGLE, ALL RIGHT RESERVED</p>
+    <footer class="max-container padding-container mt-5">
+        <p class="font-segoe border-t-4 border-gray-200 text-end text-xs text-gray-200 py-1">COPYRIGHT ©2024<br>BVCKLESMIGGLE, ALL RIGHT RESERVED</p>
     </footer>
 </x-layout>
