@@ -6,6 +6,7 @@
   --primary: #ff00ff;
   --secondary: #00ccff;
   --text: #1E1E1E;
+  --dark: #151515;
   --darkBlue: #20242F;
   --mute: #999999;
 }
@@ -29,7 +30,23 @@ p {
 }
 
 @layer utilities {
+  .bg-dark {
+    background-color: var(--dark);
+  }
+  .ads-container {
+    width: 100%;
+    max-width: 336px;
+    aspect-ratio: 6 / 5; /* Maintain the 5x6 aspect ratio */
+    overflow: hidden;
+  }
+
+  .ads-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the entire container */
+  }
   .bg-fixed {
+    /* background-image: url('../../public/img/BG_metalic.png'); */
     background-image: url('../../public/img/download2.jpeg');
     background-size: cover;
     background-attachment: fixed;

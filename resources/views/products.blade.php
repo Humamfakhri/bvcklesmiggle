@@ -1,9 +1,9 @@
 <x-layout>
     <main class="max-container padding-container">
         {{-- <div class="cardPopup fixed inset-0 flex transition-opacity items-center justify-center bg-black/50"> --}}
-        <div class="cardPopup fixed inset-0 flex opacity-100 -z-10 transition-opacity items-center justify-center bg-black/50">
+        <div class="cardPopup fixed inset-0 flex opacity-100 -z-10 transition-opacity items-center justify-center">
             {{-- <div class="cardPopupContent transition ease-in-out duration-300 bg-white border-2 border-black w-[85%] max-h-[80%] p-3 mt-12" onclick="event.stopPropagation()"> --}}
-            <div class="cardPopupContent transition ease-in-out duration-300 scale-0 bg-white border-2 border-black w-3/4 p-3" onclick="event.stopPropagation()">
+            <div class="cardPopupContent transition ease-in-out duration-300 scale-0 bg-white border-2 border-black max-w-[85%] p-3" onclick="event.stopPropagation()">
                 <div class="card-popup-header text-end border-b-2 border-black">
                     <button>
                         <i class="closePopup text-3xl text-black fa-solid fa-xmark"></i>
@@ -18,8 +18,8 @@
                     <div class="grid grid-cols-10 gap-4">
                         <div id="product-image" class="col-span-7">
                             <div class="grid grid-cols-2 gap-4">
-                                <img src="img/product-side.png" alt="" class="img-fluid border border-black">
-                                <img src="img/product.png" alt="" class="img-fluid border border-black">
+                                <img src="img/blckruby2.jpg" alt="" class="img-fluid border border-black">
+                                <img src="img/blckruby3.jpg" alt="" class="img-fluid border border-black">
                             </div>
                         </div>
                         <div id="product-info" class="col-span-3 flex flex-col">
@@ -73,9 +73,9 @@
             </div>
         </div>
         <section>
-            <img src="/img/products.png" alt="" class="img-fluid w-full my-4 border-2 border-gray-200">
+            <img src="/img/banner_products.jpg" alt="" class="img-fluid w-full my-4 border-2 border-gray-200">
             <div class="flex gap-8">
-                <div class="sidebar flex flex-col max-h-screen sticky top-0 pt-16 -mt-16">
+                <div class="sidebar flex flex-col max-h-screen sticky top-0 pt-16 -mt-16 pb-2">
                     {{-- max-h-[90vh] --}}
                     <ul class="flex flex-col items-start gap-2 grow">
                         <li><a class="font-bold font-segoe text-[#ff00ff]"
@@ -155,7 +155,7 @@
                     <div class="grid grid-cols-4 gap-4">
                     @for ($i = 0; $i < 20; $i++)
                     <div class="card hover:brightness-50 hover:cursor-pointer">
-                        <img src="img/product.png" alt="" class="img-fluid rounded-2xl">
+                        <img src="img/blckruby3.jpg" alt="" class="img-fluid rounded-2xl">
                     </div>
                     @endfor
                     </div>
@@ -186,6 +186,7 @@
             card.addEventListener('click', () => {
                 cardPopup.classList.remove('opacity-0');
                 cardPopup.classList.add('opacity-100');
+                cardPopup.classList.add('bg-black/50');
                 cardPopup.classList.remove('-z-10');
                 cardPopup.classList.add('z-50');
                 cardPopupContent.classList.add('scale-100');
@@ -194,6 +195,7 @@
         });
         closePopup.addEventListener('click', () => {
             cardPopup.classList.remove('opacity-100');
+            cardPopup.classList.remove('bg-black/50');
             cardPopup.classList.add('opacity-0');
             cardPopup.classList.remove('z-50');
             setTimeout(() => {
@@ -204,6 +206,7 @@
         });
         cardPopup.addEventListener('click', () => {
             cardPopup.classList.remove('opacity-100');
+            cardPopup.classList.remove('bg-black/50');
             cardPopup.classList.add('opacity-0');
             cardPopup.classList.remove('z-50');
             setTimeout(() => {

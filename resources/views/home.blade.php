@@ -2,7 +2,7 @@
     {{-- <main class="max-container padding-container"> --}}
     <main>
         <section class="max-container padding-container">
-            <img src="/img/banner.png" alt="" class="img-fluid w-full my-2 lg:my-4 border-2 border-gray-200">
+            <img src="/img/banner_home.jpg" alt="" class="img-fluid w-full my-2 lg:my-4 border-2 border-gray-200">
             <h1 class="font-bold text-gray-200 text-2xl xl:text-5xl"><span class="color-primary">></span>SHOUT OUT<span
                     class="color-primary">_</span></h1>
             <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-4">
@@ -24,15 +24,15 @@
                         that make people "awake" with encourage their deepest desire at lifestyle, arts, and culture.
                     </p>
                     <p class="hidden lg:block text-light text-end text-lg text-gray-200">Our goal is to deliver
-                        amazing<br>experiences thatmake<br>people "awake" with<br>encourage their<br>deepest
+                        amazing<br>experiences that make<br>people "awake" with<br>encourage their<br>deepest
                         desire<br>at lifestyle,<br>arts, and<br>culture.</p>
-                    <img src="/img/v.png" alt="" class="max-w-5 lg:max-w-full h-auto">
+                    <img src="/img/v.png" alt="" class="max-w-5 lg:max-w-9 h-auto">
                 </div>
             </div>
         </section>
         <section class="relative max-container mt-10">
             <div class="flex flex-col lg:flex-row justify-between items-center">
-                <img src="/img/events.png" alt="" class="img-fluid padding-container hidden lg:block">
+                <img src="/img/events.png" alt="" class="img-fluid padding-container hidden lg:block max-h-[600px]">
                 <div class="flex flex-col gap-8 padding-container">
                     <h1 class="font-bold text-gray-200 text-2xl xl:text-5xl lg:text-end"><span
                             class="color-primary">></span>EVENTS,
@@ -48,12 +48,9 @@
                             hype!</a></button>
                 </div>
             </div>
-            {{-- <div class="absolute left-0 bottom-0 -translate-y-24 w-full -z-10">
-                <hr class="border-zinc-500">
-            </div> --}}
+            <img src="img/ripped-1.png" alt="" class="img-fluid w-full mt-10 -mb-1">
         </section>
-        <section id="equipment" class="mt-5 bg-white">
-            <img src="img/wave.png" alt="" class="img-fluid w-full">
+        <section id="equipment" class="py-5 bg-white">
             <div
                 class="flex flex-col lg:flex-row justify-between items-center gap-4 max-container padding-container my-3 lg:my-0">
                 <div>
@@ -67,7 +64,7 @@
                             href="products" class="font-bold text-xl lg:text-2xl text-white">Check Our
                             Inventory!</a></button>
                 </div>
-                <img src="/img/eqp.png" alt="" class="img-fluid">
+                <div><img src="/img/eqp.jpg" alt="" class="img-fluid max-h-[50vh] lg:max-h-[85vh] lg:pe-20"></div>
                 <p class="hidden lg:blockfont-semibold text-2xl text-zinc-500 text-end">Don't
                     let<br>aging<br>make<br>you<br>uncool.<br>Shape urself.</p>
                 <p class="lg:hidden font-semibold text-xl lg:text-2xl text-zinc-500 text-center">Don't let aging make
@@ -78,9 +75,9 @@
                         href="products" class="font-bold text-xl lg:text-2xl text-white">Check Our
                         Inventory!</a></button>
             </div>
-            <img src="img/wave.png" alt="" class="mt-5 img-fluid w-full rotate-180 translate-y-1">
         </section>
-        <section id="collaboration" class="pt-10 lg:mb-20">
+        <section id="collaboration" class="lg:mb-20">
+            <img src="img/ripped-4.png" alt="" class="img-fluid w-full rotate-180 mb-10 -mt-1">
             {{-- <section class="pt-10 relative mb-20"> --}}
             {{-- <div class="absolute left-0 top-3 translate-y-36 w-full">
                 <hr class="border-zinc-500">

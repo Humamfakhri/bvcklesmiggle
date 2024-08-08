@@ -1,7 +1,7 @@
 <x-layout>
     <main class="max-container padding-container">
         <section class="max-h-screen">
-            <img src="/img/partnership.png" alt="" class="img-fluid w-full my-4 border-2 border-gray-200">
+            <img src="/img/banner_partnership.jpg" alt="" class="img-fluid w-full my-4 border-2 border-gray-200">
             <div class="grid grid-cols-7 gap-6 max-h-full">
             {{-- <div class="grid grid-cols-7 border-b-2 border-gray-200 gap-6"> --}}
                 <div class="col-span-4 gap-4 h-full">

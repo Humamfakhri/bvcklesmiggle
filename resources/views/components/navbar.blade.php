@@ -32,7 +32,7 @@
         if (window.scrollY > 83) {
             // header.classList.add("nav-scrolled", windowPosition);
             header.classList.add("nav-scrolled", windowPosition);
-            navBg.classList.add("bg-[#151515]");
+            navBg.classList.add("bg-dark");
             navBg.classList.add("border-y-2");
             navBg.classList.add("border-gray-200");
             navContent.classList.remove("border-gray-200");
@@ -40,7 +40,7 @@
             // border-y-2 border-gray-200
         } else {
             // header.classList.remove("nav-scrolled", windowPosition);
-            navBg.classList.remove("bg-[#151515]");
+            navBg.classList.remove("bg-dark");
             navBg.classList.remove("border-y-2");
             navBg.classList.remove("border-gray-200");
             navContent.classList.add("border-gray-200");
