@@ -30,21 +30,50 @@ p {
 }
 
 @layer utilities {
+  .description {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Jarak antar baris */
+  }
+
+  /* .row {
+    display: flex;
+    align-items: start; Menyelaraskan elemen ke atas
+  } */
+
+  .value {
+    white-space: pre-line;
+    /* Membungkus teks yang panjang */
+  }
+
+  .text-light {
+    @apply text-gray-200
+  }
+
+  .border-light {
+    @apply border-gray-200
+  }
+
   .bg-dark {
     background-color: var(--dark);
   }
+
   .ads-container {
     width: 100%;
     max-width: 336px;
-    aspect-ratio: 6 / 5; /* Maintain the 5x6 aspect ratio */
+    aspect-ratio: 6 / 5;
+    /* Maintain the 5x6 aspect ratio */
     overflow: hidden;
   }
 
   .ads-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensure the image covers the entire container */
+    object-fit: cover;
+    /* Ensure the image covers the entire container */
   }
+
   .bg-fixed {
     /* background-image: url('../../public/img/BG_metalic.png'); */
     background-image: url('../../public/img/download2.jpeg');
@@ -61,9 +90,10 @@ p {
   }
 
   .img-fluid {
-    max-width:100%;
-    height:auto
+    max-width: 100%;
+    height: auto
   }
+
   .scrollbar-transparent {
     scrollbar-width: none;
     /* Firefox */

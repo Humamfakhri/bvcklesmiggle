@@ -32,7 +32,8 @@
         </section>
         <section class="relative max-container mt-10">
             <div class="flex flex-col lg:flex-row justify-between items-center">
-                <img src="/img/events.png" alt="" class="img-fluid padding-container hidden lg:block max-h-[600px]">
+                <img src="/img/events.png" alt=""
+                    class="img-fluid padding-container hidden lg:block max-h-[600px]">
                 <div class="flex flex-col gap-8 padding-container">
                     <h1 class="font-bold text-gray-200 text-2xl xl:text-5xl lg:text-end"><span
                             class="color-primary">></span>EVENTS,
@@ -48,7 +49,7 @@
                             hype!</a></button>
                 </div>
             </div>
-            <img src="img/ripped-1.png" alt="" class="img-fluid w-full mt-10 -mb-1">
+            <img src="/img/ripped-1.png" alt="" class="img-fluid w-full mt-10 -mb-1">
         </section>
         <section id="equipment" class="py-5 bg-white">
             <div
@@ -64,7 +65,8 @@
                             href="products" class="font-bold text-xl lg:text-2xl text-white">Check Our
                             Inventory!</a></button>
                 </div>
-                <div><img src="/img/eqp.jpg" alt="" class="img-fluid max-h-[50vh] lg:max-h-[85vh] lg:pe-20"></div>
+                <div><img src="/img/eqp.jpg" alt="" class="img-fluid max-h-[50vh] lg:max-h-[85vh] lg:pe-20">
+                </div>
                 <p class="hidden lg:blockfont-semibold text-2xl text-zinc-500 text-end">Don't
                     let<br>aging<br>make<br>you<br>uncool.<br>Shape urself.</p>
                 <p class="lg:hidden font-semibold text-xl lg:text-2xl text-zinc-500 text-center">Don't let aging make
@@ -77,54 +79,48 @@
             </div>
         </section>
         <section id="collaboration" class="lg:mb-20">
-            <img src="img/ripped-4.png" alt="" class="img-fluid w-full rotate-180 mb-10 -mt-1">
+            <img src="/img/ripped-4.png" alt="" class="img-fluid w-full rotate-180 mb-10 -mt-1">
             {{-- <section class="pt-10 relative mb-20"> --}}
             {{-- <div class="absolute left-0 top-3 translate-y-36 w-full">
                 <hr class="border-zinc-500">
             </div> --}}
             {{-- <div class="flex justify-between items-start gap-10 max-container padding-container"> --}}
             <div class="lg:grid lg:grid-cols-2 max-container padding-container">
-                <img src="img/collab.png" alt="" class="img-fluid hidden lg:block">
+                <img src="/img/collab.png" alt="" class="img-fluid hidden lg:block">
                 <div class="flex flex-col gap-5 lg:gap-12 flex-shrink-0">
                     <h1 class="lg:hidden font-bold text-gray-200 text-2xl"><span class="color-primary">></span>READY
                         FOR COLLABORATE<span class="color-primary">_</span></h1>
                     <h1 class="hidden lg:block font-bold text-end text-gray-200 text-5xl"><span
                             class="color-primary">></span>READY
                         FOR<br>COLLABORATE<span class="color-primary">_</span></h1>
-                    <img src="img/collab.png" alt="" class="img-fluid lg:hidden">
+                    <img src="/img/collab.png" alt="" class="img-fluid lg:hidden">
                     <p class="lg:hidden text-gray-200">Are you an artist?<br>Into the band?<br>Owning
                         a brand?<br>A skillful crafter?<br>Or just a main character in ur life??</p>
-                    <p class="hidden lg:block font-semibold text-2xl text-gray-200 text-end">Are you an artist? into the band?<br>owning
+                    <p class="hidden lg:block font-semibold text-2xl text-gray-200 text-end">Are you an artist? into the
+                        band?<br>owning
                         a brand? a skillful crafter?<br>or just a main character in ur life??</p>
                 </div>
             </div>
         </section>
     </main>
-    <footer class="pt-5 pb-2 max-container padding-container">
-        <div class="flex flex-col lg:flex-row gap-4 items-end justify-end border-y-2 border-gray-200 py-8 lg:pb-8 lg:pt-0">
-            <p class="font-semibold text-lg lg:text-2xl text-gray-200 text-end">Let's make a party,<br>and together, we can conquer
+    <section class="pt-5 pb-2 max-container padding-container">
+        <div
+            class="flex flex-col lg:flex-row gap-4 items-end justify-end border-t-2 border-gray-200 pt-8">
+            <p class="font-semibold text-lg lg:text-2xl text-gray-200 text-end">Let's make a party,<br>and together, we
+                can conquer
                 the world.</p>
             <button
-            class="block w-full lg:w-fit lg:ms-auto lg:mt-24 py-3 lg:py-5 px-8 lg:px-10 bg-primary rounded-lg border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition"><a
+                class="block w-full lg:w-fit lg:ms-auto py-3 lg:py-5 px-8 lg:px-10 bg-primary rounded-lg border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition"><a
                     href="partnership" class="font-bold text-xl lg:text-2xl text-white">Let's make a deal!</a></button>
             <button
-                class="backToTopBtn pb-2 px-3 bg-secondary rounded-lg border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition"><a
-                    href="#" class="font-bold text-2xl text-white text-center">
-                    <small class="text-[10px] text-white">Skipped the content?</small>
-                    <div class="flex items-center justify-center gap-1 -mt-2">
-                        <p class="text-white">Goin up</p>
-                        <i class="text-white fa-solid fa-arrow-up-long"></i>
-                    </div>
-                </a>
+                class="backToTopBtn pb-2 px-3 bg-secondary rounded-lg font-bold text-2xl text-white text-center border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
+                <small class="text-[10px] text-white">Skipped the content?</small>
+                <div class="flex items-center justify-center gap-1 -mt-2">
+                    <p class="text-white">Goin up</p>
+                    <i class="text-white fa-solid fa-arrow-up-long"></i>
+                </div>
             </button>
         </div>
-        <p class="text-end text-xs text-gray-200 mt-2 mb-2 lg:mb-0">COPYRIGHT ©2024<br>BVCKLESMIGGLE, ALL RIGHT RESERVED</p>
-    </footer>
-    <script>
-        const backToTopBtn = document.querySelector(".backToTopBtn");
-        backToTopBtn.onclick = function() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        };
-    </script>
+    </section>
+    @vite('resources/js/home.js')
 </x-layout>

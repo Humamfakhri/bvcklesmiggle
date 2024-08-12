@@ -75,7 +75,7 @@
                             <p class="article-author">Author: <a href="#" class="color-primary">INQ</a></p>
                         </div>
                     </div>
-                    <img src="img/article.png" alt="" class="img-fluid mt-7">
+                    <img src="/img/article.png" alt="" class="img-fluid mt-7">
                     <p class="article-body leading-relaxed mt-3">
                         Daun-daun bunga krisan jatuhberguguran
                         <br>jatuh ke Jatuh ke bumi mata merah yang dibasahi darah
@@ -167,8 +167,4 @@
             </div>
         </div>
     </main>
-    <footer class="max-container padding-container mt-5">
-        <p class="font-segoe border-t-4 border-gray-200 text-end text-xs text-gray-200 py-1">COPYRIGHT
-            ©2024<br>BVCKLESMIGGLE, ALL RIGHT RESERVED</p>
-    </footer>
 </x-layout>
