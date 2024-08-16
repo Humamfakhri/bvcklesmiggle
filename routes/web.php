@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductCategoryController;
 
 Route::get('/', function () {
     return view('home');
@@ -26,10 +29,21 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::get('/admin/articles', function () {
-    return view('admin-articles');
-})->name('admin-articles');
+// === ADMIN === //
+// PRODUCTS
+Route::get('/admin/products', [ProductController::class, 'index'])->name('admin-products');
+Route::post('/admin/products', [ProductController::class, 'store'])->name('admin-products.store');
+Route::delete('/admin/products/{id}', [ProductController::class, 'destroy'])->name('admin-products.destroy');
+// PRODUCTS CATEGORY
+// Route::post('/admin/products', [ProductCategoryController::class, 'store'])->name('admin-product-categories.store');
 
-Route::get('/admin/products', function () {
-    return view('admin-products');
-})->name('admin-products');
+// ARTICLES
+// Route::get('/admin/articles', function () {
+//     return view('admin-articles');
+// })->name('admin-articles');
+Route::controller(ArticleController::class)->group(function () {
+    Route::get('/admin/articles', 'index')->name('admin-articles');
+    Route::post('/admin/articles', 'store')->name('admin-articles.store');
+    Route::delete('/admin/articles/{id}', 'destroy')->name('admin-articles.destroy');
+    // Route::post('/orders', 'store');
+});
