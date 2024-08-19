@@ -18,11 +18,19 @@
 <body class="bg-gray-200">
     <main>
         @if (session('success'))
-            <div class="success-alert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
+            <div class="myAlert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
                 role="alert">
                 <div class="bg-green-100 rounded border border-green-400 text-green-700 px-4 py-3">
                     {{-- <span class="block sm:inline">Berhasil</span> --}}
                     <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            </div>
+        @elseif (session('error'))
+            <div class="myAlert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
+                role="alert">
+                <div class="bg-red-100 rounded border border-red-400 text-red-700 px-4 py-3">
+                    {{-- <span class="block sm:inline">Berhasil</span> --}}
+                    <span class="block sm:inline">{{ session('error') }}</span>
                 </div>
             </div>
         @endif
@@ -40,8 +48,6 @@
 
         {{-- ADD PRODUCT MODAL --}}
         <div class="addModal fixed inset-0 flex -z-10 opacity-100 transition-opacity items-center justify-center">
-            {{--  scale-0 --}}
-            {{-- <div class="addModalContent transition ease-in-out duration-300 bg-white border-2 border-black w-[85%] max-h-[80%] p-3 mt-12" onclick="event.stopPropagation()"> --}}
             <div class="addModalContent scale-0 transition ease-in-out duration-300 bg-white border-2 border-black max-w-[60%] max-h-[85%] px-5 overflow-y-auto w-full"
                 onclick="event.stopPropagation()">
                 <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white">
@@ -51,75 +57,77 @@
                     </button>
                 </div>
                 <div class="card-popup-body pt-5">
-                    {{-- <form method="post" action="" class="flex flex-col gap-5" enctype="multipart/form-data"> --}}
-                    {{-- <form method="POST" action="{{ route('admin-product-categories.store') }}" class="flex flex-col gap-5"
-                        enctype="multipart/form-data">
-                        @csrf
-                    </form> --}}
                     <form method="POST" action="{{ route('admin-products.store') }}" class="flex-col gap-5"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="name">Name<span class="text-red-600">*</span></label>
-                                <input required type="text" name="name" id="name" oninput="checkInputFilled()"
-                                    placeholder="Enter product's name"
+                                <label class="block text-xs mb-1 font-bold" for="name">Name<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="text" name="name" id="name"
+                                    oninput="checkInputFilled()" placeholder="Enter product's name"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="category">Category<span class="text-red-600">*</span></label>
-                                <input required type="text" name="category" id="category" oninput="checkInputFilled()"
-                                    placeholder="Enter product's category"
+                                <label class="block text-xs mb-1 font-bold" for="category">Category<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="text" name="category" id="category"
+                                    oninput="checkInputFilled()" placeholder="Enter product's category"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div>
                                 <label class="block text-xs mb-1 font-bold" for="linkShopee">Link Shopee*</label>
-                                <input required type="text" name="linkShopee" id="linkShopee" oninput="checkInputFilled()"
-                                    placeholder="https://shopee.co.id/..."
+                                <input required type="text" name="linkShopee" id="linkShopee"
+                                    oninput="checkInputFilled()" placeholder="https://shopee.co.id/..."
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div>
                                 <label class="block text-xs mb-1 font-bold" for="linkTokopedia">Link Tokopedia*</label>
-                                <input required type="text" name="linkTokopedia" id="linkTokopedia" oninput="checkInputFilled()"
-                                    placeholder="https://www.tokopedia.com/..."
+                                <input required type="text" name="linkTokopedia" id="linkTokopedia"
+                                    oninput="checkInputFilled()" placeholder="https://www.tokopedia.com/..."
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="productImage">Product's Image<span class="text-red-600">*</span></label>
-                                {{-- <input required type="file" name="productImage[]" id="productImage" multiple
+                                <label class="block text-xs mb-1 font-bold" for="productImage">Product's Image<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="file" name="productImage[]" id="productImage" multiple
+                                    oninput="checkInputFilled()" accept=".jpeg,.jpg,.png,.webp"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                    onchange="previewProductImages()"> --}}
-                                <input required type="file" name="productImage[]" id="productImage" multiple oninput="checkInputFilled()"
-                                    accept=".jpeg,.jpg,.png,.webp"
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                    onchange="previewProductImages()">
+                                    onchange="validateFiles('productImage', 'productImagesPreview', 'productImageError')">
                                 @error('image')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
+                                <div class="text-red-500 text-xs pt-2" id="productImageError"></div>
+                                <!-- Tempat error message -->
                                 <div class="grid grid-cols-2 gap-3 pt-4" id="productImagesPreview"></div>
                             </div>
+
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="detailImage">Detail's Image<span class="text-red-600">*</span></label>
-                                <input required type="file" name="detailImage" id="detailImage" oninput="checkInputFilled()"
+                                <label class="block text-xs mb-1 font-bold" for="detailImage">Detail's Image<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="file" name="detailImage" id="detailImage"
+                                    oninput="checkInputFilled()" accept=".jpeg,.jpg,.png,.webp"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                    onchange="previewDetailImages()">
+                                    onchange="validateFiles('detailImage', 'detailImagePreview', 'detailImageError')">
                                 @error('image')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <div class="grid grid-cols-2 gap-3 pt-4" id="detailImagePreview">
-                                    {{-- <img src="/img/blckruby2.jpg" alt=""> --}}
-                                </div>
+                                <div class="text-red-500 text-xs pt-2" id="detailImageError"></div>
+                                <!-- Tempat error message -->
+                                <div class="grid grid-cols-2 gap-3 pt-4" id="detailImagePreview"></div>
                             </div>
                         </div>
                         <div class="mt-4 flexEnd gap-3 sticky bottom-0 bg-white border-t-2 border-black py-3">
-                            <button type="button" onclick="disableButton()" class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopup">
+                            <button type="button" onclick="disableButton()"
+                                class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopup">
                                 Cancel
                             </button>
-                            <button disabled id="saveAddBtn" type="submit" class="w-fit px-6 py-1 text-white font-bold bg-primary rounded disabled:cursor-not-allowed disabled:opacity-30">
+                            <button disabled id="saveAddBtn" type="submit"
+                                class="w-fit px-6 py-1 text-white font-bold bg-primary rounded disabled:cursor-not-allowed disabled:opacity-30">
                                 Save
                             </button>
                         </div>
@@ -130,7 +138,7 @@
 
         {{-- EDIT PRODUCT MODAL --}}
         <div class="editModal fixed inset-0 flex -z-10 opacity-100 transition-opacity items-center justify-center">
-            <div class="editModalContent scale-0 transition ease-in-out duration-300 bg-white border-2 border-black max-w-[60%] max-h-[85%] px-5 pb-5 overflow-y-auto w-full"
+            <div class="editModalContent scale-0 transition ease-in-out duration-300 bg-white border-2 border-black max-w-[60%] max-h-[85%] px-5 overflow-y-auto w-full"
                 onclick="event.stopPropagation()">
                 <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white">
                     <h1 class="font-bold text-2xl text-black font-segoe">Edit Product</h1>
@@ -139,67 +147,71 @@
                     </button>
                 </div>
                 <div class="card-popup-body pt-5">
-                    <form method="POST" action="{{ route('admin-products.store') }}" class="flex-col gap-5"
+                    <form method="POST" action="" id="editProductForm" class="flex-col gap-5"
                         enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="name">Name</label>
-                                <input required type="text" name="name" id="nameEdit"
+                                <label class="block text-xs mb-1 font-bold" for="nameEdit">Name</label>
+                                <input required type="text" name="nameEdit" id="nameEdit"
                                     placeholder="Enter product's name"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="category">Category</label>
-                                <input required type="text" name="category" id="categoryEdit"
+                                <label class="block text-xs mb-1 font-bold" for="categoryEdit">Category</label>
+                                <input required type="text" name="categoryEdit" id="categoryEdit"
                                     placeholder="Enter product's category"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="linkShopee">Link Shopee</label>
-                                <input required type="text" name="linkShopee" id="linkShopeeEdit"
+                                <label class="block text-xs mb-1 font-bold" for="linkShopeeEdit">Link Shopee</label>
+                                <input required type="text" name="linkShopeeEdit" id="linkShopeeEdit"
                                     placeholder="https://shopee.co.id/..."
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="linkTokopedia">Link Tokopedia</label>
-                                <input required type="text" name="linkTokopedia" id="linkTokopediaEdit"
+                                <label class="block text-xs mb-1 font-bold" for="linkTokopediaEdit">Link
+                                    Tokopedia</label>
+                                <input required type="text" name="linkTokopediaEdit" id="linkTokopediaEdit"
                                     placeholder="https://www.tokopedia.com/..."
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="productImage">Product's Image</label>
-                                {{-- <input required type="file" name="productImage[]" id="productImage" multiple
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                    onchange="previewProductImages()"> --}}
-                                <input required type="file" name="productImage[]" id="productImageEdit" multiple
+                                <label class="block text-xs mb-1 font-bold" for="productImageEdit">New Product's Image</label>
+                                <input type="file" name="productImageEdit[]" id="productImageEdit" multiple
                                     accept=".jpeg,.jpg,.png,.webp"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                    onchange="previewProductImagesEdit()">
+                                    onchange="validateFiles('productImageEdit', 'productImagesPreviewEdit', 'productImageEditError')">
                                 @error('image')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <div class="grid grid-cols-2 gap-3" id="productImagesPreviewEdit"></div>
+                                <div class="text-red-500 text-xs pt-2" id="productImageEditError"></div>
+                                <!-- Tempat error message -->
+                                <div class="grid grid-cols-2 gap-3 pt-4" id="productImagesPreviewEdit"></div>
+
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="detailImage">Detail's Image</label>
-                                <input required type="file" name="detailImage" id="detailImageEdit"
+                                <label class="block text-xs mb-1 font-bold" for="detailImageEdit">New Detail's
+                                    Image</label>
+                                <input type="file" name="detailImageEdit" id="detailImageEdit"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                    onchange="previewDetailImagesEdit()">
+                                    onchange="validateFiles('detailImageEdit', 'detailImagePreviewEdit', 'detailImageEditError')">
                                 @error('image')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <div class="grid grid-cols-2 gap-3" id="detailImagePreviewEdit">
-                                    {{-- <img src="/img/blckruby2.jpg" alt=""> --}}
-                                </div>
+                                <div class="text-red-500 text-xs pt-2" id="detailImageEditError"></div>
+                                <!-- Tempat error message -->
+                                <div class="grid grid-cols-2 gap-3 pt-4" id="detailImagePreviewEdit"></div>
                             </div>
                         </div>
-                        <div class="mt-4 flexEnd gap-3">
-                            <button type="button" class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopup">
+                        <div class="mt-4 flexEnd gap-3 sticky bottom-0 bg-white border-t-2 border-black py-3">
+                            <button type="button"
+                                class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopup">
                                 Cancel
                             </button>
                             <button type="submit" class="w-fit px-6 py-1 text-white font-bold bg-primary rounded">
@@ -227,9 +239,8 @@
                         <h3 class="text-light font-bold">Admin</h3>
                     </div>
                     <button><a href="/login">
-                        <i
-                                class="fa-solid fa-arrow-right-from-bracket color-primary text-2xl rotate-180"></i>
-                    </a></button>
+                            <i class="fa-solid fa-arrow-right-from-bracket color-primary text-2xl rotate-180"></i>
+                        </a></button>
                 </div>
             </div>
             <div class="content grow padding-container pt-5">
@@ -261,6 +272,7 @@
                     <tbody>
                         @foreach ($products as $product)
                             <tr>
+                                <input type="hidden" id="rowId" value="{{ $product->id }}">
                                 <td id="rowNo">No.</td>
                                 <td id="rowName">{{ $product->name }}</td>
                                 <td id="rowCategory">{{ $product->category }}</td>
@@ -278,22 +290,22 @@
                                     </div>
                                 </td>
                                 <td><img src="{{ asset('storage/' . $product->detail_image) }}" alt="Detail Image"
-                                    id="rowDetailImage" class="w-full cursor-pointer"
+                                        id="rowDetailImage" class="w-full cursor-pointer"
                                         onclick="openModal('{{ asset('storage/' . $product->detail_image) }}')"></td>
                                 <td>
                                     <div class="flexCenter gap-3">
                                         <button>
-                                            <a id="rowLinkShopee" href="{{ $product->link_shopee }}" target="_blank">
-                                                <img src="/img/shopee.png" alt=""
-                                                    class="w-8 h-auto">
+                                            <a id="rowLinkShopee" href="{{ $product->link_shopee }}"
+                                                target="_blank">
+                                                <img src="/img/shopee.png" alt="" class="w-8 h-auto">
                                             </a>
-                                            </button>
+                                        </button>
                                         <button>
-                                            <a id="rowLinkTokopedia" href="{{ $product->link_tokopedia }}" target="_blank">
-                                                <img src="/img/tokopedia.png" alt=""
-                                                    class="w-8 h-auto">
+                                            <a id="rowLinkTokopedia" href="{{ $product->link_tokopedia }}"
+                                                target="_blank">
+                                                <img src="/img/tokopedia.png" alt="" class="w-8 h-auto">
                                             </a>
-                                            </button>
+                                        </button>
                                     </div>
                                 </td>
                                 <td id="rowActions">
@@ -372,6 +384,7 @@
                 };
             }
         }
+
         function previewDetailImages() {
             const detailImages = document.querySelector('#detailImage').files;
             const detailImagePreview = document.querySelector('#detailImagePreview');
@@ -390,6 +403,44 @@
                     imgElement.style.maxWidth = '100%';
                     detailImagePreview.appendChild(imgElement);
                 };
+            }
+        }
+
+        function validateFiles(inputId, previewId, errorId) {
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+            const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+            const inputFile = document.getElementById(inputId);
+            const errorElement = document.getElementById(errorId);
+            const previewElement = document.getElementById(previewId);
+            errorElement.textContent = '';
+            previewElement.innerHTML = ''; // Bersihkan preview sebelumnya
+
+            for (const file of inputFile.files) {
+                // Validasi tipe file
+                if (!allowedTypes.includes(file.type)) {
+                    errorElement.textContent = 'File harus berupa JPEG, JPG, PNG, atau WEBP.';
+                    inputFile.value = ''; // Kosongkan input jika tidak valid
+                    return;
+                }
+
+                // Validasi ukuran file
+                if (file.size > maxSize) {
+                    errorElement.textContent = 'File tidak boleh lebih besar dari 2MB.';
+                    inputFile.value = ''; // Kosongkan input jika tidak valid
+                    return;
+                }
+
+                // Buat preview gambar
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    imgElement.classList.add('img-fluid', 'border', 'border-gray-200');
+                    imgElement.style.maxWidth = '100%';
+                    previewElement.appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
             }
         }
 
@@ -414,6 +465,7 @@
                 };
             }
         }
+
         function previewDetailImagesEdit() {
             const detailImages = document.querySelector('#detailImageEdit').files;
             const detailImagePreview = document.querySelector('#detailImagePreviewEdit');
@@ -495,19 +547,19 @@
             document.getElementById('imageModal').classList.remove('z-50');
         }
 
-        if (document.querySelector('.success-alert')) {
-            const successAlert = document.querySelector('.success-alert');
-            successAlert.classList.remove('opacity-0');
-            successAlert.classList.add('opacity-100');
+        if (document.querySelector('.myAlert')) {
+            const myAlert = document.querySelector('.myAlert');
+            myAlert.classList.remove('opacity-0');
+            myAlert.classList.add('opacity-100');
             setTimeout(() => {
-                successAlert.classList.remove('opacity-100');
-                successAlert.classList.add('opacity-0');
+                myAlert.classList.remove('opacity-100');
+                myAlert.classList.add('opacity-0');
             }, 3000);
         }
 
         const saveAddBtn = document.querySelector('#saveAddBtn');
         saveAddBtn.setAttribute('disabled', true);
-        
+
         function checkInputFilled() {
             const name = document.querySelector('#name');
             const category = document.querySelector('#category');
@@ -516,7 +568,7 @@
             const productImage = document.querySelector('#productImage');
             const detailImage = document.querySelector('#detailImage');
             const isLinkProvided = linkShopee.value || linkTokopedia.value;
-            if ( name.value && category.value && isLinkProvided && productImage.value && detailImage.value) {
+            if (name.value && category.value && isLinkProvided && productImage.value && detailImage.value) {
                 saveAddBtn.removeAttribute('disabled');
             } else {
                 saveAddBtn.setAttribute('disabled', true);

@@ -32,6 +32,7 @@ Route::get('/login', function () {
 // PRODUCTS
 Route::get('/admin/products', [AdminProductController::class, 'index'])->name('admin-products');
 Route::post('/admin/products', [AdminProductController::class, 'store'])->name('admin-products.store');
+Route::put('/admin/products/{id}', [AdminProductController::class, 'update'])->name('admin-products.update');
 Route::delete('/admin/products/{id}', [AdminProductController::class, 'destroy'])->name('admin-products.destroy');
 // PRODUCTS CATEGORY
 // Route::post('/admin/products', [ProductCategoryController::class, 'store'])->name('admin-product-categories.store');

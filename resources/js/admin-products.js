@@ -43,10 +43,12 @@ const editBtns = document.querySelectorAll('.editBtn');
 const editModal = document.querySelector('.editModal');
 const editModalContent = document.querySelector('.editModalContent');
 
+const editProductForm = document.querySelector('#editProductForm');
 const inputNameEdit = document.querySelector('#nameEdit');
 const inputCategoryEdit = document.querySelector('#categoryEdit');
 const inputLinkShopeeEdit = document.querySelector('#linkShopeeEdit');
 const inputLinkTokopediaEdit = document.querySelector('#linkTokopediaEdit');
+const inputProductImageEdit = document.querySelector('#productImageEdit');
 const inputDetailImageEdit = document.querySelector('#detailImageEdit');
 const productImagesPreviewEdit = document.querySelector('#productImagesPreviewEdit');
 const detailImagePreviewEdit = document.querySelector('#detailImagePreviewEdit');
@@ -54,6 +56,16 @@ const detailImagePreviewEdit = document.querySelector('#detailImagePreviewEdit')
 editBtns.forEach(editBtn => {
   const tr = editBtn.parentElement.parentElement.parentElement.parentElement.parentElement
   editBtn.addEventListener('click', () => {
+    const rowId = tr.querySelector('#rowId').value;
+    const rowName = tr.querySelector('#rowName').innerHTML;
+    const rowCategory = tr.querySelector('#rowCategory').innerHTML;
+    const rowProductImages = tr.querySelectorAll('.rowProductImage');
+    const rowDetailImage = tr.querySelector('#rowDetailImage').src;
+    const rowLinkShopee = tr.querySelector('#rowLinkShopee').href;
+    const rowLinkTokopedia = tr.querySelector('#rowLinkTokopedia').href;
+
+    editProductForm.action = "/admin/products/" + rowId;
+
     clearEditFields();
     document.body.classList.add('overflow-hidden');
     editModal.classList.remove('opacity-0');
@@ -64,49 +76,31 @@ editBtns.forEach(editBtn => {
     editModalContent.classList.add('scale-100');
     editModalContent.classList.remove('scale-0');
 
-    console.log('#rowName');
-    const rowName = tr.querySelector('#rowName').innerHTML;
-    console.log(rowName);
+    // console.log('#rowName');
+    // console.log(rowName);
     inputNameEdit.value = rowName;
 
-    console.log('#rowCategory');
-    const rowCategory = tr.querySelector('#rowCategory').innerHTML;
-    console.log(rowCategory);
+    // console.log('#rowCategory');
+    // console.log(rowCategory);
     inputCategoryEdit.value = rowCategory;
 
-    console.log('.rowProductImage');
-    const rowProductImages = tr.querySelectorAll('.rowProductImage');
+    // console.log('.rowProductImage');
     rowProductImages.forEach(rowProductImage => {
-      console.log(rowProductImage.src);
+      // console.log(rowProductImage.src);
       const tagImgProduct = document.createElement('img');
       tagImgProduct.src = rowProductImage.src;
-      console.log(tagImgProduct.src);
+      // console.log(tagImgProduct.src);
       tagImgProduct.classList.add('mt-3');
       tagImgProduct.classList.add('img-fluid');
       tagImgProduct.classList.add('border');
       tagImgProduct.classList.add('border-gray-200');
       tagImgProduct.style.maxWidth = '100%';
-      console.log(productImagesPreviewEdit);
+      // console.log(productImagesPreviewEdit);
       productImagesPreviewEdit.appendChild(tagImgProduct);
     })
 
-    // console.log('.rowProductImage');
-    // const rowProductImage = tr.querySelector('.rowProductImage').src;
-    // console.log(rowProductImage);
-    // const tagImgProduct = document.createElement('img');
-    // tagImgProduct.src = rowProductImage;
-    // console.log(tagImgProduct.src);
-    // tagImgProduct.classList.add('mt-3');
-    // tagImgProduct.classList.add('img-fluid');
-    // tagImgProduct.classList.add('border');
-    // tagImgProduct.classList.add('border-gray-200');
-    // tagImgProduct.style.maxWidth = '100%';
-    // console.log(productImagesPreviewEdit);
-    // productImagesPreviewEdit.appendChild(tagImgProduct);
-
-    console.log('#rowDetailImage');
-    const rowDetailImage = tr.querySelector('#rowDetailImage').src;
-    console.log(rowDetailImage);
+    // console.log('#rowDetailImage');
+    // console.log(rowDetailImage);
     const tagImgDetail = document.createElement('img');
     tagImgDetail.src = rowDetailImage;
     tagImgDetail.classList.add('mt-3');
@@ -116,14 +110,12 @@ editBtns.forEach(editBtn => {
     tagImgDetail.style.maxWidth = '100%';
     detailImagePreviewEdit.appendChild(tagImgDetail);
 
-    console.log('#rowLinkShopee');
-    const rowLinkShopee = tr.querySelector('#rowLinkShopee').href;
-    console.log(rowLinkShopee);
+    // console.log('#rowLinkShopee');
+    // console.log(rowLinkShopee);
     inputLinkShopeeEdit.value = rowLinkShopee;
 
-    console.log('#rowLinkTokopedia');
-    const rowLinkTokopedia = tr.querySelector('#rowLinkTokopedia').href;
-    console.log(rowLinkTokopedia);
+    // console.log('#rowLinkTokopedia');
+    // console.log(rowLinkTokopedia);
     inputLinkTokopediaEdit.value = rowLinkTokopedia;
   });
 });
@@ -207,6 +199,8 @@ function clearEditFields() {
   inputCategoryEdit.value = "";
   inputLinkShopeeEdit.value = "";
   inputLinkTokopediaEdit.value = "";
+  inputProductImageEdit.value = "";
+  inputDetailImageEdit.value = "";
   if (detailImagePreviewEdit.querySelector('img')) {
     detailImagePreviewEdit.querySelector('img').remove();
   }

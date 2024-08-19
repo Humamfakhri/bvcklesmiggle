@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class AdminProductController extends Controller
 {
@@ -76,15 +78,66 @@ class AdminProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        $product->title = $request->title;
-        $product->content = $request->content;
-        $product->save();
+        try {
+            // Validasi data input
+            $validatedData = $request->validate([
+                'nameEdit' => 'required|string|max:255',
+                'categoryEdit' => 'required|string|max:255',
+                'linkShopeeEdit' => 'nullable|string',
+                'linkTokopediaEdit' => 'nullable|string',
+                'productImageEdit.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+                'detailImageEdit' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+            ]);
 
-        return response()->json([
-            'data' => $product
-        ]);
+            // Cari produk berdasarkan ID
+            $product = Product::findOrFail($id);
+
+            // Simpan atau update multiple product images
+            $productImagesEdit = json_decode($product->product_images, true); // Ambil gambar lama
+            if ($request->hasfile('productImageEdit')) {
+                // Hapus gambar lama dari storage
+                foreach ($productImagesEdit as $image) {
+                    Storage::disk('public')->delete($image);
+                }
+
+                // Simpan gambar baru
+                $productImagesEdit = [];
+                foreach ($request->file('productImageEdit') as $image) {
+                    $path = $image->store('product_images', 'public');
+                    $productImagesEdit[] = $path;
+                }
+            }
+
+            // Simpan atau update detail image
+            $detailImagePathEdit = $product->detail_image; // Ambil gambar detail lama
+            if ($request->hasFile('detailImageEdit')) {
+                // Hapus gambar detail lama dari storage
+                Storage::disk('public')->delete($product->detail_image);
+
+                // Simpan gambar detail baru
+                $detailImagePathEdit = $request->file('detailImageEdit')->store('detail_images', 'public');
+            }
+
+            // Update data produk di database
+            $product->name = $validatedData['nameEdit'];
+            $product->category = $validatedData['categoryEdit'];
+            $product->link_shopee = $validatedData['linkShopeeEdit'];
+            $product->link_tokopedia = $validatedData['linkTokopediaEdit'];
+            $product->product_images = json_encode($productImagesEdit); // Simpan array images sebagai JSON
+            $product->detail_image = $detailImagePathEdit;
+            $product->save();
+
+            // Redirect kembali ke halaman admin dengan pesan sukses
+            return redirect()->route('admin-products')->with('success', 'Product has been updated successfully!');
+        } catch (Exception $e) {
+            // Log error untuk debugging
+            Log::error('Error updating product: ' . $e->getMessage());
+
+            // Tampilkan pesan error ke user
+            return redirect()->back()->with('error', 'An error occurred while updating the product. Please try again.');
+        }
     }
 
     /**
@@ -99,12 +152,12 @@ class AdminProductController extends Controller
         // Menghapus file gambar terkait dari storage
         if ($product->product_images) {
             foreach (json_decode($product->product_images) as $image) {
-                Storage::delete($image); // Menghapus file dari storage
+                Storage::disk('public')->delete($image);
             }
         }
 
         if ($product->detail_image) {
-            Storage::delete($product->detail_image); // Menghapus detail image
+            Storage::disk('public')->delete($product->detail_image);
         }
 
         // Menghapus produk dari database
@@ -113,15 +166,4 @@ class AdminProductController extends Controller
         // Mengembalikan redirect dengan pesan sukses
         return redirect()->route('admin-products')->with('success', 'Product have been deleted successfully!');
     }
-    // public function destroy($id)
-    // {
-    //     // Mencari produk berdasarkan ID
-    //     $product = Product::findOrFail($id);
-
-    //     // Menghapus produk dari database
-    //     $product->delete();
-
-    //     // Mengembalikan redirect dengan pesan sukses
-    //     return redirect()->route('admin-products')->with('success', 'Product has been deleted successfully!');
-    // }
 }
