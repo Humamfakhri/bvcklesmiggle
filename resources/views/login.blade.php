@@ -24,7 +24,7 @@
             <div cl>
                 <img src="img/home.png" alt="" class="h-auto max-w-52 mb-5 block mx-auto">
                 <h1 class="text-light font-bold text-2xl mb-4">Welcome Back, Admin!</h1>
-                <form action="" class="flex flex-col gap-5">
+                <form method="post" class="flex flex-col gap-5">
                     <div>
                         <label class="block mb-2 text-gray-300" for="username">Username</label>
                         <input required type="text" name="username" id="username" placeholder="Enter your username"
@@ -37,9 +37,9 @@
                     </div>
                     <div class="mt-4">
                         {{-- <button class="w-full bg-primary text-light rounded">Login</button> --}}
-                        <button
+                        <button type="button"
                             class="w-full py-2 bg-primary rounded-lg border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition"><a
-                                href="articles" class="font-bold text-lg text-white">Login</a></button>
+                                href="{{ route('admin-products') }}" class="font-bold text-lg text-white">Login</a></button>
                     </div>
                 </form>
             </div>

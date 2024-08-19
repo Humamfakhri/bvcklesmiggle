@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('category');
             $table->string('name');
+            $table->string('link_shopee');
+            $table->string('link_tokopedia');
             $table->json('product_images'); // Menyimpan beberapa product images dalam format JSON
             $table->string('detail_image'); // Menyimpan detail image
             // $table->foreign('category')->references('id')->on('product_categories');

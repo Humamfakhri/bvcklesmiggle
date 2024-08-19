@@ -12,6 +12,8 @@ class Product extends Model
     protected $fillable = [
         'name',
         'category',
+        'link_shopee',
+        'link_tokopedia',
         'product_images',
         'detail_image'
     ];

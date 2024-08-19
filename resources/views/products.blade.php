@@ -219,11 +219,19 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                        @for ($i = 0; $i < 12; $i++)
+                        {{-- @for ($i = 0; $i < 12; $i++)
                             <div class="card hover:brightness-50 hover:cursor-pointer">
                                 <img src="/img/blckruby3.jpg" alt="" class="img-fluid rounded-2xl">
                             </div>
-                        @endfor
+                            @endfor --}}
+                            @foreach ($products as $product)
+                            <div class="card hover:brightness-50 hover:cursor-pointer">
+                                {{-- <h1 class="text-white text-2xl"></h1> --}}
+                                {{-- @foreach (json_decode($product->product_images) as $image) --}}
+                                {{-- @endforeach --}}
+                                <img src="{{ asset('storage/' . json_decode($product->product_images)[0]) }}" alt="" class="img-fluid rounded-2xl">
+                            </div>
+                        @endforeach
                     </div>
                     <div class="pagination flex gap-3 justify-center mt-7">
                         <div class="font-bold text-light">PAGE: </div>
