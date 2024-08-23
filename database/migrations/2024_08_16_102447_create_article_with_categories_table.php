@@ -14,20 +14,12 @@ return new class extends Migration
         Schema::create('article_with_categories', function (Blueprint $table) {
             $table->unsignedBigInteger('article_id');
             $table->unsignedBigInteger('category_id');
-            
-            // Define foreign keys
-            $table->foreign('article_id')
-                  ->references('id')
-                  ->on('articles')
-                  ->onDelete('cascade');
-            
-            $table->foreign('category_id')
-                  ->references('id')
-                  ->on('article_categories')
-                  ->onDelete('cascade');
-
-            // Set primary key
+            $table->timestamps();
             $table->primary(['article_id', 'category_id']);
+
+            // Foreign keys
+            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('article_categories')->onDelete('cascade');
         });
     }
 

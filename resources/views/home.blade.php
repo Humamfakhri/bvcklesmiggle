@@ -2,7 +2,8 @@
     {{-- <main class="max-container padding-container"> --}}
     <main>
         <section class="max-container padding-container">
-            <img src="/img/banner_home.jpg" alt="" class="img-fluid w-full my-2 lg:my-4 border-2 border-gray-200">
+            <img src="/img/banner_home_mob.jpg" alt="" class="lg:hidden img-fluid w-full my-2 border-2 border-gray-200">
+            <img src="/img/banner_home.jpg" alt="" class="hidden lg:block img-fluid w-full my-4 border-2 border-gray-200">
             <h1 class="font-bold text-gray-200 text-2xl xl:text-5xl"><span class="color-primary">></span>SHOUT OUT<span
                     class="color-primary">_</span></h1>
             <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-4">
@@ -67,7 +68,7 @@
                 </div>
                 <div><img src="/img/eqp.jpg" alt="" class="img-fluid max-h-[50vh] lg:max-h-[85vh] lg:pe-20">
                 </div>
-                <p class="hidden lg:blockfont-semibold text-2xl text-zinc-500 text-end">Don't
+                <p class="hidden lg:block font-semibold text-2xl text-zinc-500 text-end">Don't
                     let<br>aging<br>make<br>you<br>uncool.<br>Shape urself.</p>
                 <p class="lg:hidden font-semibold text-xl lg:text-2xl text-zinc-500 text-center">Don't let aging make
                     you uncool.
@@ -113,10 +114,10 @@
                 class="block w-full lg:w-fit lg:ms-auto py-3 lg:py-5 px-8 lg:px-10 bg-primary rounded-lg border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition"><a
                     href="partnership" class="font-bold text-xl lg:text-2xl text-white">Let's make a deal!</a></button>
             <button
-                class="backToTopBtn pb-2 px-3 bg-secondary rounded-lg font-bold text-2xl text-white text-center border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
+                class="backToTopBtn self-stretch w-full lg:w-fit pb-2 px-3 bg-secondary rounded-lg font-bold text-white text-center border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
                 <small class="text-[10px] text-white">Skipped the content?</small>
                 <div class="flex items-center justify-center gap-1 -mt-2">
-                    <p class="text-white">Goin up</p>
+                    <p class="text-white text-lg lg:text-2xl">Goin up</p>
                     <i class="text-white fa-solid fa-arrow-up-long"></i>
                 </div>
             </button>

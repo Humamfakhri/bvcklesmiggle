@@ -19,6 +19,21 @@ class ProductController extends Controller
         ]);
     }
 
+    public function getProduct(Request $request)
+    {
+        // Validasi ID
+        $request->validate([
+            'id' => 'required|integer|exists:products,id',
+        ]);
+
+        // Mendapatkan nama produk berdasarkan ID
+        $product = Product::findOrFail($request->id);
+
+        // Mengirim data sebagai JSON        
+        // return response()->json(['product' => $product]);
+        return response()->json($product);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

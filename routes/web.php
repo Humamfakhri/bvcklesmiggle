@@ -15,6 +15,7 @@ Route::get('/articles', function () {
 })->name('articles');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/get-product', [ProductController::class, 'getProduct']);
 
 Route::get('/partnership', function () {
     return view('partnership');

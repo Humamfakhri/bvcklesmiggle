@@ -10,9 +10,15 @@ class Article extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'author',
-        'image',
-        'body',
+    'title',
+    'author',
+    'image',
+    'body',
     ];
+
+    // Relasi many-to-many dengan model Category
+    public function categories()
+    {
+        return $this->belongsToMany(ArticleCategory::class, 'article_with_categories', 'article_id', 'category_id');
+    }
 }

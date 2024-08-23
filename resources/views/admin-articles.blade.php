@@ -12,250 +12,373 @@
     <script src="https://cdn.datatables.net/2.1.3/js/dataTables.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/trix.css">
+    @vite('resources/js/trix.umd.min.js')
+    {{-- <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css"> --}}
+    {{-- <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script> --}}
+    {{-- <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script> --}}
     <title>bvcklesmiggle</title>
+
+    <style>
+        trix-toolbar [data-trix-button-group="file-tools"] {
+            display: none;
+        }
+
+        trix-editor {
+            background-color: #fff;
+            /* border-radius: 10px */
+        }
+    </style>
 </head>
 
 <body class="bg-gray-200">
-    <!-- Modal -->
-    <div id="imageModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 items-center justify-center hidden">
-        <div class="relative max-w-[80vh] max-h-[80vh]">
-            <img id="modalImage" src="" alt="Full Image" class="img-fluid w-full">
-            {{-- <img id="modalImage" src="" alt="Full Image" class="max-w-full max-h-full object-contain"> --}}
-            <button onclick="closeModal()"
-                class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-primary w-8 h-8 rounded-full"><i
-                    class="fa-solid fa-xmark text-white"></i></button>
-        </div>
-    </div>
-    <div class="cardPopup fixed inset-0 flex -z-10 opacity-100 transition-opacity items-center justify-center">
-        {{--  scale-0 --}}
-        {{-- <div class="cardPopupContent transition ease-in-out duration-300 bg-white border-2 border-black w-[85%] max-h-[80%] p-3 mt-12" onclick="event.stopPropagation()"> --}}
-        <div class="cardPopupContent scale-0 transition ease-in-out duration-300 bg-white border-2 border-black max-w-[60%] max-h-[85%] p-5 overflow-y-auto w-full"
-            onclick="event.stopPropagation()">
-            <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pb-3 bg-white">
-                <h1 class="font-bold text-2xl text-black font-segoe">Add Article</h1>
-                <button>
-                    <i class="closePopup text-3xl text-black fa-solid fa-xmark"></i>
-                </button>
+    <main>
+        @if (session('success'))
+            <div class="myAlert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
+                role="alert">
+                <div class="bg-green-100 rounded border border-green-400 text-green-700 px-4 py-3">
+                    {{-- <span class="block sm:inline">Berhasil</span> --}}
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
             </div>
-            <div class="card-popup-body pt-5">
-                {{-- <form method="post" action="" class="flex flex-col gap-5" enctype="multipart/form-data"> --}}
-                {{-- <form method="POST" action="{{ route('admin-article-categories.store') }}" class="flex flex-col gap-5"
-                    enctype="multipart/form-data">
-                    @csrf
-                </form> --}}
+        @elseif (session('error'))
+            <div class="myAlert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
+                role="alert">
+                <div class="bg-red-100 rounded border border-red-400 text-red-700 px-4 py-3">
+                    {{-- <span class="block sm:inline">Berhasil</span> --}}
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            </div>
+        @endif
+
+        <!-- VIEW IMAGE MODAL -->
+        <div id="imageModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 items-center justify-center hidden">
+            <div class="relative max-w-[80vh] max-h-[80vh]">
+                <img id="modalImage" src="" alt="Full Image" class="img-fluid w-full">
+                {{-- <img id="modalImage" src="" alt="Full Image" class="max-w-full max-h-full object-contain"> --}}
+                <button onclick="closeModal()"
+                    class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-primary w-8 h-8 rounded-full"><i
+                        class="fa-solid fa-xmark text-white"></i></button>
+            </div>
+        </div>
+
+        {{-- ADD CATEGORY MODAL --}}
+        <div
+            class="addCategoryModal fixed inset-0 flex -z-10 opacity-100 transition-opacity items-center justify-center">
+            <div class="addCategoryModalContent scale-0 transition ease-in-out duration-300 bg-white border-2 border-black max-w-[370px] max-h-[85%] w-[80vw] px-5 overflow-y-auto"
+                onclick="event.stopPropagation()">
+                <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white">
+                    <h1 class="font-bold text-2xl text-black font-segoe">Add Category</h1>
+                    <button onclick="disableButton()">
+                        <i class="closePopup text-3xl text-black fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="card-popup-body pt-5">
+                    <form method="POST" action="{{ route('admin-articles.store') }}" class="flex-col gap-5"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-2">
+                                <label class="block text-xs mb-1 font-bold" for="name">Category<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="text" name="name" id="name"
+                                    oninput="checkInputFilled()" placeholder="Enter category's name"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                            </div>
+                        </div>
+                        <div class="mt-4 flexEnd gap-3 sticky bottom-0 bg-white py-3">
+                            <button type="button" onclick="disableButton()"
+                                class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopup">
+                                Cancel
+                            </button>
+                            <button disabled id="saveAddCategoryBtn" type="submit"
+                                class="w-fit px-6 py-1 text-white font-bold bg-primary rounded disabled:cursor-not-allowed disabled:opacity-30">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- EDIT ARTICLE MODAL --}}
+        <div class="editModal fixed inset-0 flex -z-10 opacity-100 transition-opacity items-center justify-center">
+            <div class="editModalContent scale-0 transition ease-in-out duration-300 bg-white border-2 border-black max-w-[60%] max-h-[85%] px-5 overflow-y-auto w-full"
+                onclick="event.stopPropagation()">
+                <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white">
+                    <h1 class="font-bold text-2xl text-black font-segoe">Edit Article</h1>
+                    <button>
+                        <i class="closePopup text-3xl text-black fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="card-popup-body pt-5">
+                    <form method="POST" action="" id="editArticleForm" class="flex-col gap-5"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="nameEdit">Name</label>
+                                <input required type="text" name="nameEdit" id="nameEdit"
+                                    placeholder="Enter article's name"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="categoryEdit">Category</label>
+                                <input required type="text" name="categoryEdit" id="categoryEdit"
+                                    placeholder="Enter article's category"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="linkShopeeEdit">Link Shopee</label>
+                                <input required type="text" name="linkShopeeEdit" id="linkShopeeEdit"
+                                    placeholder="https://shopee.co.id/..."
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="linkTokopediaEdit">Link
+                                    Tokopedia</label>
+                                <input required type="text" name="linkTokopediaEdit" id="linkTokopediaEdit"
+                                    placeholder="https://www.tokopedia.com/..."
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="articleImageEdit">New Article's
+                                    Image</label>
+                                <input type="file" name="articleImageEdit[]" id="articleImageEdit" multiple
+                                    accept=".jpeg,.jpg,.png,.webp"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
+                                    onchange="validateFiles('articleImageEdit', 'articleImagesPreviewEdit', 'articleImageEditError')">
+                                @error('image')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                                <div class="text-red-500 text-xs pt-2" id="articleImageEditError"></div>
+                                <!-- Tempat error message -->
+                                <div class="grid grid-cols-2 gap-3 pt-4" id="articleImagesPreviewEdit"></div>
+
+                            </div>
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="detailImageEdit">New Detail's
+                                    Image</label>
+                                <input type="file" name="detailImageEdit" id="detailImageEdit"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
+                                    onchange="validateFiles('detailImageEdit', 'detailImagePreviewEdit', 'detailImageEditError')">
+                                @error('image')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                                <div class="text-red-500 text-xs pt-2" id="detailImageEditError"></div>
+                                <!-- Tempat error message -->
+                                <div class="grid grid-cols-2 gap-3 pt-4" id="detailImagePreviewEdit"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flexEnd gap-3 sticky bottom-0 bg-white border-t-2 border-black py-3">
+                            <button type="button"
+                                class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopup">
+                                Cancel
+                            </button>
+                            <button type="submit" class="w-fit px-6 py-1 text-white font-bold bg-primary rounded">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="flex">
+            <div class="sidebar h-screen py-6 bg-dark flex flex-col padding-container sticky top-0">
+                <img src="/img/logo.png" alt="" class="h-auto max-w-52">
+                <ul class="flex flex-col gap-5 mt-5 grow">
+                    {{-- <li><x-nav-link href="/">HOME</x-nav-link></li> --}}
+                    <li><x-nav-link href="admin/articles">ARTICLES</x-nav-link></li>
+                    <li><x-nav-link href="admin/products">PRODUCTS</x-nav-link></li>
+                    {{-- <li><x-nav-link href="partnership">PARTNERSHIP</x-nav-link></li> --}}
+                </ul>
+                <div class="flex justify-between items-end border border-gray-500 px-3 py-2 rounded-lg">
+                    <div>
+                        <small class="text-gray-400">You are logged in as:</small>
+                        <h3 class="text-light font-bold">Admin</h3>
+                    </div>
+                    <button><a href="/login">
+                            <i class="fa-solid fa-arrow-right-from-bracket color-primary text-2xl rotate-180"></i>
+                        </a></button>
+                </div>
+            </div>
+            <div class="content grow padding-container pt-5">
+                <h1 class="font-bold text-3xl mb-4">Articles</h1>
                 <form method="POST" action="{{ route('admin-articles.store') }}" class="flex-col gap-5"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="title">Title</label>
+                        <div class="col-span-2">
+                            <label class="block text-xs mb-1 font-bold" for="title">Title<span
+                                    class="text-red-600">*</span></label>
                             <input required type="text" name="title" id="title"
-                                placeholder="Enter article's title"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                                oninput="checkInputFilled()" placeholder="Enter article's title"
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
                         </div>
                         <div>
-                            <label class="block text-xs mb-1 font-bold" for="category">Category</label>
+                            <label class="block text-xs mb-1 font-bold" for="author">Author<span
+                                    class="text-red-600">*</span></label>
+                            <input required type="text" name="author" id="author"
+                                oninput="checkInputFilled()" placeholder="Enter article's author"
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                        </div>
+                        {{-- <div>
+                            <label class="block text-xs mb-1 font-bold" for="category">Category<span class="text-red-600">*</span></label>
                             <input required type="text" name="category" id="category"
-                                placeholder="Enter article's category"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                                oninput="checkInputFilled()" placeholder="Enter article's category"
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                        </div> --}}
+                        <div class="relative">
+                            <label class="block text-xs mb-1 font-bold" for="category">Category<span
+                                    class="text-red-600">*</span></label>
+                            {{-- <button type="button"
+                                class="categoryBtn w-full flexCenter gap-1 border border-gray-400 text-light rounded-lg px-3 py-1">
+                                Category
+                                <i class="categoryChevron fa-solid fa-chevron-down text-light duration-200"></i>
+                            </button> --}}
+                            <div class="relative">
+                                <select name="categoryId" id="categoryId"
+                                    class="w-full px-3 py-2 rounded-lg appearance-none border border-gray-400 text-xs cursor-pointer">
+                                    <option value="">-- Select Category --</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="absolute top-0 right-0 h-full flexCenter pe-3"><i
+                                        class="fa-solid fa-chevron-down"></i></div>
+                            </div>
+                            {{-- <div
+                                class="categoryContainer absolute top-full mt-1 h-0 overflow-hidden duration-300 z-50">
+                                <ul class="leading-loose px-5 py-3 border border-gray-400 bg-dark rounded-xl">
+                                    <li><a class="font-bold font-segoe color-primary" href="#">ALL</a>
+                                    <li>
+                                        <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
+                                    </li>
+                                    <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                            href="products?category=head%20gear">Head
+                                            Gear</a></li>
+                                    <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                            href="#">Body
+                                            Armor</a></li>
+                                    <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                            href="#">Hand
+                                            Wear</a></li>
+                                    <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                            href="#">Foot
+                                            Wear</a></li>
+                                    <li>
+                                        <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
+                                    </li>
+                                    <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                            href="#">Storage</a></li>
+                                    <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                            href="#">Extended</a></li>
+                                    <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                            href="#">Items</a></li>
+                                </ul>
+                            </div> --}}
                         </div>
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="articleImage">Article's Image</label>
-                            {{-- <input required type="file" name="articleImage[]" id="articleImage" multiple
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                onchange="previewArticleImages()"> --}}
-                            <input required type="file" name="articleImage[]" id="articleImage" multiple
-                                accept=".jpeg,.jpg,.png,.webp"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                onchange="previewArticleImages()">
-
+                        <div class="col-span-2">
+                            <label class="block text-xs mb-1 font-bold">Article's Image</label>
+                            <input required type="file" name="articleImage" id="articleImage" multiple
+                                oninput="checkInputFilled()" accept=".jpeg,.jpg,.png,.webp"
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('image') is-invalid @enderror"
+                                onchange="validateFiles('articleImage', 'articleImagesPreview', 'articleImageError')">
                             @error('image')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
-                            <div class="grid grid-cols-2 gap-3" id="articleImagesPreview"></div>
+                            <div class="text-red-500 text-xs pt-2" id="articleImageError"></div>
+                            <!-- Tempat error message -->
+                            <div class="grid grid-cols-2 gap-3 pt-4" id="articleImagesPreview"></div>
+                        </div>
+                        <div class="col-span-2">
+                            <input id="body" type="hidden" name="body">
+                            <trix-editor input="body"></trix-editor>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs mt-2 mb-1 font-bold" for="body">Body</label>
-                        <textarea required type="text" name="body" id="body" placeholder="Enter article's body" rows="10"
-                            class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent"></textarea>
-                    </div>
-                    <div class="mt-4 flexEnd gap-3">
-                        <button type="button" class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded">
-                            Cancel
+                    <div class="flexBetween">
+                        <button type="button" id="addCategoryBtn"
+                            class="w-fit px-4 py-1 my-6  color-primary font-bold rounded border-2 border-primary flexCenter gap-2">
+                            Add Category
+                            <i class="fa-solid fa-plus color-primary"></i>
                         </button>
-                        <button type="submit" class="w-fit px-6 py-1 text-white font-bold bg-primary rounded">
-                            Save
+                        <button id="addArticleBtn"
+                            class="w-fit px-4 py-1 my-6  text-white font-bold bg-primary rounded border-2 border-black flexCenter gap-2">
+                            Add Article
+                            <i class="fa-solid fa-plus text-white"></i>
                         </button>
                     </div>
                 </form>
-                {{-- <form method="post" action="" class="flex flex-col gap-5" enctype="multipart/form-data">
-                    @csrf
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="name">Name</label>
-                            <input required type="text" name="name" id="name"
-                                placeholder="Enter article's name"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="category">Category</label>
-                            <input required type="category" name="category" id="category"
-                                placeholder="Enter article's category"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="articleImage">Article's Image</label>
-                            <input required type="file" name="articleImage" id="articleImage"
-                                placeholder="Enter article's image"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                onchange="previewArticleImage()">
-                            @error('image')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                            <div class="grid grid-cols-2 gap-3">
-                                <img class="articleImagePreview img-fluid">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="detailImage">Detail's Image</label>
-                            <input required type="file" name="detailImage" id="detailImage"
-                                placeholder="Enter detail's image"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                onchange="previewDetailImage()">
-                            @error('image')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                            <div class="grid grid-cols-2 gap-3">
-                                <img class="detailImagePreview img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 flexEnd gap-3">
-                        <button
-                            type="button"
-                            class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded">
-                            Cancel
-                        </button>
-                        <button
-                        type="submit"
-                            class="w-fit px-6 py-1 text-white font-bold bg-primary rounded">
-                            Save
-                        </button>
-                    </div>
-                </form> --}}
-            </div>
-        </div>
-    </div>
-
-    <div class="flex">
-        <div class="sidebar h-screen py-6 bg-dark flex flex-col padding-container sticky top-0">
-            <img src="/img/logo.png" alt="" class="h-auto max-w-52">
-            <ul class="flex flex-col gap-5 mt-5 grow">
-                {{-- <li><x-nav-link href="/">HOME</x-nav-link></li> --}}
-                <li><x-nav-link href="admin/articles">ARTICLES</x-nav-link></li>
-                <li><x-nav-link href="admin/products">PRODUCTS</x-nav-link></li>
-                {{-- <li><x-nav-link href="partnership">PARTNERSHIP</x-nav-link></li> --}}
-            </ul>
-            <div class="flex justify-between items-end border border-gray-500 px-3 py-2 rounded-lg">
-                <div>
-                    <small class="text-gray-400">You are logged in as:</small>
-                    <h3 class="text-light font-bold">Admin</h3>
-                </div>
-                <button><a href="/login">
-                        <i class="fa-solid fa-arrow-right-from-bracket color-primary text-2xl rotate-180"></i>
-                    </a></button>
-            </div>
-        </div>
-        <div class="content grow padding-container pt-5">
-            <h1 class="font-bold text-3xl">Articles</h1>
-            @if (session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-                    role="alert">
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
-            <div class="flex gap-3">
-                <button
-                    class="w-fit px-2 py-1 my-6 text-white font-bold bg-primary rounded border-2 border-black flexCenter gap-2 card">
-                    Add Article
-                    <i class="fa-solid fa-plus text-white"></i>
-                </button>
-                {{-- <button
-                    class="w-fit px-2 py-1 my-6 color-primary font-bold rounded border-2 border-primary flexCenter gap-2 card">
-                    Add Category
-                    <i class="fa-solid fa-plus color-primary"></i>
-                </button> --}}
-            </div>
-            <table id="myTable" class="display">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Content</th>
-                        <th>Image</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($articles as $article)
+                <hr class="border-gray-300 mb-10">
+                <table id="myTable" class="display">
+                    <thead>
                         <tr>
-                            <td>No.</td>
-                            <td>{{ $article->category }}</td>
-                            <td>{{ $article->name }}</td>
-                            <td>
-                                <div class="grid grid-cols-3 gap-3">
-                                    @foreach (json_decode($article->article_images) as $image)
-                                        {{-- <img src="{{ asset('storage/' . $image) }}" alt="Article Image"
-                                            class="img-fluid w-full"> --}}
-                                        <div class="relative">
-                                            <img src="{{ asset('storage/' . $image) }}" alt="Article Image"
-                                                class="w-full cursor-pointer"
-                                                onclick="openModal('{{ asset('storage/' . $image) }}')">
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td><img src="{{ asset('storage/' . $article->detail_image) }}" alt="Detail Image"
-                                    class="w-full cursor-pointer"
-                                    onclick="openModal('{{ asset('storage/' . $article->detail_image) }}')"></td>
-                            <td>
-                                <div class="flexCenter gap-5">
-                                    <form action="{{ route('admin-articles.destroy', $article->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this article?');">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="button">
-                                            <i class="fa-solid fa-edit color-primary text-lg"></i>
-                                        </button>
-                                    </form>
-                                    <form action="{{ route('admin-articles.destroy', $article->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this article?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit">
-                                            <i class="fa-solid fa-trash text-red-500 text-lg"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+                            <th>No.</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                            <th>Article Image</th>
+                            <th>Body</th>
+                            <th>Actions</th>
                         </tr>
-                    @endforeach
-                    {{-- <tr>
-                        <td>Row 1 Data 1</td>
-                        <td>Row 1 Data 2</td>
-                    </tr> --}}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($articles as $article)
+                            <tr>
+                                <input type="hidden" id="rowId" value="{{ $article->id }}">
+                                <td id="rowNo">No.</td>
+                                <td id="rowTitle">{{ $article->title }}</td>
+                                <td id="rowAuthor">{{ $article->author }}</td>
+                                <td id="rowCategories">{{ $article->categories->implode('name', ', ') }}</td>
+                                <td>
+                                    <div class="relative">
+                                        <img src="{{ asset('storage/' . $article->image) }}" alt="Article Image"
+                                            class="w-full cursor-pointer rowArticleImage"
+                                            onclick="openModal('{{ asset('storage/' . $article->image) }}')">
+                                    </div>
+                                <td id="rowBody">{{ $article->body }}</td>
+                                <td id="rowActions">
+                                    <div class="flexCenter gap-5">
+                                        <form action="{{ route('admin-articles.destroy', $article->id) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="button">
+                                                <i class="editBtn fa-solid fa-edit text-lg"></i>
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('admin-articles.destroy', $article->id) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">
+                                                <i class="fa-solid fa-trash text-red-600 text-lg"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        {{-- <tr>
+                            <td>Row 1 Data 1</td>
+                            <td>Row 1 Data 2</td>
+                        </tr> --}}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    </main>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
@@ -278,6 +401,7 @@
             });
         });
 
+        // ADD ARTICLE
         function previewArticleImages() {
             const articleImages = document.querySelector('#articleImage').files;
             const articleImagesPreview = document.querySelector('#articleImagesPreview');
@@ -291,7 +415,8 @@
                     const imgElement = document.createElement('img');
                     imgElement.src = oFREvent.target.result;
                     imgElement.classList.add('img-fluid');
-                    imgElement.classList.add('rounded-lg');
+                    imgElement.classList.add('border');
+                    imgElement.classList.add('border-gray-200');
                     imgElement.style.maxWidth = '100%';
                     articleImagesPreview.appendChild(imgElement);
                 };
@@ -300,8 +425,8 @@
 
         function previewDetailImages() {
             const detailImages = document.querySelector('#detailImage').files;
-            const detailImagesPreview = document.querySelector('#detailImagesPreview');
-            detailImagesPreview.innerHTML = ''; // Bersihkan preview sebelumnya
+            const detailImagePreview = document.querySelector('#detailImagePreview');
+            detailImagePreview.innerHTML = ''; // Bersihkan preview sebelumnya
 
             for (const image of detailImages) {
                 const oFReader = new FileReader();
@@ -311,9 +436,91 @@
                     const imgElement = document.createElement('img');
                     imgElement.src = oFREvent.target.result;
                     imgElement.classList.add('img-fluid');
-                    imgElement.classList.add('rounded-lg');
+                    imgElement.classList.add('border');
+                    imgElement.classList.add('border-gray-200');
                     imgElement.style.maxWidth = '100%';
-                    detailImagesPreview.appendChild(imgElement);
+                    detailImagePreview.appendChild(imgElement);
+                };
+            }
+        }
+
+        function validateFiles(inputId, previewId, errorId) {
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+            const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+            const inputFile = document.getElementById(inputId);
+            const errorElement = document.getElementById(errorId);
+            const previewElement = document.getElementById(previewId);
+            errorElement.textContent = '';
+            previewElement.innerHTML = ''; // Bersihkan preview sebelumnya
+
+            for (const file of inputFile.files) {
+                // Validasi tipe file
+                if (!allowedTypes.includes(file.type)) {
+                    errorElement.textContent = 'File harus berupa JPEG, JPG, PNG, atau WEBP.';
+                    inputFile.value = ''; // Kosongkan input jika tidak valid
+                    return;
+                }
+
+                // Validasi ukuran file
+                if (file.size > maxSize) {
+                    errorElement.textContent = 'File tidak boleh lebih besar dari 2MB.';
+                    inputFile.value = ''; // Kosongkan input jika tidak valid
+                    return;
+                }
+
+                // Buat preview gambar
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    imgElement.classList.add('img-fluid', 'border', 'border-gray-200');
+                    imgElement.style.maxWidth = '100%';
+                    previewElement.appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // EDIT ARTICLE
+        function previewArticleImagesEdit() {
+            const articleImages = document.querySelector('#articleImageEdit').files;
+            const articleImagesPreview = document.querySelector('#articleImagesPreviewEdit');
+            articleImagesPreview.innerHTML = ''; // Bersihkan preview sebelumnya
+
+            for (const image of articleImages) {
+                const oFReader = new FileReader();
+                oFReader.readAsDataURL(image);
+
+                oFReader.onload = function(oFREvent) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = oFREvent.target.result;
+                    imgElement.classList.add('img-fluid');
+                    imgElement.classList.add('border');
+                    imgElement.classList.add('border-gray-200');
+                    imgElement.style.maxWidth = '100%';
+                    articleImagesPreview.appendChild(imgElement);
+                };
+            }
+        }
+
+        function previewDetailImagesEdit() {
+            const detailImages = document.querySelector('#detailImageEdit').files;
+            const detailImagePreview = document.querySelector('#detailImagePreviewEdit');
+            detailImagePreview.innerHTML = ''; // Bersihkan preview sebelumnya
+
+            for (const image of detailImages) {
+                const oFReader = new FileReader();
+                oFReader.readAsDataURL(image);
+
+                oFReader.onload = function(oFREvent) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = oFREvent.target.result;
+                    imgElement.classList.add('img-fluid');
+                    imgElement.classList.add('border');
+                    imgElement.classList.add('border-gray-200');
+                    imgElement.style.maxWidth = '100%';
+                    detailImagePreview.appendChild(imgElement);
                 };
             }
         }
@@ -323,7 +530,7 @@
         //     const articleImage = document.querySelector('#articleImage');
         //     const articleImagePreview = document.querySelector(".articleImagePreview");
         //     console.log(articleImagePreview);
-        //     articleImagePreview.style.display = 'block';
+        //     articleImagePreview.style.display = 'bflock';
 
         //     const oFReader = new FileReader();
         //     oFReader.readAsDataURL(articleImage.files[0]);
@@ -377,8 +584,34 @@
             document.getElementById('imageModal').classList.remove('flex');
             document.getElementById('imageModal').classList.remove('z-50');
         }
+
+        if (document.querySelector('.myAlert')) {
+            const myAlert = document.querySelector('.myAlert');
+            myAlert.classList.remove('opacity-0');
+            myAlert.classList.add('opacity-100');
+            setTimeout(() => {
+                myAlert.classList.remove('opacity-100');
+                myAlert.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        const saveAddCategoryBtn = document.querySelector('#saveAddCategoryBtn');
+        saveAddCategoryBtn.setAttribute('disabled', true);
+
+        function checkInputFilled() {
+            const name = document.querySelector('#name');
+            if (name.value) {
+                saveAddCategoryBtn.removeAttribute('disabled');
+            } else {
+                saveAddCategoryBtn.setAttribute('disabled', true);
+            }
+        }
+
+        function disableButton() {
+            saveAddCategoryBtn.setAttribute('disabled', true);
+        }
     </script>
-    @vite('resources/js/products.js')
+    @vite('resources/js/admin-articles.js')
 </body>
 
 </html>

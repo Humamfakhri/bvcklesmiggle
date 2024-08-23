@@ -10,10 +10,11 @@
                         <i class="closePopup text-3xl text-black fa-solid fa-xmark"></i>
                     </button>
                 </div>
-                <div class="card-popup-body">
+                <div id="loadingSpinner" class="loading-spinner p-20"></div>
+                <div id="cardPopupBody" class="card-popup-body">
                     <div class="hidden lg:grid grid-cols-10 items-end gap-4 mt-3">
                         <div class="col-end-11 col-span-3 border-b-2 border-black py-2">
-                            <h1 class="font-bold text-2xl text-black font-segoe">//BLCK RUBY</h1>
+                            <h1 id="productNameModal" class="font-bold text-2xl text-black font-segoe">//[JUDUL]</h1>
                         </div>
                     </div>
                     <div class="flex flex-col lg:grid lg:grid-cols-10 lg:gap-4">
@@ -26,8 +27,7 @@
                         </div>
                         <div id="product-info" class="col-span-3 flex flex-col">
                             <div id="product-category">
-                                <small class="block border-b border-black py-1 font-bold font-segoe">HandWear/<span
-                                        class="color-primary">Armlet</span></small>
+                                <small id="productCategoryModal" class="block border-b border-black py-1 font-bold font-segoe color-primary">[Category]</small>
                             </div>
                             <div id="product-issue">
                                 <small class="block font-bold mt-2">Issue #01</small>
@@ -74,14 +74,14 @@
                                     <div class="grid grid-cols-2 gap-3">
                                         <button
                                             class="bg-white p-1 border-2 border-black shadow-[-3px_3px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
-                                            <a href="#" class="flex items-center gap-1">
+                                            <a id="linkShopeeModal" href="#" class="flex items-center gap-1">
                                                 <img src="/img/shopee.jpg" alt="" width="25">
                                                 <small class="font-segoe font-bold text-xs">bvcklesmiggle</small>
                                             </a>
                                         </button>
                                         <button
                                             class="bg-white p-1 border-2 border-black shadow-[-3px_3px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
-                                            <a href="#" class="flex items-center gap-1">
+                                            <a id="linkTokopediaModal" href="#" class="flex items-center gap-1">
                                                 <img src="/img/tokopedia.png" alt="" width="25">
                                                 <small class="font-segoe font-bold text-xs">bvcklesmiggle</small>
                                             </a>
@@ -95,8 +95,10 @@
             </div>
         </div>
         <section>
+            <img src="/img/banner_products_mob.jpg" alt=""
+                class="lg:hidden img-fluid w-full mt-2 mb-4 border-2 border-gray-200">
             <img src="/img/banner_products.jpg" alt=""
-                class="img-fluid w-full mt-2 mb-4 lg:my-4 border-2 border-gray-200">
+                class="hidden lg:block img-fluid w-full my-4 border-2 border-gray-200">
             <div class="flex gap-8">
                 <div class="sidebar hidden lg:flex flex-col max-h-screen sticky top-0 pt-16 -mt-16 pb-2">
                     {{-- max-h-[90vh] --}}
@@ -156,8 +158,6 @@
                                 href="#">Items</a></li>
                     </ul>
                     <div>
-                        <h5 class="font-bold font-segoe text-light text-xs text-center">CHECK OUT AT<br>OUR OFFICIAL
-                            eCOMMERCE:</h5>
                         <div class="grid grid-cols-2 gap-3 mt-2">
                             <button class="bg-white p-1">
                                 <a href="#" class="flex items-center gap-1">
@@ -175,89 +175,94 @@
                     </div>
                 </div>
                 <div class="products">
-                    <form action="" class="flex items-stretch mb-3 lg:hidden">
-                        <input type="text" placeholder="Search for Product"
-                            class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-xl text-light text-sm">
-                        <button class="self-auto px-3 border border-primary bg-dark rounded-r-xl"><i
-                                class="fa-solid fa-magnifying-glass text-light"></i></button>
-                        {{-- <button class="self-auto px-3 border border-primary rounded-r-xl"><i class="fa-solid fa-magnifying-glass text-light"></i></button> --}}
-                    </form>
-                    <div class="relative flexEnd lg:hidden mb-6">
-                        <button
-                            class="categoryBtn flexCenter gap-1 bg-dark border border-primary text-light rounded-full px-3 py-1">
-                            Category
-                            <i class="categoryChevron fa-solid fa-chevron-down text-light duration-200"></i>
-                        </button>
-                        <div class="categoryContainer absolute top-full mt-1 h-0 overflow-hidden duration-300">
-                            <ul class="leading-loose px-5 py-3 border border-gray-500 bg-dark rounded-xl">
-                                <li><a class="font-bold font-segoe color-primary" href="#">ALL</a>
-                                <li>
-                                    <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
-                                </li>
-                                <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                        href="products?category=head%20gear">Head
-                                        Gear</a></li>
-                                <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                        href="#">Body
-                                        Armor</a></li>
-                                <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                        href="#">Hand
-                                        Wear</a></li>
-                                <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                        href="#">Foot
-                                        Wear</a></li>
-                                <li>
-                                    <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
-                                </li>
-                                <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                        href="#">Storage</a></li>
-                                <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                        href="#">Extended</a></li>
-                                <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                        href="#">Items</a></li>
-                            </ul>
+                    <div class="sticky top-[70px]">
+                        <form action="" class="flex items-stretch mb-3 lg:hidden">
+                            <input type="text" placeholder="Search for Product"
+                                class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-full text-light text-sm">
+                            <button class="self-auto px-3 border border-primary bg-dark rounded-r-full"><i
+                                    class="fa-solid fa-magnifying-glass text-light"></i></button>
+                            {{-- <button class="self-auto px-3 border border-primary rounded-r-xl"><i class="fa-solid fa-magnifying-glass text-light"></i></button> --}}
+                        </form>
+                        <div class="flexBetween gap-3 mb-6">
+                            <div class="relative lg:hidden">
+                                <button
+                                    class="categoryBtn flexCenter gap-1 bg-dark border border-primary text-light rounded-full px-3 py-1">
+                                    Category
+                                    <i class="categoryChevron fa-solid fa-chevron-down text-light duration-200"></i>
+                                </button>
+                                <div class="categoryContainer absolute top-full mt-1 h-0 overflow-hidden duration-300">
+                                    <ul class="leading-loose px-5 py-3 border border-gray-500 bg-dark rounded-xl">
+                                        <li><a class="font-bold font-segoe color-primary" href="#">ALL</a>
+                                        <li>
+                                            <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
+                                        </li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="products?category=head%20gear">Head
+                                                Gear</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Body
+                                                Armor</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Hand
+                                                Wear</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Foot
+                                                Wear</a></li>
+                                        <li>
+                                            <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
+                                        </li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Storage</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Extended</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Items</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 lg:hidden">
+                                <button class="bg-white px-3 py-1 rounded-full">
+                                    <a href="#" class="flex items-center gap-1">
+                                        <img src="/img/shopee.jpg" alt="" width="25">
+                                        <small class="font-semibold text-[10px] leading-none">bvckle<br>smiggle</small>
+                                    </a>
+                                </button>
+                                <button class="bg-white px-3 py-1 rounded-full">
+                                    <a href="#" class="flex items-center gap-1">
+                                        <img src="/img/tokopedia.png" alt="" width="25">
+                                        <small class="font-semibold text-[10px] leading-none">bvckle<br>smiggle</small>
+                                    </a>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 min-h-[50vh]">
                         {{-- @for ($i = 0; $i < 12; $i++)
                             <div class="card hover:brightness-50 hover:cursor-pointer">
                                 <img src="/img/blckruby3.jpg" alt="" class="img-fluid rounded-2xl">
                             </div>
                             @endfor --}}
-                            @foreach ($products as $product)
+                        @foreach ($products as $product)
                             <div class="card hover:brightness-50 hover:cursor-pointer">
                                 {{-- <h1 class="text-white text-2xl"></h1> --}}
                                 {{-- @foreach (json_decode($product->product_images) as $image) --}}
                                 {{-- @endforeach --}}
-                                <img src="{{ asset('storage/' . json_decode($product->product_images)[0]) }}" alt="" class="img-fluid rounded-2xl">
+                                <img data-id="{{ $product->id }}" src="{{ asset('storage/' . json_decode($product->product_images)[0]) }}"
+                                    alt="" class="img-fluid rounded-2xl">
                             </div>
                         @endforeach
                     </div>
-                    <div class="pagination flex gap-3 justify-center mt-7">
-                        <div class="font-bold text-light">PAGE: </div>
-                        <a href="#" class="font-bold color-primary">1 </a>
-                        <a href="#" class="font-bold text-light">2 </a>
-                        <a href="#" class="font-bold text-light">3 </a>
-                        <div class="font-bold text-light">... </div>
-                        <a href="#" class="font-bold text-light">last page</a>
-                    </div>
-                    <div class="mt-6 lg:hidden">
-                        <h5 class="font-bold font-segoe text-light text-xs text-center">CHECK OUT AT<br>OUR OFFICIAL
-                            eCOMMERCE:</h5>
-                        <div class="grid grid-cols-2 gap-3 mt-2">
-                            <button class="bg-white p-1">
-                                <a href="#" class="flex items-center gap-1">
-                                    <img src="/img/shopee.jpg" alt="" width="25">
-                                    <small class="font-semibold text-[10px]">bvcklesmiggle</small>
-                                </a>
-                            </button>
-                            <button class="bg-white p-1">
-                                <a href="#" class="flex items-center gap-1">
-                                    <img src="/img/tokopedia.png" alt="" width="25">
-                                    <small class="font-semibold text-[10px]">bvcklesmiggle</small>
-                                </a>
-                            </button>
+                    <div class="pagination flex items-center justify-between lg:justify-center gap-10 mt-7">
+                        <a href="#" class="font-bold text-light text-xs lg:text-base color-primary">First page</a>
+                        <div class="flexCenter gap-3">
+                            <a href="#" class="font-bold color-primary">1</a>
+                            <a href="#" class="font-bold text-light">2</a>
+                            <a href="#" class="font-bold text-light">3</a>
+                            <small class="text-light">...</small>
+                            <a href="#" class="font-bold text-light">9</a>
+                            <a href="#" class="font-bold text-light">10</a>
                         </div>
+                        <a href="#" class="font-bold text-light text-xs lg:text-base">Last page</a>
                     </div>
                 </div>
             </div>
