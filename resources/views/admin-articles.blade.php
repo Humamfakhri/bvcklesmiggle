@@ -34,7 +34,7 @@
 <body class="bg-gray-200">
     <main>
         @if (session('success'))
-            <div class="myAlert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
+            <div class="myAlert transition-opacity duration-300 rounded fixed top-0 right-0 padding-container pt-5"
                 role="alert">
                 <div class="bg-green-100 rounded border border-green-400 text-green-700 px-4 py-3">
                     {{-- <span class="block sm:inline">Berhasil</span> --}}
@@ -42,7 +42,7 @@
                 </div>
             </div>
         @elseif (session('error'))
-            <div class="myAlert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
+            <div class="myAlert transition-opacity duration-300 rounded fixed top-0 right-0 padding-container pt-5"
                 role="alert">
                 <div class="bg-red-100 rounded border border-red-400 text-red-700 px-4 py-3">
                     {{-- <span class="block sm:inline">Berhasil</span> --}}
@@ -70,7 +70,7 @@
                 <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white">
                     <h1 class="font-bold text-2xl text-black font-segoe">Add Category</h1>
                     <button onclick="disableButton()">
-                        <i class="closePopup text-3xl text-black fa-solid fa-xmark"></i>
+                        <i class="closePopupCategory text-3xl text-black fa-solid fa-xmark"></i>
                     </button>
                 </div>
                 <div class="card-popup-body pt-5">
@@ -82,12 +82,12 @@
                                 <label class="block text-xs mb-1 font-bold" for="name">Category<span
                                         class="text-red-600">*</span></label>
                                 <input required type="text" name="name" id="name"
-                                    oninput="checkInputFilled()" placeholder="Enter category's name"
+                                    oninput="checkCategoryFilled()" placeholder="Enter category's name"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                         </div>
                         <div class="mt-4 flexEnd gap-3 sticky bottom-0 bg-white py-3">
-                            <button type="button" onclick="disableButton()"
+                            <button type="button" onclick="disableSaveAddCategoryBtn()"
                                 class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopup">
                                 Cancel
                             </button>
@@ -108,76 +108,67 @@
                 <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white">
                     <h1 class="font-bold text-2xl text-black font-segoe">Edit Article</h1>
                     <button>
-                        <i class="closePopup text-3xl text-black fa-solid fa-xmark"></i>
+                        <i class="closePopupArticle text-3xl text-black fa-solid fa-xmark"></i>
                     </button>
                 </div>
                 <div class="card-popup-body pt-5">
-                    <form method="POST" action="" id="editArticleForm" class="flex-col gap-5"
+                    <form id="editArticleForm" method="POST" action="" class="flex-col gap-5"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs mb-1 font-bold" for="nameEdit">Name</label>
-                                <input required type="text" name="nameEdit" id="nameEdit"
-                                    placeholder="Enter article's name"
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                            <div class="col-span-2">
+                                <label class="block text-xs mb-1 font-bold" for="titleEdit">Title<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="text" name="titleEdit" id="titleEdit"
+                                    oninput="checkInputFilled(this)" placeholder="Enter article's title"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="categoryEdit">Category</label>
-                                <input required type="text" name="categoryEdit" id="categoryEdit"
-                                    placeholder="Enter article's category"
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                                <label class="block text-xs mb-1 font-bold" for="authorEdit">Author<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="text" name="authorEdit" id="authorEdit"
+                                    oninput="checkInputFilled(this)" placeholder="Enter article's author"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
                             </div>
-                            <div>
-                                <label class="block text-xs mb-1 font-bold" for="linkShopeeEdit">Link Shopee</label>
-                                <input required type="text" name="linkShopeeEdit" id="linkShopeeEdit"
-                                    placeholder="https://shopee.co.id/..."
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                            <div class="relative">
+                                <label class="block text-xs mb-1 font-bold" for="category">Category<span
+                                        class="text-red-600">*</span></label>
+                                <div class="relative">
+                                    <select name="categoryEdit" id="categoryEdit" oninput="checkInputFilled(this)" required
+                                        class="w-full px-3 py-2 rounded-lg appearance-none border border-gray-400 text-xs cursor-pointer">
+                                        <option value="">-- Select Category --</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="absolute top-0 right-0 h-full flexCenter pe-3"><i
+                                            class="fa-solid fa-chevron-down"></i></div>
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-xs mb-1 font-bold" for="linkTokopediaEdit">Link
-                                    Tokopedia</label>
-                                <input required type="text" name="linkTokopediaEdit" id="linkTokopediaEdit"
-                                    placeholder="https://www.tokopedia.com/..."
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
-                            </div>
-                            <div>
-                                <label class="block text-xs mb-1 font-bold" for="articleImageEdit">New Article's
-                                    Image</label>
-                                <input type="file" name="articleImageEdit[]" id="articleImageEdit" multiple
+                            <div class="col-span-2">
+                                <label class="block text-xs mb-1 font-bold">New Article's Image</label>
+                                <input type="file" name="articleImageEdit" id="articleImage"
                                     accept=".jpeg,.jpg,.png,.webp"
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                    onchange="validateFiles('articleImageEdit', 'articleImagesPreviewEdit', 'articleImageEditError')">
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('image') is-invalid @enderror"
+                                    onchange="validateFiles('articleImage', 'articleImagesPreview', 'articleImageError')">
                                 @error('image')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <div class="text-red-500 text-xs pt-2" id="articleImageEditError"></div>
+                                <div class="text-red-500 text-xs pt-2" id="articleImageError"></div>
                                 <!-- Tempat error message -->
-                                <div class="grid grid-cols-2 gap-3 pt-4" id="articleImagesPreviewEdit"></div>
-
+                                <div class="grid grid-cols-2 gap-3 pt-4" id="articleImagesPreview"></div>
                             </div>
-                            <div>
-                                <label class="block text-xs mb-1 font-bold" for="detailImageEdit">New Detail's
-                                    Image</label>
-                                <input type="file" name="detailImageEdit" id="detailImageEdit"
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
-                                    onchange="validateFiles('detailImageEdit', 'detailImagePreviewEdit', 'detailImageEditError')">
-                                @error('image')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                                <div class="text-red-500 text-xs pt-2" id="detailImageEditError"></div>
-                                <!-- Tempat error message -->
-                                <div class="grid grid-cols-2 gap-3 pt-4" id="detailImagePreviewEdit"></div>
+                            <div class="col-span-2">
+                                <input id="bodyEdit" type="hidden" name="bodyEdit">
+                                <trix-editor id="bodyEdit2" input="bodyEdit" oninput="checkInputFilled(this)"></trix-editor>
                             </div>
                         </div>
                         <div class="mt-4 flexEnd gap-3 sticky bottom-0 bg-white border-t-2 border-black py-3">
                             <button type="button"
-                                class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopup">
+                                class="w-fit px-4 py-1 text-white font-bold bg-gray-500 rounded closePopupArticle">
                                 Cancel
                             </button>
                             <button type="submit" class="w-fit px-6 py-1 text-white font-bold bg-primary rounded">
@@ -219,36 +210,25 @@
                             <label class="block text-xs mb-1 font-bold" for="title">Title<span
                                     class="text-red-600">*</span></label>
                             <input required type="text" name="title" id="title"
-                                oninput="checkInputFilled()" placeholder="Enter article's title"
+                                oninput="checkInputFilled(this)" placeholder="Enter article's title"
                                 class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
                         </div>
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="author">Author<span
                                     class="text-red-600">*</span></label>
                             <input required type="text" name="author" id="author"
-                                oninput="checkInputFilled()" placeholder="Enter article's author"
+                                oninput="checkInputFilled(this)" placeholder="Enter article's author"
                                 class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
                         </div>
-                        {{-- <div>
-                            <label class="block text-xs mb-1 font-bold" for="category">Category<span class="text-red-600">*</span></label>
-                            <input required type="text" name="category" id="category"
-                                oninput="checkInputFilled()" placeholder="Enter article's category"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
-                        </div> --}}
                         <div class="relative">
                             <label class="block text-xs mb-1 font-bold" for="category">Category<span
                                     class="text-red-600">*</span></label>
-                            {{-- <button type="button"
-                                class="categoryBtn w-full flexCenter gap-1 border border-gray-400 text-light rounded-lg px-3 py-1">
-                                Category
-                                <i class="categoryChevron fa-solid fa-chevron-down text-light duration-200"></i>
-                            </button> --}}
                             <div class="relative">
-                                <select name="categoryId" id="categoryId"
+                                <select name="category" id="category" oninput="checkInputFilled(this)"
                                     class="w-full px-3 py-2 rounded-lg appearance-none border border-gray-400 text-xs cursor-pointer">
                                     <option value="">-- Select Category --</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->name }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="absolute top-0 right-0 h-full flexCenter pe-3"><i
@@ -287,8 +267,8 @@
                         </div>
                         <div class="col-span-2">
                             <label class="block text-xs mb-1 font-bold">Article's Image</label>
-                            <input required type="file" name="articleImage" id="articleImage" multiple
-                                oninput="checkInputFilled()" accept=".jpeg,.jpg,.png,.webp"
+                            <input type="file" name="articleImage" id="articleImage"
+                                accept=".jpeg,.jpg,.png,.webp"
                                 class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('image') is-invalid @enderror"
                                 onchange="validateFiles('articleImage', 'articleImagesPreview', 'articleImageError')">
                             @error('image')
@@ -302,7 +282,7 @@
                         </div>
                         <div class="col-span-2">
                             <input id="body" type="hidden" name="body">
-                            <trix-editor input="body"></trix-editor>
+                            <trix-editor input="body" oninput="checkInputFilled(this)"></trix-editor>
                         </div>
                     </div>
                     <div class="flexBetween">
@@ -312,7 +292,7 @@
                             <i class="fa-solid fa-plus color-primary"></i>
                         </button>
                         <button id="addArticleBtn"
-                            class="w-fit px-4 py-1 my-6  text-white font-bold bg-primary rounded border-2 border-black flexCenter gap-2">
+                            class="w-fit px-4 py-1 my-6  text-white font-bold bg-primary rounded border-2 border-black flexCenter gap-2 disabled:cursor-not-allowed disabled:opacity-30">
                             Add Article
                             <i class="fa-solid fa-plus text-white"></i>
                         </button>
@@ -338,25 +318,26 @@
                                 <td id="rowNo">No.</td>
                                 <td id="rowTitle">{{ $article->title }}</td>
                                 <td id="rowAuthor">{{ $article->author }}</td>
-                                <td id="rowCategories">{{ $article->categories->implode('name', ', ') }}</td>
+                                <td id="rowCategory">{{ $article->categories->implode('name', ', ') }}</td>
                                 <td>
-                                    <div class="relative">
-                                        <img src="{{ asset('storage/' . $article->image) }}" alt="Article Image"
-                                            class="w-full cursor-pointer rowArticleImage"
-                                            onclick="openModal('{{ asset('storage/' . $article->image) }}')">
+                                    @if ($article->image)
+                                        <div class="relative">
+                                            <img id="rowArticleImage" src="{{ asset('storage/' . $article->image) }}"
+                                                alt="Article Image"
+                                                class="w-full cursor-pointer rowArticleImage min-w-40"
+                                                onclick="openModal('{{ asset('storage/' . $article->image) }}')">
+                                        </div>
+                                    @endif
+                                <td id="rowBody">
+                                    <div class="line-clamp-3">
+                                        {!! $article->body !!}
                                     </div>
-                                <td id="rowBody">{{ $article->body }}</td>
+                                </td>
                                 <td id="rowActions">
                                     <div class="flexCenter gap-5">
-                                        <form action="{{ route('admin-articles.destroy', $article->id) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this article?');">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="button">
-                                                <i class="editBtn fa-solid fa-edit text-lg"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button">
+                                            <i class="editBtn fa-solid fa-edit text-lg"></i>
+                                        </button>
                                         <form action="{{ route('admin-articles.destroy', $article->id) }}"
                                             method="POST"
                                             onsubmit="return confirm('Are you sure you want to delete this article?');">
@@ -595,10 +576,32 @@
             }, 3000);
         }
 
+        // CHECK INPUT FILL ARTICLE
+        const addArticleBtn = document.querySelector('#addArticleBtn');
+        addArticleBtn.setAttribute('disabled', true);
+
+        function checkInputFilled(e) {
+            console.log(e.value);
+            const title = document.querySelector('#title');
+            const author = document.querySelector('#author');
+            const category = document.querySelector('#category');
+            const body = document.querySelector('#body');
+            if (title.value && author.value && category.value && body.value) {
+                addArticleBtn.removeAttribute('disabled');
+            } else {
+                addArticleBtn.setAttribute('disabled', true);
+            }
+        }
+
+        // function disableAddArticleBtn() {
+        //     addArticleBtn.setAttribute('disabled', true);
+        // }
+
+        // CHECK INPUT FILL CATEGORY
         const saveAddCategoryBtn = document.querySelector('#saveAddCategoryBtn');
         saveAddCategoryBtn.setAttribute('disabled', true);
 
-        function checkInputFilled() {
+        function checkCategoryFilled() {
             const name = document.querySelector('#name');
             if (name.value) {
                 saveAddCategoryBtn.removeAttribute('disabled');
@@ -607,7 +610,7 @@
             }
         }
 
-        function disableButton() {
+        function disableSaveAddCategoryBtn() {
             saveAddCategoryBtn.setAttribute('disabled', true);
         }
     </script>

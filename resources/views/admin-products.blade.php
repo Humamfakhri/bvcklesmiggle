@@ -18,7 +18,7 @@
 <body class="bg-gray-200">
     <main>
         @if (session('success'))
-            <div class="myAlert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
+            <div class="myAlert transition-opacity duration-300 rounded fixed top-0 right-0 padding-container pt-5"
                 role="alert">
                 <div class="bg-green-100 rounded border border-green-400 text-green-700 px-4 py-3">
                     {{-- <span class="block sm:inline">Berhasil</span> --}}
@@ -26,7 +26,7 @@
                 </div>
             </div>
         @elseif (session('error'))
-            <div class="myAlert transition-opacity duration-300 rounded absolute top-0 right-0 padding-container pt-5"
+            <div class="myAlert transition-opacity duration-300 rounded fixed top-0 right-0 padding-container pt-5"
                 role="alert">
                 <div class="bg-red-100 rounded border border-red-400 text-red-700 px-4 py-3">
                     {{-- <span class="block sm:inline">Berhasil</span> --}}
@@ -309,16 +309,10 @@
                                     </div>
                                 </td>
                                 <td id="rowActions">
-                                    <div class="flexCenter gap-5">
-                                        <form action="{{ route('admin-products.destroy', $product->id) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="button">
-                                                <i class="editBtn fa-solid fa-edit text-lg"></i>
-                                            </button>
-                                        </form>
+                                    <div class="flexCenter gap-4">
+                                        <button type="button">
+                                            <i class="editBtn fa-solid fa-edit text-lg"></i>
+                                        </button>
                                         <form action="{{ route('admin-products.destroy', $product->id) }}"
                                             method="POST"
                                             onsubmit="return confirm('Are you sure you want to delete this product?');">

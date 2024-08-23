@@ -59,6 +59,41 @@
                                         <div class="text-xs">:</div>
                                         <div class="value text-xs">Red</div>
                                     </div>
+                                    <div class="flex items-start gap-1">
+                                        <div class="label text-xs w-12">Variant</div>
+                                        <div class="text-xs">:</div>
+                                        <div class="value text-xs">Red</div>
+                                    </div>
+                                    <div class="flex items-start gap-1">
+                                        <div class="label text-xs w-12">Variant</div>
+                                        <div class="text-xs">:</div>
+                                        <div class="value text-xs">Red</div>
+                                    </div>
+                                    <div class="flex items-start gap-1">
+                                        <div class="label text-xs w-12">Variant</div>
+                                        <div class="text-xs">:</div>
+                                        <div class="value text-xs">Red</div>
+                                    </div>
+                                    <div class="flex items-start gap-1">
+                                        <div class="label text-xs w-12">Variant</div>
+                                        <div class="text-xs">:</div>
+                                        <div class="value text-xs">Red</div>
+                                    </div>
+                                    <div class="flex items-start gap-1">
+                                        <div class="label text-xs w-12">Variant</div>
+                                        <div class="text-xs">:</div>
+                                        <div class="value text-xs">Red</div>
+                                    </div>
+                                    <div class="flex items-start gap-1">
+                                        <div class="label text-xs w-12">Variant</div>
+                                        <div class="text-xs">:</div>
+                                        <div class="value text-xs">Red</div>
+                                    </div>
+                                    <div class="flex items-start gap-1">
+                                        <div class="label text-xs w-12">Variant</div>
+                                        <div class="text-xs">:</div>
+                                        <div class="value text-xs">Red</div>
+                                    </div>
                                 </div>
                                 <hr class="border-t-1 border-black border-dashed mt-2">
                                 <div class="leading-none my-2">

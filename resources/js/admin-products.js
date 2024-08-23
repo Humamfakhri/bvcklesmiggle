@@ -1,7 +1,6 @@
 // ============================== ADD ============================== //
 const addModal = document.querySelector('.addModal');
 const addModalContent = document.querySelector('.addModalContent');
-const cards = document.querySelectorAll('.card');
 const addProductBtn = document.querySelector('#addProductBtn');
 
 const inputName = document.querySelector('#name');
