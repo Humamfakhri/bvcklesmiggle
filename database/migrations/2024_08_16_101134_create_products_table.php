@@ -16,9 +16,12 @@ return new class extends Migration
             $table->string('category');
             $table->string('name');
             $table->string('link_shopee');
+            $table->boolean('is_active_shopee');
             $table->string('link_tokopedia');
+            $table->boolean('is_active_tokopedia');
             $table->json('product_images'); // Menyimpan beberapa product images dalam format JSON
-            $table->string('detail_image'); // Menyimpan detail image
+            $table->text('issue'); // Menyimpan detail image
+            $table->text('details'); // Menyimpan detail image
             // $table->foreign('category')->references('id')->on('product_categories');
             $table->timestamps();
         });

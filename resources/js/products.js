@@ -4,19 +4,21 @@ const closePopup = document.querySelector('.closePopup');
 const cards = document.querySelectorAll('.card');
 
 // ASAL
-const productName = document.querySelector('#productName');
-const productCategory = document.querySelector('#productCategory');
+// const productName = document.querySelector('#productName');
+// const productCategory = document.querySelector('#productCategory');
 
 // TUJUAN
 const productNameModal = document.querySelector('#productNameModal');
 const productCategoryModal = document.querySelector('#productCategoryModal');
+const productIssueModal = document.querySelector('#productIssueModal');
+const productDetailsModal = document.querySelector('#productDetailsModal');
 const linkShopeeModal = document.querySelector('#linkShopeeModal');
 const linkTokopediaModal = document.querySelector('#linkTokopediaModal');
 
 cards.forEach(card => {
   card.addEventListener('click', () => {
     // Gantilah dengan ID yang sesuai
-    const productId = 1; // Misalnya, ID produk yang ingin Anda ambil
+    const productId = 3; // Misalnya, ID produk yang ingin Anda ambil
 
     // Tampilkan loading spinner
     const loadingSpinner = document.getElementById('loadingSpinner');
@@ -32,8 +34,11 @@ cards.forEach(card => {
             loadingSpinner.style.display = 'none';
             cardPopupBody.style.display = 'block';
 
-            productNameModal.textContent = data.name;
-            productCategoryModal.textContent = data.category;
+            productNameModal.innerHTML = data.name;
+            productCategoryModal.innerHTML = data.category;
+            productCategoryModal.href = data.category;
+            productIssueModal.innerHTML = data.issue;
+            productDetailsModal.innerHTML = data.details;
             linkShopeeModal.href = data.link_shopee;
             linkTokopediaModal.href = data.link_tokopedia;
         })

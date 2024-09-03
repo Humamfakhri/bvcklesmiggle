@@ -34,13 +34,7 @@
 <body class="bg-gray-200">
     <main>
         @if (session('success'))
-            <div class="myAlert transition-opacity duration-300 rounded fixed top-0 right-0 padding-container pt-5"
-                role="alert">
-                <div class="bg-green-100 rounded border border-green-400 text-green-700 px-4 py-3">
-                    {{-- <span class="block sm:inline">Berhasil</span> --}}
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            </div>
+            <x-error-alert></x-error-alert>
         @elseif (session('error'))
             <div class="myAlert transition-opacity duration-300 rounded fixed top-0 right-0 padding-container pt-5"
                 role="alert">
@@ -135,7 +129,8 @@
                                 <label class="block text-xs mb-1 font-bold" for="category">Category<span
                                         class="text-red-600">*</span></label>
                                 <div class="relative">
-                                    <select name="categoryEdit" id="categoryEdit" oninput="checkInputFilled(this)" required
+                                    <select name="categoryEdit" id="categoryEdit" oninput="checkInputFilled(this)"
+                                        required
                                         class="w-full px-3 py-2 rounded-lg appearance-none border border-gray-400 text-xs cursor-pointer">
                                         <option value="">-- Select Category --</option>
                                         @foreach ($categories as $category)
@@ -162,8 +157,10 @@
                                 <div class="grid grid-cols-2 gap-3 pt-4" id="articleImagesPreview"></div>
                             </div>
                             <div class="col-span-2">
+                                <label class="block text-xs mb-1 font-bold">Body</label>
                                 <input id="bodyEdit" type="hidden" name="bodyEdit">
-                                <trix-editor id="bodyEdit2" input="bodyEdit" oninput="checkInputFilled(this)"></trix-editor>
+                                <trix-editor id="bodyEdit2" input="bodyEdit"
+                                    oninput="checkInputFilled(this)"></trix-editor>
                             </div>
                         </div>
                         <div class="mt-4 flexEnd gap-3 sticky bottom-0 bg-white border-t-2 border-black py-3">
@@ -180,26 +177,38 @@
             </div>
         </div>
 
-
-        <div class="flex">
-            <div class="sidebar h-screen py-6 bg-dark flex flex-col padding-container sticky top-0">
-                <img src="/img/logo.png" alt="" class="h-auto max-w-52">
-                <ul class="flex flex-col gap-5 mt-5 grow">
-                    {{-- <li><x-nav-link href="/">HOME</x-nav-link></li> --}}
-                    <li><x-nav-link href="admin/articles">ARTICLES</x-nav-link></li>
-                    <li><x-nav-link href="admin/products">PRODUCTS</x-nav-link></li>
-                    {{-- <li><x-nav-link href="partnership">PARTNERSHIP</x-nav-link></li> --}}
-                </ul>
-                <div class="flex justify-between items-end border border-gray-500 px-3 py-2 rounded-lg">
-                    <div>
-                        <small class="text-gray-400">You are logged in as:</small>
-                        <h3 class="text-light font-bold">Admin</h3>
-                    </div>
-                    <button><a href="/login">
-                            <i class="fa-solid fa-arrow-right-from-bracket color-primary text-2xl rotate-180"></i>
-                        </a></button>
+        {{-- VIEW COMMENT MODAL --}}
+        <div
+            class="viewCommentModal fixed inset-0 flex -z-10 opacity-100 transition-opacity items-center justify-center">
+            <div class="viewCommentModalContent scale-0 transition ease-in-out duration-300 bg-white border-2 border-black max-w-[370px] max-h-[85%] w-[80vw] px-5 overflow-y-auto"
+                onclick="event.stopPropagation()">
+                <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white">
+                    <h1 class="font-bold text-2xl text-black font-segoe">Comments</h1>
+                    <button onclick="disableButton()">
+                        <i class="closePopupCategory text-3xl text-black fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="card-popup-body pt-5">
+                    <form method="POST" action="{{ route('admin-articles.store') }}" class="flex-col gap-5"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-2">
+                                <label class="block text-xs mb-1 font-bold" for="name">Category<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="text" name="name" id="name"
+                                    oninput="checkCategoryFilled()" placeholder="Enter category's name"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
+
+
+        <div class="flex">
+            @include('components.sidebar')
             <div class="content grow padding-container pt-5">
                 <h1 class="font-bold text-3xl mb-4">Articles</h1>
                 <form method="POST" action="{{ route('admin-articles.store') }}" class="flex-col gap-5"
@@ -281,6 +290,7 @@
                             <div class="grid grid-cols-2 gap-3 pt-4" id="articleImagesPreview"></div>
                         </div>
                         <div class="col-span-2">
+                            <label class="block text-xs mb-1 font-bold">Body</label>
                             <input id="body" type="hidden" name="body">
                             <trix-editor input="body" oninput="checkInputFilled(this)"></trix-editor>
                         </div>
@@ -335,6 +345,9 @@
                                 </td>
                                 <td id="rowActions">
                                     <div class="flexCenter gap-5">
+                                        <button class="hidden" type="button">
+                                            <i class="viewCommentBtn fa-solid fa-comment text-lg"></i>
+                                        </button>
                                         <button type="button">
                                             <i class="editBtn fa-solid fa-edit text-lg"></i>
                                         </button>

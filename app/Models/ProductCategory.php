@@ -12,4 +12,10 @@ class ProductCategory extends Model
     protected $fillable = [
         'name'
     ];
+
+    // Relasi many-to-many dengan model Product
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_with_categories', 'category_id', 'product_id');
+    }
 }

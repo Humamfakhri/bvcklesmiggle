@@ -27,10 +27,12 @@
                         </div>
                         <div id="product-info" class="col-span-3 flex flex-col">
                             <div id="product-category">
-                                <small id="productCategoryModal" class="block border-b border-black py-1 font-bold font-segoe color-primary">[Category]</small>
+                                <a href="#" id="productCategoryModal"
+                                    class="block border-b border-black py-1 font-bold font-segoe color-primary">[Category]</a>
                             </div>
-                            <div id="product-issue">
-                                <small class="block font-bold mt-2">Issue #01</small>
+                            <div id="productIssueModal" class="text-sm mt-2">
+                                [Issue]
+                                {{-- <small class="block font-bold mt-2">Issue #01</small>
                                 <small class="block">"Never goin old"</small>
                                 <small class="block">Year: 2024</small>
                                 <small class="block">Collaborative:
@@ -38,11 +40,14 @@
                                         StudsAddictive
                                         <i class="fa-solid fa-arrow-up-right-from-square color-primary text-[10px]"></i>
                                     </a>
-                                </small>
+                                </small> --}}
                             </div>
-                            <div id="product-details" class="grow overflow-auto">
+                            <div class="grow overflow-auto">
                                 <hr class="border-t-1 border-black border-dashed mt-2">
-                                <small class="block font-bold mt-2">Details</small>
+                                <div id="productDetailsModal" class="text-sm mt-2">
+                                    [Details]
+                                </div>
+                                {{-- <small class="block font-bold mt-2">Details</small>
                                 <div class="description">
                                     <div class="flex items-start gap-1">
                                         <div class="label text-xs w-12">Material</div>
@@ -58,43 +63,8 @@
                                         <div class="label text-xs w-12">Variant</div>
                                         <div class="text-xs">:</div>
                                         <div class="value text-xs">Red</div>
-                                    </div>
-                                    <div class="flex items-start gap-1">
-                                        <div class="label text-xs w-12">Variant</div>
-                                        <div class="text-xs">:</div>
-                                        <div class="value text-xs">Red</div>
-                                    </div>
-                                    <div class="flex items-start gap-1">
-                                        <div class="label text-xs w-12">Variant</div>
-                                        <div class="text-xs">:</div>
-                                        <div class="value text-xs">Red</div>
-                                    </div>
-                                    <div class="flex items-start gap-1">
-                                        <div class="label text-xs w-12">Variant</div>
-                                        <div class="text-xs">:</div>
-                                        <div class="value text-xs">Red</div>
-                                    </div>
-                                    <div class="flex items-start gap-1">
-                                        <div class="label text-xs w-12">Variant</div>
-                                        <div class="text-xs">:</div>
-                                        <div class="value text-xs">Red</div>
-                                    </div>
-                                    <div class="flex items-start gap-1">
-                                        <div class="label text-xs w-12">Variant</div>
-                                        <div class="text-xs">:</div>
-                                        <div class="value text-xs">Red</div>
-                                    </div>
-                                    <div class="flex items-start gap-1">
-                                        <div class="label text-xs w-12">Variant</div>
-                                        <div class="text-xs">:</div>
-                                        <div class="value text-xs">Red</div>
-                                    </div>
-                                    <div class="flex items-start gap-1">
-                                        <div class="label text-xs w-12">Variant</div>
-                                        <div class="text-xs">:</div>
-                                        <div class="value text-xs">Red</div>
-                                    </div>
-                                </div>
+                                    </div> --}}
+                                {{-- </div> --}}
                                 <hr class="border-t-1 border-black border-dashed mt-2">
                                 <div class="leading-none my-2">
                                     <small class="text-[10px] font-bold">All "Limited BvckleSmiggle Equipment" will be
@@ -103,20 +73,21 @@
                                 </div>
                             </div>
                             <div id="product-footer" class="sticky bottom-0 bg-white pb-3">
-                                <div class="flex flex-col lg:flex-row items-center justify-end gap-3">
+                                <div class="flex flex-col lg:flex-row items-center justify-between gap-3">
                                     <small class="font-bold border-t border-primary pt-2">Order<br
                                             class="hidden lg:block"> here:</small>
                                     <div class="grid grid-cols-2 gap-3">
                                         <button
                                             class="bg-white p-1 border-2 border-black shadow-[-3px_3px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
-                                            <a id="linkShopeeModal" href="#" class="flex items-center gap-1">
+                                            <a id="linkShopeeModal" target="_blank" href="#" class="flex items-center gap-1">
                                                 <img src="/img/shopee.jpg" alt="" width="25">
                                                 <small class="font-segoe font-bold text-xs">bvcklesmiggle</small>
                                             </a>
                                         </button>
                                         <button
                                             class="bg-white p-1 border-2 border-black shadow-[-3px_3px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
-                                            <a id="linkTokopediaModal" href="#" class="flex items-center gap-1">
+                                            <a id="linkTokopediaModal" target="_blank" href="#"
+                                                class="flex items-center gap-1">
                                                 <img src="/img/tokopedia.png" alt="" width="25">
                                                 <small class="font-segoe font-bold text-xs">bvcklesmiggle</small>
                                             </a>
@@ -158,10 +129,12 @@
                                 <i class="text-light fa-solid fa-minus ms-1"></i>
                             </div>
                         </li>
-                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                href="products?category=head%20gear">Head
-                                Gear</a></li>
-                        <li><a class="text-light font-semibold font-segoe hover:color-primary" href="#">Body
+                        @foreach ($categories as $category)
+                            <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                    href="products?category={{ $category }}">{{ $category }}</a>
+                            </li>
+                        @endforeach
+                        {{-- <li><a class="text-light font-semibold font-segoe hover:color-primary" href="#">Body
                                 Armor</a></li>
                         <li><a class="text-light font-semibold font-segoe hover:color-primary" href="#">Hand
                                 Wear</a></li>
@@ -190,18 +163,18 @@
                         <li><a class="text-light font-semibold font-segoe hover:color-primary"
                                 href="#">Extended</a></li>
                         <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                href="#">Items</a></li>
+                                href="#">Items</a></li> --}}
                     </ul>
                     <div>
                         <div class="grid grid-cols-2 gap-3 mt-2">
                             <button class="bg-white p-1">
-                                <a href="#" class="flex items-center gap-1">
+                                <a href="https://shopee.co.id" target="_blank" class="flex items-center gap-1">
                                     <img src="/img/shopee.jpg" alt="" width="25">
                                     <small class="font-semibold text-[10px]">bvcklesmiggle</small>
                                 </a>
                             </button>
                             <button class="bg-white p-1">
-                                <a href="#" class="flex items-center gap-1">
+                                <a href="https://tokopedia.com" target="_blank" class="flex items-center gap-1">
                                     <img src="/img/tokopedia.png" alt="" width="25">
                                     <small class="font-semibold text-[10px]">bvcklesmiggle</small>
                                 </a>
@@ -231,10 +204,12 @@
                                         <li>
                                             <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
                                         </li>
-                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                                href="products?category=head%20gear">Head
-                                                Gear</a></li>
-                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                        @foreach ($categories as $category)
+                                            <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                    href="products?category={{ $category }}">{{ $category }}</a>
+                                            </li>
+                                        @endforeach
+                                        {{-- <li><a class="text-light font-semibold font-segoe hover:color-primary"
                                                 href="#">Body
                                                 Armor</a></li>
                                         <li><a class="text-light font-semibold font-segoe hover:color-primary"
@@ -251,19 +226,19 @@
                                         <li><a class="text-light font-semibold font-segoe hover:color-primary"
                                                 href="#">Extended</a></li>
                                         <li><a class="text-light font-semibold font-segoe hover:color-primary"
-                                                href="#">Items</a></li>
+                                                href="#">Items</a></li> --}}
                                     </ul>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-3 lg:hidden">
                                 <button class="bg-white px-3 py-1 rounded-full">
-                                    <a href="#" class="flex items-center gap-1">
+                                    <a href="#" target="_blank" class="flex items-center gap-1">
                                         <img src="/img/shopee.jpg" alt="" width="25">
                                         <small class="font-semibold text-[10px] leading-none">bvckle<br>smiggle</small>
                                     </a>
                                 </button>
                                 <button class="bg-white px-3 py-1 rounded-full">
-                                    <a href="#" class="flex items-center gap-1">
+                                    <a href="#" target="_blank" class="flex items-center gap-1">
                                         <img src="/img/tokopedia.png" alt="" width="25">
                                         <small class="font-semibold text-[10px] leading-none">bvckle<br>smiggle</small>
                                     </a>
@@ -282,12 +257,13 @@
                                 {{-- <h1 class="text-white text-2xl"></h1> --}}
                                 {{-- @foreach (json_decode($product->product_images) as $image) --}}
                                 {{-- @endforeach --}}
-                                <img data-id="{{ $product->id }}" src="{{ asset('storage/' . json_decode($product->product_images)[0]) }}"
+                                <img data-id="{{ $product->id }}"
+                                    src="{{ asset('storage/' . json_decode($product->product_images)[0]) }}"
                                     alt="" class="img-fluid rounded-2xl">
                             </div>
                         @endforeach
                     </div>
-                    <div class="pagination flex items-center justify-between lg:justify-center gap-10 mt-7">
+                    {{-- <div class="pagination flex items-center justify-between lg:justify-center gap-10 mt-7">
                         <a href="#" class="font-bold text-light text-xs lg:text-base color-primary">First page</a>
                         <div class="flexCenter gap-3">
                             <a href="#" class="font-bold color-primary">1</a>
@@ -298,7 +274,7 @@
                             <a href="#" class="font-bold text-light">10</a>
                         </div>
                         <a href="#" class="font-bold text-light text-xs lg:text-base">Last page</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </section>

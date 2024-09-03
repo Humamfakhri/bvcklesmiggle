@@ -100,7 +100,7 @@ p {
   }
   
   .ads-image-s {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 6 / 4;
     max-width: 300px;
     /* max-width: 336px; */
     width: 100%;

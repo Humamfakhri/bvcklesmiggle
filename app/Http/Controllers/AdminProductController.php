@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Product;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 use Exception;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
@@ -17,7 +18,8 @@ class AdminProductController extends Controller
     public function index()
     {
         return view('admin-products', [
-            'products' => Product::get()
+            'products' => Product::get(),
+            'categories' => ProductCategory::get()
         ]);
     }
 
@@ -26,6 +28,30 @@ class AdminProductController extends Controller
      */
     public function store(Request $request)
     {
+        // CATEGORY
+        if ($request->has('categoryName')) {
+            try {
+                // Validasi data input
+                $validatedData = $request->validate([
+                    'categoryName' => 'required|string|max:255',
+                ]);
+
+                // Simpan data ke database
+                $productCategory = new ProductCategory();
+                $productCategory->name = $validatedData['categoryName'];
+                $productCategory->save();
+
+                // Redirect kembali ke halaman admin dengan pesan sukses
+                return redirect('/sipalingadminB$/products')->with('success', 'Product Category has been added successfully!');
+            } catch (Exception $e) {
+                // Log error untuk debugging
+                Log::error('Error updating product: ' . $e->getMessage());
+
+                // Tampilkan pesan error ke user
+                return redirect()->back()->with('error', 'An error occurred while updating the product. Please try again.');
+            }
+        }
+
         // Validasi data input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -33,7 +59,8 @@ class AdminProductController extends Controller
             'linkShopee' => 'string',
             'linkTokopedia' => 'string',
             'productImage.*' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-            'detailImage' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
+            'issue' => 'required|string',
+            'details' => 'required|string'
         ]);
 
         // Simpan multiple product images
@@ -45,20 +72,22 @@ class AdminProductController extends Controller
             }
         }
 
-        // Simpan detail image
-        $detailImagePath = null;
-        if ($request->hasFile('detailImage')) {
-            $detailImagePath = $request->file('detailImage')->store('detail_images', 'public');
-        }
+        // // Simpan detail image
+        // $detailImagePath = null;
+        // if ($request->hasFile('detailImage')) {
+        //     $detailImagePath = $request->file('detailImage')->store('detail_images', 'public');
+        // }
 
         // Simpan data ke database
         $product = new Product();
         $product->name = $validatedData['name'];
         $product->category = $validatedData['category'];
+        $product->issue = $validatedData['issue'];
+        $product->details = $validatedData['details'];
         $product->link_shopee = $validatedData['linkShopee'];
         $product->link_tokopedia = $validatedData['linkTokopedia'];
         $product->product_images = json_encode($productImages); // Simpan array images sebagai JSON
-        $product->detail_image = $detailImagePath;
+        // $product->detail_image = $detailImagePath;
         $product->save();
 
         // Redirect kembali ke halaman admin dengan pesan sukses
@@ -88,7 +117,9 @@ class AdminProductController extends Controller
                 'linkShopeeEdit' => 'nullable|string',
                 'linkTokopediaEdit' => 'nullable|string',
                 'productImageEdit.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
-                'detailImageEdit' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+                // 'detailImageEdit' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+                'issueEdit' => 'required|string',
+                'detailsEdit' => 'required|string'
             ]);
 
             // Cari produk berdasarkan ID
@@ -111,14 +142,14 @@ class AdminProductController extends Controller
             }
 
             // Simpan atau update detail image
-            $detailImagePathEdit = $product->detail_image; // Ambil gambar detail lama
-            if ($request->hasFile('detailImageEdit')) {
-                // Hapus gambar detail lama dari storage
-                Storage::disk('public')->delete($product->detail_image);
+            // $detailImagePathEdit = $product->detail_image; // Ambil gambar detail lama
+            // if ($request->hasFile('detailImageEdit')) {
+            //     // Hapus gambar detail lama dari storage
+            //     Storage::disk('public')->delete($product->detail_image);
 
-                // Simpan gambar detail baru
-                $detailImagePathEdit = $request->file('detailImageEdit')->store('detail_images', 'public');
-            }
+            //     // Simpan gambar detail baru
+            //     $detailImagePathEdit = $request->file('detailImageEdit')->store('detail_images', 'public');
+            // }
 
             // Update data produk di database
             $product->name = $validatedData['nameEdit'];
@@ -126,7 +157,9 @@ class AdminProductController extends Controller
             $product->link_shopee = $validatedData['linkShopeeEdit'];
             $product->link_tokopedia = $validatedData['linkTokopediaEdit'];
             $product->product_images = json_encode($productImagesEdit); // Simpan array images sebagai JSON
-            $product->detail_image = $detailImagePathEdit;
+            $product->issue = $validatedData['issueEdit'];
+            $product->details = $validatedData['detailsEdit'];
+            // $product->detail_image = $detailImagePathEdit;
             $product->save();
 
             // Redirect kembali ke halaman admin dengan pesan sukses

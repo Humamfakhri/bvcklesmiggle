@@ -13,7 +13,7 @@
                                 class="mt-1.5 lg:mt-0 max-w-14 h-auto">
                             <div class="flex flex-col lg:gap-2">
                                 <h1 class="font-semibold text-2xl text-gray-200">Fair Trade</h1>
-                                <p class="text-sm text-gray-200">Fair play, fair pay. When you collaborate with us, it’s all about transparency and mutual gain—because good business is honest business.</p>
+                                <p class="text-sm text-gray-200">Fair play, fair pay. When you collaborate with us, it’s all about transparency and mutual gain, because good business is honest business.</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-2">
@@ -30,7 +30,7 @@
                                 class="mt-1.5 lg:mt-0 max-w-14 h-auto">
                             <div class="flex flex-col lg:gap-2">
                                 <h1 class="font-semibold text-2xl text-gray-200">Exclusive Merch</h1>
-                                <p class="text-sm text-gray-200">Crafted for the few, desired by many. Our accessories are the epitome of exclusivity—available only to those who dare to stand out.</p>
+                                <p class="text-sm text-gray-200">Crafted for the few, desired by many. Our accessories are the epitome of exclusivity, available only to those who dare to stand out.</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-2">
@@ -38,7 +38,7 @@
                                 class="mt-1.5 lg:mt-0 max-w-14 h-auto">
                             <div class="flex flex-col lg:gap-2">
                                 <h1 class="font-semibold text-2xl text-gray-200">Why the fxxx not?</h1>
-                                <p class="text-sm text-gray-200">So, what's holding you back? The time is now—let's make something epic together!</p>
+                                <p class="text-sm text-gray-200">So, what's holding you back? The time is now, let's make something epic together!</p>
                             </div>
                         </div>
                     </div>

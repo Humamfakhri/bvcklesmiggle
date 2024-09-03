@@ -15,6 +15,12 @@ class Product extends Model
         'link_shopee',
         'link_tokopedia',
         'product_images',
-        'detail_image'
+        'issue',
+        'details'
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(ProductCategory::class, 'product_with_categories', 'product_id', 'category_id');
+    }
 }

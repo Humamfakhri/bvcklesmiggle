@@ -1,4 +1,6 @@
 // ============================== ADD ============================== //
+const addModal = document.querySelector('.addModal');
+const addModalContent = document.querySelector('.addModalContent');
 const addProductBtn = document.querySelector('#addProductBtn');
 
 const inputName = document.querySelector('#name');
@@ -10,40 +12,30 @@ const inputProductImage = document.querySelector('#productImage');
 const productImagesPreview = document.querySelector('#productImagesPreview');
 // const detailImagePreview = document.querySelector('#detailImagePreview');
 
-
-// ============================== ADD CATEGORY ============================== //
-const addCategoryBtn = document.querySelector('#addCategoryBtn');
-const addCategoryModal = document.querySelector('.addCategoryModal');
-const addCategoryModalContent = document.querySelector('.addCategoryModalContent');
-addCategoryBtn.addEventListener('click', () => {
-  if (document.querySelector('#name').value) {
-    saveAddCategoryBtn.removeAttribute('disabled');
-  } else {
-    saveAddCategoryBtn.setAttribute('disabled', true);
-  }
-
+addProductBtn.addEventListener('click', () => {
   document.body.classList.add('overflow-hidden');
-  addCategoryModal.classList.remove('opacity-0');
-  addCategoryModal.classList.add('opacity-100');
-  addCategoryModal.classList.add('bg-black/50');
-  addCategoryModal.classList.remove('-z-10');
-  addCategoryModal.classList.add('z-50');
-  addCategoryModalContent.classList.add('scale-100');
-  addCategoryModalContent.classList.remove('scale-0');
+  addModal.classList.remove('opacity-0');
+  addModal.classList.add('opacity-100');
+  addModal.classList.add('bg-black/50');
+  addModal.classList.remove('-z-10');
+  addModal.classList.add('z-50');
+  addModalContent.classList.add('scale-100');
+  addModalContent.classList.remove('scale-0');
 });
 
-addCategoryModal.addEventListener('click', () => {
+addModal.addEventListener('click', () => {
   document.body.classList.remove('overflow-hidden');
-  addCategoryModal.classList.remove('opacity-100');
-  addCategoryModal.classList.remove('bg-black/50');
-  addCategoryModal.classList.add('opacity-0');
-  addCategoryModal.classList.remove('z-50');
+  addModal.classList.remove('opacity-100');
+  addModal.classList.remove('bg-black/50');
+  addModal.classList.add('opacity-0');
+  addModal.classList.remove('z-50');
   setTimeout(() => {
-    addCategoryModal.classList.add('-z-10');
+    addModal.classList.add('-z-10');
   }, 300);
-  addCategoryModalContent.classList.add('scale-0');
-  addCategoryModalContent.classList.remove('scale-100');
+  addModalContent.classList.add('scale-0');
+  addModalContent.classList.remove('scale-100');
 });
+
 
 // ============================== EDIT ============================== //
 const editBtns = document.querySelectorAll('.editBtn');
@@ -58,8 +50,6 @@ const inputLinkTokopediaEdit = document.querySelector('#linkTokopediaEdit');
 const inputProductImageEdit = document.querySelector('#productImageEdit');
 // const inputDetailImageEdit = document.querySelector('#detailImageEdit');
 const productImagesPreviewEdit = document.querySelector('#productImagesPreviewEdit');
-const inputIssueEdit = document.querySelector('#issueEdit2');
-const inputDetailsEdit = document.querySelector('#detailsEdit2');
 // // const detailImagePreviewEdit = document.querySelector('#detailImagePreviewEdit');
 
 editBtns.forEach(editBtn => {
@@ -69,8 +59,6 @@ editBtns.forEach(editBtn => {
     const rowName = tr.querySelector('#rowName').innerHTML;
     const rowCategory = tr.querySelector('#rowCategory').innerHTML;
     const rowProductImages = tr.querySelectorAll('.rowProductImage');
-    const rowIssue = tr.querySelector('#rowIssue').innerHTML;
-    const rowDetails = tr.querySelector('#rowDetails').innerHTML;
     // const rowDetailImage = tr.querySelector('#rowDetailImage').src;
     const rowLinkShopee = tr.querySelector('#rowLinkShopee').href;
     const rowLinkTokopedia = tr.querySelector('#rowLinkTokopedia').href;
@@ -110,9 +98,6 @@ editBtns.forEach(editBtn => {
       productImagesPreviewEdit.appendChild(tagImgProduct);
     })
 
-    inputIssueEdit.value = rowIssue;
-    
-    inputDetailsEdit.value = rowDetails;
     // console.log('#rowDetailImage');
     // console.log(rowDetailImage);
     // const tagImgDetail = document.createElement('img');
@@ -165,17 +150,17 @@ closePopups.forEach(closePopup => {
   closePopup.addEventListener('click', () => {
     document.body.classList.remove('overflow-hidden');
 
-    if (addCategoryModal) {
-      document.body.classList.remove('overflow-hidden');
-      addCategoryModal.classList.remove('opacity-100');
-      addCategoryModal.classList.remove('bg-black/50');
-      addCategoryModal.classList.add('opacity-0');
-      addCategoryModal.classList.remove('z-50');
+    if (addModal) {
+      clearAddFields();
+      addModal.classList.remove('opacity-100');
+      addModal.classList.remove('bg-black/50');
+      addModal.classList.add('opacity-0');
+      addModal.classList.remove('z-50');
       setTimeout(() => {
-        addCategoryModal.classList.add('-z-10');
+        addModal.classList.add('-z-10');
       }, 300);
-      addCategoryModalContent.classList.add('scale-0');
-      addCategoryModalContent.classList.remove('scale-100');
+      addModalContent.classList.add('scale-0');
+      addModalContent.classList.remove('scale-100');
     }
 
     if (editModal) {
@@ -202,7 +187,7 @@ function clearAddFields() {
   // inputDetailImage.value = "";
   inputProductImage.value = "";
   // if (detailImagePreview.querySelector('img')) {
-  // detailImagePreview.querySelector('img').remove();
+    // detailImagePreview.querySelector('img').remove();
   // }
   while (productImagesPreview.querySelector('img')) {
     productImagesPreview.querySelector('img').remove();
@@ -216,7 +201,7 @@ function clearEditFields() {
   inputProductImageEdit.value = "";
   // inputDetailImageEdit.value = "";
   // if (detailImagePreviewEdit.querySelector('img')) {
-  // detailImagePreviewEdit.querySelector('img').remove();
+    // detailImagePreviewEdit.querySelector('img').remove();
   // }
   while (productImagesPreviewEdit.querySelector('img')) {
     productImagesPreviewEdit.querySelector('img').remove();

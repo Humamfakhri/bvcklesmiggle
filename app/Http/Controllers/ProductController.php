@@ -15,7 +15,8 @@ class ProductController extends Controller
     public function index()
     {
         return view('products', [
-            'products' => Product::get()
+            'products' => Product::get(),
+            'categories' => Product::distinct()->pluck('category')
         ]);
     }
 
@@ -37,46 +38,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        // Validasi data input
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'linkShopee' => 'string',
-            'linkTokopedia' => 'string',
-            'productImage.*' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-            'detailImage' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-        ]);
-
-        // Simpan multiple product images
-        $productImages = [];
-        if ($request->hasfile('productImage')) {
-            foreach ($request->file('productImage') as $image) {
-                $path = $image->store('product_images', 'public');
-                $productImages[] = $path;
-            }
-        }
-
-        // Simpan detail image
-        $detailImagePath = null;
-        if ($request->hasFile('detailImage')) {
-            $detailImagePath = $request->file('detailImage')->store('detail_images', 'public');
-        }
-
-        // Simpan data ke database
-        $product = new Product();
-        $product->name = $validatedData['name'];
-        $product->category = $validatedData['category'];
-        $product->link_shopee = $validatedData['linkShopee'];
-        $product->link_tokopedia = $validatedData['linkTokopedia'];
-        $product->product_images = json_encode($productImages); // Simpan array images sebagai JSON
-        $product->detail_image = $detailImagePath;
-        $product->save();
-
-        // Redirect kembali ke halaman admin dengan pesan sukses
-        return redirect()->route('admin-products')->with('success', 'Product has been added successfully!');
-    }
+    // FUNGSI STORE DIPINDAH KE ADMIN
 
     /**
      * Display the specified resource.

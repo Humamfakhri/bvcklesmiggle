@@ -55,7 +55,39 @@ closePopupCategorys.forEach(closePopupCategory => {
   });
 })
 
+// ============================== VIEW COMMENT ARTICLE ============================== //
+const viewCommentBtns = document.querySelectorAll('.viewCommentBtn');
+const viewCommentModal = document.querySelector('.viewCommentModal');
+const viewCommentModalContent = document.querySelector('.viewCommentModalContent');
+viewCommentBtns.forEach(viewCommentBtn => {
+  viewCommentBtn.addEventListener('click', () => {
+    document.body.classList.add('overflow-hidden');
+    viewCommentModal.classList.remove('opacity-0');
+    viewCommentModal.classList.add('opacity-100');
+    viewCommentModal.classList.add('bg-black/50');
+    viewCommentModal.classList.remove('-z-10');
+    viewCommentModal.classList.add('z-50');
+    viewCommentModalContent.classList.add('scale-100');
+    viewCommentModalContent.classList.remove('scale-0');
+  });
+})
+
+viewCommentModal.addEventListener('click', () => {
+  document.body.classList.remove('overflow-hidden');
+  viewCommentModal.classList.remove('opacity-100');
+  viewCommentModal.classList.remove('bg-black/50');
+  viewCommentModal.classList.add('opacity-0');
+  viewCommentModal.classList.remove('z-50');
+  setTimeout(() => {
+    viewCommentModal.classList.add('-z-10');
+  }, 300);
+  viewCommentModalContent.classList.add('scale-0');
+  viewCommentModalContent.classList.remove('scale-100');
+});
+
+
 // ============================== EDIT ARTICLE ============================== //
+
 const editBtns = document.querySelectorAll('.editBtn');
 const editModal = document.querySelector('.editModal');
 const editModalContent = document.querySelector('.editModalContent');
@@ -77,7 +109,7 @@ editBtns.forEach(editBtn => {
     const rowArticleImages = tr.querySelector('.rowArticleImage');
     const rowBody = tr.querySelector('#rowBody').innerHTML;
 
-    editArticleForm.action = "/admin/articles/" + rowId;
+    editArticleForm.action = "/sipalingadminB$/articles/" + rowId;
 
     document.body.classList.add('overflow-hidden');
     editModal.classList.remove('opacity-0');

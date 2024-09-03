@@ -23,59 +23,57 @@ class AdminArticleController extends Controller
 
     public function store(Request $request)
     {
-        // CATEGORY
-        if ($request->has('name')) {
-            // Validasi data input
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-            ]);
-
-            // Simpan data ke database
-            $articleCategory = new ArticleCategory();
-            $articleCategory->name = $validatedData['name'];
-            $articleCategory->save();
-
-            // Redirect kembali ke halaman admin dengan pesan sukses
-            return redirect()->route('admin-articles')->with('success', 'Article Category has been added successfully!');
-        }
-
         try {
-        // ARTICLE
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'articleImage' => 'image|mimes:jpeg,jpg,png,webp|max:2048',
-            'body' => 'required|string',
-        ]);
+            // CATEGORY
+            if ($request->has('name')) {
+                // Validasi data input
+                $validatedData = $request->validate([
+                    'name' => 'required|string|max:255',
+                ]);
+                // Simpan data ke database
+                $articleCategory = new ArticleCategory();
+                $articleCategory->name = $validatedData['name'];
+                $articleCategory->save();
 
-        // Simpan detail image
-        $articleImagePath = null;
-        if ($request->hasFile('articleImage')) {
-            $articleImagePath = $request->file('articleImage')->store('article_images', 'public');
-        }
+                // Redirect kembali ke halaman admin dengan pesan sukses
+                return redirect()->route('admin-articles')->with('success', 'Article Category has been added successfully!');
+            } else {
+                // ARTICLE
+                $validatedData = $request->validate([
+                    'title' => 'required|string|max:255',
+                    'author' => 'required|string|max:255',
+                    'category' => 'required|string|max:255',
+                    'articleImage' => 'image|mimes:jpeg,jpg,png,webp|max:2048',
+                    'body' => 'required|string',
+                ]);
 
-        // Simpan data ke database
-        $article = new Article();
-        $article->title = $validatedData['title'];
-        $article->author = $validatedData['author'];
-        $article->image = $articleImagePath;
-        $article->body = $validatedData['body'];
-        $article->save();
+                // Simpan detail image
+                $articleImagePath = null;
+                if ($request->hasFile('articleImage')) {
+                    $articleImagePath = $request->file('articleImage')->store('article_images', 'public');
+                }
 
-        // Simpan kategori (atau bisa juga cari jika sudah ada)
-        // $category = ArticleCategory::firstOrCreate(['name' => $validatedData['category']]);
+                // Simpan data ke database
+                $article = new Article();
+                $article->title = $validatedData['title'];
+                $article->author = $validatedData['author'];
+                $article->image = $articleImagePath;
+                $article->body = $validatedData['body'];
+                $article->save();
 
-        $categoryId = ArticleCategory::where('name', $validatedData['category'])->value('id');
+                // Simpan kategori (atau bisa juga cari jika sudah ada)
+                // $category = ArticleCategory::firstOrCreate(['name' => $validatedData['category']]);
 
-        ArticleWithCategory::create([
-            'article_id' => $article->id,
-            'category_id' => $categoryId
-        ]);
+                $categoryId = ArticleCategory::where('name', $validatedData['category'])->value('id');
 
+                ArticleWithCategory::create([
+                    'article_id' => $article->id,
+                    'category_id' => $categoryId
+                ]);
 
-        // Redirect kembali ke halaman admin dengan pesan sukses
-        return redirect()->route('admin-articles')->with('success', 'Article has been added successfully!');
+                // Redirect kembali ke halaman admin dengan pesan sukses
+                return redirect()->route('admin-articles')->with('success', 'Article has been added successfully!');
+            }
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error updating article: ' . $e->getMessage());
