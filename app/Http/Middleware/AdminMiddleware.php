@@ -17,7 +17,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // Periksa apakah pengguna adalah admin
-        if (Auth::check() && Auth::user()->username == 'admin') {
+        if (Auth::check() && Auth::user()->username == 'adminB$') {
             return $next($request);
         }
 

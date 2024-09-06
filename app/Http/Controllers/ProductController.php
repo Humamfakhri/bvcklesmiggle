@@ -22,17 +22,36 @@ class ProductController extends Controller
 
     public function getProduct(Request $request)
     {
+
         // Validasi ID
         $request->validate([
             'id' => 'required|integer|exists:products,id',
         ]);
 
-        // Mendapatkan nama produk berdasarkan ID
+        // Mendapatkan produk berdasarkan ID
         $product = Product::findOrFail($request->id);
 
-        // Mengirim data sebagai JSON        
-        // return response()->json(['product' => $product]);
-        return response()->json($product);
+        // Mengubah JSON string menjadi array
+        $imagesArray = json_decode($product->product_images, true);
+
+        // Mengubah data produk menjadi array dan menambahkan images array
+        $productData = $product->toArray();
+        $productData['product_images'] = $imagesArray;
+
+        // Mengirim data sebagai JSON
+        return response()->json($productData);
+
+        // // Validasi ID
+        // $request->validate([
+        //     'id' => 'required|integer|exists:products,id',
+        // ]);
+
+        // // Mendapatkan nama produk berdasarkan ID
+        // $product = Product::findOrFail($request->id);
+
+        // // Mengirim data sebagai JSON        
+        // // return response()->json(['product' => $product]);
+        // return response()->json($product);
     }
 
     /**

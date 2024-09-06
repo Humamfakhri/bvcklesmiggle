@@ -62,9 +62,9 @@
                     <h2 class="font-bold text-gray-200 mb-3">CATEGORIES:</h2>
                     <ul class="flex items-center gap-2">
                         @foreach ($categories as $category)
-                        <li><a href="#"
-                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-full text-[#ff00ff]">{{ $category->name }}</a>
-                        </li>
+                            <li><a href="#"
+                                    class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-full text-[#ff00ff]">{{ $category->name }}</a>
+                            </li>
                         @endforeach
                         {{-- <li><a href="#"
                                 class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-full text-[#ff00ff]">Event</a>
@@ -166,17 +166,19 @@
                         6:5<br>Ads
                         Placement</div>
                 </div>
-                <div class="categories hidden lg:block mt-3 leading-loose">
-                    <h2 class="font-bold text-gray-200">CATEGORIES:</h2>
-                    <ul>
-                        @foreach ($categories as $category)
-                        <li><a href="#" class="text-[#ff00ff]">> {{ $category->name }}</a></li>
-                        @endforeach
-                        {{-- <li><a href="#" class="text-[#ff00ff]">> Event</a></li>
+                @if ($articles->count() > 0)
+                    <div class="categories hidden lg:block mt-3 leading-loose">
+                        <h2 class="font-bold text-gray-200">CATEGORIES:</h2>
+                        <ul>
+                            @foreach ($categories as $category)
+                                <li><a href="#" class="text-[#ff00ff]">> {{ $category->name }}</a></li>
+                            @endforeach
+                            {{-- <li><a href="#" class="text-[#ff00ff]">> Event</a></li>
                         <li><a href="#" class="text-[#ff00ff]">> Music</a></li>
                         <li><a href="#" class="text-[#ff00ff]">> Popstore</a></li> --}}
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
+                @endif
                 <hr class="border-t-1 border-gray-200 border-dashed my-2 lg:mt-2 lg:mb-0">
                 <div class="ads-container mt-4 flexCenter lg:hidden">
                     {{-- <img src="your-image-url.jpg" alt="336 x 280 (6:5 ratio) Ads Placement" class="ads-image bg-gray-200"> --}}
@@ -231,8 +233,8 @@
         const closePopup = document.querySelector('.closePopup');
         const addCommentBtns = document.querySelectorAll('#addCommentBtn');
 
-        const articleIdModal  = document.querySelector('#articleIdModal');
-        
+        const articleIdModal = document.querySelector('#articleIdModal');
+
         addCommentBtns.forEach(card => {
             card.addEventListener('click', () => {
                 const articleId = card.getAttribute('data-article-id');

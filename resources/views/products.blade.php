@@ -1,5 +1,7 @@
 <x-layout>
     <main class="max-container padding-container">
+
+
         {{-- <div class="cardPopup fixed inset-0 flex transition-opacity items-center justify-center bg-black/50"> --}}
         <div class="cardPopup fixed inset-0 flex opacity-100 -z-10 transition-opacity items-center justify-center">
             {{-- <div class="cardPopupContent transition ease-in-out duration-300 bg-white border-2 border-black w-[85%] max-h-[80%] p-3 mt-12" onclick="event.stopPropagation()"> --}}
@@ -19,11 +21,42 @@
                     </div>
                     <div class="flex flex-col lg:grid lg:grid-cols-10 lg:gap-4">
                         <div id="product-image" class="col-span-7 pb-3">
-                            <div class="md:grid grid-cols-2 gap-4 px-[1px]">
+                            <!-- Carousel Wrapper -->
+                            <div class="relative w-full overflow-hidden">
+                                <div id="carousel" class="flex transition-transform duration-300 ease-out">
+                                    <!-- Images will be inserted here dynamically -->
+                                </div>
+
+                                <!-- Previous Button -->
+                                <button id="prevButton"
+                                    class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2">
+                                    Previous
+                                </button>
+
+                                <!-- Next Button -->
+                                <button id="nextButton"
+                                    class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2">
+                                    Next
+                                </button>
+
+                                <!-- Dots Indicator -->
+                                <div id="dotsContainer"
+                                    class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                                    <!-- Dots will be inserted here dynamically -->
+                                </div>
+
+                                <!-- Image Counter -->
+                                <div
+                                    class="absolute bottom-4 right-4 bg-gray-700 bg-opacity-50 text-white px-2 py-1 rounded">
+                                    <span id="currentImage">1</span> / <span id="totalImages">0</span>
+                                </div>
+                            </div>
+
+                            {{-- <div class="md:grid grid-cols-2 gap-4 px-[1px]">
                                 <img src="/img/blckruby2.jpg" alt=""
                                     class="img-fluid border border-black hidden md:block">
                                 <img src="/img/blckruby3.jpg" alt="" class="img-fluid border border-black">
-                            </div>
+                            </div> --}}
                         </div>
                         <div id="product-info" class="col-span-3 flex flex-col">
                             <div id="product-category">
@@ -65,6 +98,8 @@
                                         <div class="value text-xs">Red</div>
                                     </div> --}}
                                 {{-- </div> --}}
+                            </div>
+                            <div>
                                 <hr class="border-t-1 border-black border-dashed mt-2">
                                 <div class="leading-none my-2">
                                     <small class="text-[10px] font-bold">All "Limited BvckleSmiggle Equipment" will be
@@ -79,7 +114,8 @@
                                     <div class="grid grid-cols-2 gap-3">
                                         <button
                                             class="bg-white p-1 border-2 border-black shadow-[-3px_3px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
-                                            <a id="linkShopeeModal" target="_blank" href="#" class="flex items-center gap-1">
+                                            <a id="linkShopeeModal" target="_blank" href="#"
+                                                class="flex items-center gap-1">
                                                 <img src="/img/shopee.jpg" alt="" width="25">
                                                 <small class="font-segoe font-bold text-xs">bvcklesmiggle</small>
                                             </a>
@@ -279,5 +315,47 @@
             </div>
         </section>
     </main>
+    <script>
+        // const carousel = document.getElementById('carousel');
+        // const prevButton = document.getElementById('prevButton');
+        // const nextButton = document.getElementById('nextButton');
+        // const dotsContainer = document.getElementById('dotsContainer');
+        // const currentImage = document.getElementById('currentImage');
+        // const totalImages = document.getElementById('totalImages');
+        // let currentIndex = 0;
+        // let images = [];
+
+
+        // function updateCarouselPosition() {
+        //     const offset = -currentIndex * 100;
+        //     carousel.style.transform = `translateX(${offset}%)`;
+        //     updateIndicators();
+        // }
+
+        // function updateIndicators() {
+        //     dots.forEach((dot, index) => {
+        //         dot.classList.toggle('bg-gray-700', index === currentIndex);
+        //         dot.classList.toggle('bg-gray-300', index !== currentIndex);
+        //     });
+        //     currentImage.textContent = currentIndex + 1;
+        // }
+
+        // prevButton.addEventListener('click', function() {
+        //     if (currentIndex > 0) {
+        //         currentIndex--;
+        //         updateCarouselPosition();
+        //     }
+        // });
+
+        // nextButton.addEventListener('click', function() {
+        //     if (currentIndex < totalImages - 1) {
+        //         currentIndex++;
+        //         updateCarouselPosition();
+        //     }
+        // });
+
+        // // Initialize indicators
+        // updateIndicators();
+    </script>
     @vite('resources/js/products.js')
 </x-layout>

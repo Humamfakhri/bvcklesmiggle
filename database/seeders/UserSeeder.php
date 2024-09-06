@@ -16,8 +16,8 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin',
-            'username' => 'admin',
-            'password' => Hash::make('123'), // Gantilah 'your-password' dengan password yang diinginkan
+            'username' => 'adminB$',
+            'password' => Hash::make('bvckleB$321'), // Gantilah 'your-password' dengan password yang diinginkan
         ]);
     }
 }
