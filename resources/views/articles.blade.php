@@ -1,14 +1,16 @@
 <x-layout>
     <main class="max-container padding-container">
-        @if (session('error'))
-            <x-success-alert>{{ session('error') }}</x-success-alert>
+        @if (session('success'))
+            <x-success-alert>{{ session('success') }}</x-success-alert>
+        @elseif (session('error'))
+            <x-error-alert>{{ session('error') }}</x-error-alert>
         @endif
         <div class="modal fixed inset-0 flex opacity-100 -z-10 transition-opacity items-center justify-center">
             {{-- <div class="cardPopupContent transition ease-in-out duration-300 bg-white border-2 border-black w-[85%] max-h-[80%] p-3 mt-12" onclick="event.stopPropagation()"> --}}
             <div class="modalContent transition ease-in-out duration-300 scale-0 bg-white border-2 border-black rounded-md w-full max-w-[500px] max-h-[85%] px-3 overflow-y-auto"
                 onclick="event.stopPropagation()">
                 <div id="cardPopupBody" class="card-popup-body">
-                    {{-- <form method="POST" action="{{ route('articlesComment.store') }}" class="flex-col gap-5 p-4"
+                    <form method="POST" action="{{ route('articlesComment.store') }}" class="flex-col gap-5 p-4"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="flex flex-col gap-3">
@@ -22,7 +24,7 @@
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="email">Email<span
                                     class="text-red-600">*</span></label>
-                            <input required type="text" name="email" id="email"
+                            <input required type="email" name="email" id="email"
                                 oninput="checkInputFilled(this)" placeholder="Enter your email"
                                 class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
                         </div>
@@ -38,7 +40,7 @@
                             <button id="saveAddCommentBtn" disabled class="w-fit px-4 py-1  text-white font-bold bg-primary rounded-md border-2 border-black flexCenter gap-2 disabled:cursor-not-allowed disabled:opacity-30">Send</button>
                         </div>
                     </div>
-                </form> --}}
+                </form>
                 </div>
             </div>
         </div>
@@ -109,33 +111,34 @@
                         </div>
                         {{-- <hr class="border-zinc-400 my-3"> --}}
                         <div class="text-end mt-2 lg:mt-5">
-                            {{-- <button id="addCommentBtn" data-article-id="{{ $article->id }}"
+                            <button id="addCommentBtn" data-article-id="{{ $article->id }}"
                                 class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-full hidden">Add
-                                a comment</button> --}}
+                                a comment</button>
                             <button
                                 class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-full"
                                 onclick="toggleShowArticle(this)">Show more</button>
                         </div>
-                        {{-- <div>
+                        <div class="hidden">
                             <h5 class="text-lg font-bold">Comments</h5>
                             <hr class="my-3">
                             <ul class="flex flex-col gap-3 mt-3">    
-                                @foreach ($comments as $comment)
+                                {{-- {{ $article->comments }} --}}
+                                @foreach ($article->comments as $comment)
                                 <li>
                                     <div class="flex gap-1">
-                                        @if ($comment->name)
-                                            <small class="font-bold">{{ $comment->name }}</small>
+                                        @if ($comment->user->name)
+                                            <small class="font-bold">{{ $comment->user->name }}</small>
                                         @else
                                             <small class="font-bold italic">Anonymous</small>
                                         @endif
                                     </div>
                                     <p class="text-sm">
-                                        {{ $comment->comment }}
+                                        {{ $comment->content }}
                                     </p>
                                 </li>
                                 @endforeach
                             </ul>
-                        </div> --}}
+                        </div>
                     </div>
                 @endforeach
                 {{ $articles->links() }}
@@ -162,9 +165,7 @@
                 </form>
                 <div class="ads-container hidden lg:block">
                     {{-- <img src="your-image-url.jpg" alt="336 x 280 (6:5 ratio) Ads Placement" class="ads-image bg-gray-200"> --}}
-                    <div class="ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">336 x 280 atau
-                        6:5<br>Ads
-                        Placement</div>
+                    <x-ads-m />
                 </div>
                 @if ($articles->count() > 0)
                     <div class="categories hidden lg:block mt-3 leading-loose">
@@ -179,14 +180,14 @@
                         </ul>
                     </div>
                 @endif
-                <hr class="border-t-1 border-gray-200 border-dashed my-2 lg:mt-2 lg:mb-0">
+                {{-- <hr class="border-t-1 border-gray-200 border-dashed my-2 lg:mt-2 lg:mb-0"> --}}
                 <div class="ads-container mt-4 flexCenter lg:hidden">
                     {{-- <img src="your-image-url.jpg" alt="336 x 280 (6:5 ratio) Ads Placement" class="ads-image bg-gray-200"> --}}
                     <div class="ads-image-s lg:ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">
                         4:3<br>Ads
                         Placement</div>
                 </div>
-                <div class="download-pdf mt-3 leading-loose">
+                <div class="download-pdf mt-3 leading-loose hidden">
                     <h2 class="font-bold text-gray-200">DOWNLOAD OUR ZINE (pdf):</h2>
                     <ul>
                         <li><a href="#" class="text-[#ff00ff]">#1 Issue "Goldie Old"</a></li>
@@ -198,25 +199,18 @@
                 <div class="flex flex-col gap-4 mt-8">
                     <div class="ads-container hidden lg:block">
                         {{-- <img src="your-image-url.jpg" alt="336 x 280 (6:5 ratio) Ads Placement" class="ads-image bg-gray-200"> --}}
-                        <div class="ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">336 x 280
-                            atau 6:5<br>Ads
-                            Placement</div>
+                        <x-ads-m />
                     </div>
                     <div class="ads-container hidden lg:block">
                         {{-- <img src="your-image-url.jpg" alt="336 x 280 (6:5 ratio) Ads Placement" class="ads-image bg-gray-200"> --}}
-                        <div class="ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">336 x 280
-                            atau 6:5<br>Ads
-                            Placement</div>
+                        <x-ads-m />
                     </div>
                     <div class="ads-container hidden lg:block">
                         {{-- <img src="your-image-url.jpg" alt="336 x 280 (6:5 ratio) Ads Placement" class="ads-image bg-gray-200"> --}}
-                        <div class="ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">336 x 280
-                            atau 6:5<br>Ads
-                            Placement</div>
+                        <x-ads-m />
                     </div>
                 </div>
-                <a href="#" class="hidden lg:block text-end mt-1 color-secondary text-[10px]">Ads powered by
-                    Google</a>
+                <a href="#" class="hidden text-end mt-1 color-secondary text-[10px]">Ads powered by Google</a>
             </div>
         </div>
     </main>
@@ -226,6 +220,7 @@
             el.innerHTML = el.innerHTML === 'Show Less' ? 'Show More' : 'Show Less';
             el.classList.toggle('border');
             el.previousElementSibling.classList.toggle('hidden');
+            el.parentElement.nextElementSibling.classList.toggle('hidden');
         }
 
         const modal = document.querySelector('.modal');
@@ -280,7 +275,7 @@
             console.log(e.value);
             const name = document.querySelector('#name');
             const email = document.querySelector('#email');
-            const comment = document.querySelector('#comment');
+            const comment = document.querySelector('#content');
             if (email.value && comment.value) {
                 saveAddCommentBtn.removeAttribute('disabled');
             } else {

@@ -27,6 +27,7 @@ let images = [];
 
 cards.forEach(card => {
   card.addEventListener('click', () => {
+    currentIndex = 0;
     // Gantilah dengan ID yang sesuai
     const productId = card.querySelector('img').getAttribute('data-id');
     // console.log(card.querySelector('img').getAttribute('data-id'));
@@ -47,6 +48,7 @@ cards.forEach(card => {
         cardPopupBody.style.display = 'block';
         console.log(Array.isArray(data.product_images));
         images = data.product_images; // Assuming the response contains an array of image URLs
+        images = images.slice(1);
         console.log(images);
 
         const url = new URL(window.location.href); // Mengambil URL saat ini
@@ -59,6 +61,17 @@ cards.forEach(card => {
 
         // Update total images count
         totalImages.textContent = images.length;
+        if (images.length == 1) {
+          nextButton.classList.add('hidden');
+          prevButton.classList.add('hidden');
+          dotsContainer.classList.add('hidden');
+          dotsContainer.classList.remove('flexCenter');
+        } else {
+          nextButton.classList.remove('hidden');
+          prevButton.classList.remove('hidden');
+          dotsContainer.classList.remove('hidden');
+          dotsContainer.classList.add('flexCenter');
+        }
 
         // Clear existing content
         carousel.innerHTML = '';
@@ -67,8 +80,8 @@ cards.forEach(card => {
         // Add new images to carousel
         images.forEach((image, index) => {
           const imgDiv = document.createElement('div');
-          imgDiv.className = 'w-full flex-shrink-0';
-          imgDiv.innerHTML = `<img src="${fullDomain}/storage/${image}" class="img-fluid border border-black" alt="Product Image">`;
+          imgDiv.className = 'w-full flexCenter flex-shrink-0';
+          imgDiv.innerHTML = `<img src="${fullDomain}/storage/${image}" class="max-h-[400px] border border-black" alt="Product Image">`;
           carousel.appendChild(imgDiv);
 
           const dot = document.createElement('div');
@@ -79,7 +92,7 @@ cards.forEach(card => {
         // Show modal
         updateCarouselPosition();
 
-        productNameModal.innerHTML = data.name;
+        productNameModal.innerHTML = `//${data.name}`;
         productCategoryModal.innerHTML = data.category;
         productCategoryModal.href = data.category;
         productIssueModal.innerHTML = data.issue;
@@ -143,13 +156,22 @@ cardPopup.addEventListener('click', () => {
 function updateCarouselPosition() {
   const offset = -currentIndex * 100;
   carousel.style.transform = `translateX(${offset}%)`;
+  if (currentIndex == images.length - 1) {
+    nextButton.classList.add('hidden')
+  } else if (currentIndex == 0) {
+    prevButton.classList.add('hidden')
+  }
+  else {
+    nextButton.classList.remove('hidden')
+    prevButton.classList.remove('hidden')
+  }
   updateIndicators();
 }
 
 function updateIndicators() {
   const dots = dotsContainer.children;
   for (let i = 0; i < dots.length; i++) {
-    dots[i].classList.toggle('bg-gray-700', i === currentIndex);
+    dots[i].classList.toggle('bg-primary', i === currentIndex);
     dots[i].classList.toggle('bg-gray-300', i !== currentIndex);
   }
   currentImage.textContent = currentIndex + 1;

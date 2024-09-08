@@ -5,9 +5,9 @@
         {{-- <div class="cardPopup fixed inset-0 flex transition-opacity items-center justify-center bg-black/50"> --}}
         <div class="cardPopup fixed inset-0 flex opacity-100 -z-10 transition-opacity items-center justify-center">
             {{-- <div class="cardPopupContent transition ease-in-out duration-300 bg-white border-2 border-black w-[85%] max-h-[80%] p-3 mt-12" onclick="event.stopPropagation()"> --}}
-            <div class="cardPopupContent transition ease-in-out duration-300 scale-0 bg-white border-2 border-black max-w-[85%] max-h-[85%] px-3 overflow-y-auto"
+            <div class="cardPopupContent transition ease-in-out duration-300 scale-0 bg-white border-2 border-black w-[90%] max-w-[900px] max-h-[85%] px-3 overflow-y-auto"
                 onclick="event.stopPropagation()">
-                <div class="card-popup-header text-end border-b-2 border-black sticky top-0 pt-3 bg-white">
+                <div class="card-popup-header text-end border-b-2 border-black sticky top-0 pt-3 bg-white z-40">
                     <button>
                         <i class="closePopup text-3xl text-black fa-solid fa-xmark"></i>
                     </button>
@@ -15,39 +15,40 @@
                 <div id="loadingSpinner" class="loading-spinner p-20"></div>
                 <div id="cardPopupBody" class="card-popup-body">
                     <div class="hidden lg:grid grid-cols-10 items-end gap-4 mt-3">
-                        <div class="col-end-11 col-span-3 border-b-2 border-black py-2">
+                        <div class="col-end-11 col-span-4 border-b-2 border-black py-2">
                             <h1 id="productNameModal" class="font-bold text-2xl text-black font-segoe">//[JUDUL]</h1>
                         </div>
                     </div>
                     <div class="flex flex-col lg:grid lg:grid-cols-10 lg:gap-4">
-                        <div id="product-image" class="col-span-7 pb-3">
+                        <div id="product-image" class="col-span-6 pb-3">
                             <!-- Carousel Wrapper -->
-                            <div class="relative w-full overflow-hidden">
-                                <div id="carousel" class="flex transition-transform duration-300 ease-out">
+                            <div class="relative w-auto max-h-[500px] overflow-hidden">
+                                <div id="carousel" class="flex transition-transform duration-300 ease-out w-auto max-h-[500px]">
                                     <!-- Images will be inserted here dynamically -->
                                 </div>
 
                                 <!-- Previous Button -->
                                 <button id="prevButton"
-                                    class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2">
-                                    Previous
+                                    class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-700/50 rounded-lg text-white px-4 py-2">
+                                    <i class="fa-solid fa-chevron-left"></i>
                                 </button>
 
                                 <!-- Next Button -->
                                 <button id="nextButton"
-                                    class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2">
-                                    Next
+                                    class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-700/50 rounded-lg text-white px-4 py-2">
+                                    <i class="fa-solid fa-chevron-right"></i>
                                 </button>
 
                                 <!-- Dots Indicator -->
                                 <div id="dotsContainer"
-                                    class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                                    class="space-x-2 mt-3">
+                                    {{-- class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"> --}}
                                     <!-- Dots will be inserted here dynamically -->
                                 </div>
 
                                 <!-- Image Counter -->
                                 <div
-                                    class="absolute bottom-4 right-4 bg-gray-700 bg-opacity-50 text-white px-2 py-1 rounded">
+                                    class="hidden absolute bottom-4 right-4 bg-gray-700 bg-opacity-50 text-white px-2 py-1 rounded">
                                     <span id="currentImage">1</span> / <span id="totalImages">0</span>
                                 </div>
                             </div>
@@ -58,7 +59,7 @@
                                 <img src="/img/blckruby3.jpg" alt="" class="img-fluid border border-black">
                             </div> --}}
                         </div>
-                        <div id="product-info" class="col-span-3 flex flex-col">
+                        <div id="product-info" class="col-span-4 flex flex-col">
                             <div id="product-category">
                                 <a href="#" id="productCategoryModal"
                                     class="block border-b border-black py-1 font-bold font-segoe color-primary">[Category]</a>
@@ -145,7 +146,7 @@
                 <div class="sidebar hidden lg:flex flex-col max-h-screen sticky top-0 pt-16 -mt-16 pb-2">
                     {{-- max-h-[90vh] --}}
                     <ul class="flex flex-col items-start gap-2 grow">
-                        <li><a class="font-bold font-segoe color-primary" href="#">ALL</a>
+                        <li><a class="font-bold font-segoe hover:color-primary {{ !request()->input('category') ? 'color-primary' : 'text-gray-200' }}" href="/products">ALL</a>
                         </li>
                         <li>
                             <div class="flex">
@@ -166,7 +167,7 @@
                             </div>
                         </li>
                         @foreach ($categories as $category)
-                            <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                            <li><a class="text-light font-semibold font-segoe hover:color-primary {{ request()->input('category') === $category ? 'color-primary' : '' }}"
                                     href="products?category={{ $category }}">{{ $category }}</a>
                             </li>
                         @endforeach
@@ -204,12 +205,17 @@
                     <div>
                         <div class="grid grid-cols-2 gap-3 mt-2">
                             <button class="bg-white p-1">
-                                <a href="https://shopee.co.id" target="_blank" class="flex items-center gap-1">
+
+                                {{-- LINK UNTUK KE TOKO UTAMA --}}
+                                {{-- UBAH HREF MISAL JADI https://shopee.co.id/bvcklesmiggle  --}}
+
+                                <a href="https://shopee.co.id/" target="_blank" class="flex items-center gap-1">
                                     <img src="/img/shopee.jpg" alt="" width="25">
                                     <small class="font-semibold text-[10px]">bvcklesmiggle</small>
                                 </a>
                             </button>
                             <button class="bg-white p-1">
+                                {{-- UBAH HREF MISAL JADI https://tokopedia.com/bvcklesmiggle  --}}
                                 <a href="https://tokopedia.com" target="_blank" class="flex items-center gap-1">
                                     <img src="/img/tokopedia.png" alt="" width="25">
                                     <small class="font-semibold text-[10px]">bvcklesmiggle</small>
@@ -241,7 +247,7 @@
                                             <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
                                         </li>
                                         @foreach ($categories as $category)
-                                            <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                            <li><a class="text-light font-semibold font-segoe hover:color-primary {{ request()->input('category') === $category ? 'color-primary' : '' }}"
                                                     href="products?category={{ $category }}">{{ $category }}</a>
                                             </li>
                                         @endforeach

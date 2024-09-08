@@ -12,12 +12,22 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('products', [
-            'products' => Product::get(),
-            'categories' => Product::distinct()->pluck('category')
-        ]);
+        if ($request->input('category')) {
+            $category = $request->input('category');
+            return view('products', [
+                'products' =>
+                Product::where('category', $category)->get(),
+                'categories' => Product::distinct()->pluck('category')
+            ]);
+        } else {
+            return view('products', [
+                'products' =>
+                Product::get(),
+                'categories' => Product::distinct()->pluck('category')
+            ]);
+        }
     }
 
     public function getProduct(Request $request)

@@ -26,6 +26,7 @@
     <link rel="icon" type="image/png" href="/images/96x96/10231534/iconBbl-Copy.png" sizes="96x96">
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/images/152x152/10231534/iconBbl-Copy.png">
     <link rel="preconnect" href="" />
+    <meta name="facebook-domain-verification" content="eszr5qfwh5m28etsu7byq1kfchdsgz" />
     <title>bvcklesmiggle</title>
 </head>
 

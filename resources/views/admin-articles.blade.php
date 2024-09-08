@@ -34,15 +34,9 @@
 <body class="bg-gray-200">
     <main>
         @if (session('success'))
-            <x-error-alert></x-error-alert>
+            <x-success-alert>{{ session('success') }}</x-success-alert>
         @elseif (session('error'))
-            <div class="myAlert transition-opacity duration-300 rounded fixed top-0 right-0 padding-container pt-5"
-                role="alert">
-                <div class="bg-red-100 rounded border border-red-400 text-red-700 px-4 py-3">
-                    {{-- <span class="block sm:inline">Berhasil</span> --}}
-                    <span class="block sm:inline">{{ session('error') }}</span>
-                </div>
-            </div>
+            <x-error-alert>{{ session('error') }}</x-error-alert>
         @endif
 
         <!-- VIEW IMAGE MODAL -->
@@ -158,8 +152,8 @@
                             </div>
                             <div class="col-span-2">
                                 <label class="block text-xs mb-1 font-bold">Body</label>
-                                <input id="bodyEdit" type="hidden" name="bodyEdit">
-                                <trix-editor id="bodyEdit2" input="bodyEdit"
+                                <input required id="bodyEdit" type="hidden" name="bodyEdit">
+                                <trix-editor id="bodyEditTrix" input="bodyEdit"
                                     oninput="checkInputFilled(this)"></trix-editor>
                             </div>
                         </div>
@@ -291,8 +285,8 @@
                         </div>
                         <div class="col-span-2">
                             <label class="block text-xs mb-1 font-bold">Body</label>
-                            <input id="body" type="hidden" name="body">
-                            <trix-editor input="body" oninput="checkInputFilled(this)"></trix-editor>
+                            <input required id="body" type="hidden" name="body">
+                            <trix-editor input="body" id="bodyTrix" oninput="checkInputFilled(this)"></trix-editor>
                         </div>
                     </div>
                     <div class="flexBetween">
@@ -593,12 +587,30 @@
         const addArticleBtn = document.querySelector('#addArticleBtn');
         addArticleBtn.setAttribute('disabled', true);
 
+        document.getElementById('bodyTrix').addEventListener('trix-paste', function(event) {
+            // Dapatkan konten yang dipaste
+            // const pastedContent = event.paste;
+
+            // Lakukan sesuatu dengan konten yang dipaste
+            // console.log('Content pasted:', pastedContent);
+            checkInputFilled()
+        });
+
+        document.getElementById('bodyEditTrix').addEventListener('trix-paste', function(event) {
+            // Dapatkan konten yang dipaste
+            // const pastedContent = event.paste;
+
+            // Lakukan sesuatu dengan konten yang dipaste
+            // console.log('Content pasted:', pastedContent);
+            checkInputFilled()
+        });
+
         function checkInputFilled(e) {
-            console.log(e.value);
+            // console.log(e.value);
             const title = document.querySelector('#title');
             const author = document.querySelector('#author');
             const category = document.querySelector('#category');
-            const body = document.querySelector('#body');
+            const body = document.querySelector('#bodyTrix');
             if (title.value && author.value && category.value && body.value) {
                 addArticleBtn.removeAttribute('disabled');
             } else {

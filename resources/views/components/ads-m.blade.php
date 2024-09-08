@@ -1,0 +1,2 @@
+<div class="ads-image ads-1 hidden bg-white text-gray-500 text-center text-xs">336 x 280 atau 6:5<br>Ads Placement</div>
+{{-- <div class="ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">336 x 280 atau 6:5<br>Ads Placement</div> --}}

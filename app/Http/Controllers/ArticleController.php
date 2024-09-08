@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\User;
 use App\Models\Article;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
 use App\Models\ArticleWithComment;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class ArticleController extends Controller
 {
     public function index()
     {
         return view('articles', [
-            'articles' => Article::paginate(3),
+            'articles' => Article::with('comments.user')->paginate(3),
             'categories' => ArticleCategory::get()
         ]);
     }
@@ -34,29 +36,46 @@ class ArticleController extends Controller
         return response()->json($article);
     }
 
-    // public function storeComment(Request $request) 
-    // {
-    //     try {
-    //         $request->validate([
-    //             'articleId' => 'required',
-    //             'content' => 'required|string|max:1000',
-    //         ]);
-    
-    //         $article = Article::findOrFail($articleId);
-    
-    //         $article->comments()->create([
-    //             'user_id' => auth()->id(),
-    //             'content' => $request->content,
-    //         ]);
-    
-    //         return redirect()->route('articles.show', $articleId)->with('success', 'Comment has been added successfully!');
-    //     // return redirect()->route('articles')->with('success', 'Comment has been added successfully!');
-    //     } catch (Exception $e) {
-    //         // Log error untuk debugging
-    //         Log::error('Error adding comment: ' . $e->getMessage());
+    public function storeComment(Request $request) 
+{
+    $articleId = $request->articleId;
 
-    //         // Tampilkan pesan error ke user
-    //         return redirect()->back()->with('error', $e->getMessage());
-    //     }
-    // }
+    try {
+        // Validasi input
+        $request->validate([
+            'name' => 'nullable|string',
+            'email' => 'required|string|email',
+            'content' => 'required|string|max:1000',
+        ]);
+
+        // Cek apakah user sudah ada berdasarkan email
+        $user = User::where('email', $request->email)->first();
+
+        // Jika user tidak ada, buat user baru
+        if (!$user) {
+            $user = User::create([
+                'name' => $request->name ?? 'Anonymous', // Default name if not provided
+                'email' => $request->email,
+            ]);
+        }
+
+        // Masukkan data ke tabel Comments
+        Comment::create([
+            'article_id' => $articleId,
+            'user_id' => $user->id,
+            'content' => $request->content,
+        ]);
+
+        // Redirect ke artikel dengan pesan sukses
+        return redirect()->route('articles')->with('success', 'Comment has been added successfully!');
+
+    } catch (Exception $e) {
+        // Log error untuk debugging
+        Log::error('Error adding comment: ' . $e->getMessage());
+
+        // Tampilkan pesan error ke user
+        return redirect()->back()->with('error', 'There was an error adding your comment. Please try again.');
+    }
+}
+
 }

@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 // ARTICLES
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
-// Route::post('/articles', [ArticleController::class, 'storeComment'])->name('articlesComment.store');
+Route::post('/articles', [ArticleController::class, 'storeComment'])->name('articlesComment.store');
 Route::get('/get-article', [ArticleController::class, 'getArticle']);
 
 // PRODUCTS

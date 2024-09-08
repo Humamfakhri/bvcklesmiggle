@@ -261,8 +261,8 @@
                                 oninput="addProductValidation(this)" placeholder="Enter Tokopedia product link"
                                 class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
                         </div>
-                        <div class="col-span-2">
-                            <label class="block text-xs mb-1 font-bold">Product's Image</label>
+                        {{-- <div class="col-span-2">
+                            <label class="block text-xs mb-1 font-bold">Product Images</label>
                             <input type="file" name="productImage[]" id="productImage" multiple
                                 accept=".jpeg,.jpg,.png,.webp"
                                 class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('image') is-invalid @enderror"
@@ -275,7 +275,29 @@
                             <div class="text-red-500 text-xs pt-2" id="productImageError"></div>
                             <!-- Tempat error message -->
                             <div class="grid grid-cols-4 gap-3 pt-4" id="productImagesPreview"></div>
+                        </div> --}}
+                        <div class="col-span-2">
+                            <!-- Input untuk Thumbnail -->
+                            <label class="block text-xs mb-1 font-bold">Product Thumbnail</label>
+                            <input type="file" name="thumbnail" id="thumbnail" accept=".jpeg,.jpg,.png,.webp"
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white"
+                                onchange="validateFiles('thumbnail', 'thumbnailPreview', 'thumbnailError')">
+                            <div class="text-red-500 text-xs" id="thumbnailError"></div>
+                            <div class="grid grid-cols-1 gap-3" id="thumbnailPreview"></div>
                         </div>
+                        
+                        <div class="col-span-2">
+                            <!-- Input untuk Gambar Detail -->
+                            <label class="block text-xs mb-1 font-bold">Product Images</label>
+                            <input type="file" name="productImage[]" id="productImage" multiple accept=".jpeg,.jpg,.png,.webp"
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white"
+                                onchange="validateFiles('productImage', 'productImagesPreview', 'productImageError')">
+                            <div class="text-red-500 text-xs" id="productImageError"></div>
+                            <div class="grid grid-cols-4 gap-3" id="productImagesPreview">
+                                {{-- <img src="/img/blckruby1.jpg" alt="" class="w-full object-cover aspect-square border border-gray-200 mt-4"> --}}
+                            </div>
+                        </div>
+                        
                         <div class="col-span-2">
                             <label class="block text-xs mb-1 font-bold">Issue</label>
                             <input id="issue" type="hidden" name="issue">
@@ -332,7 +354,7 @@
                                             class="img-fluid w-full"> --}}
                                             <div class="relative">
                                                 <img src="{{ asset('storage/' . $image) }}" alt="Product Image"
-                                                    class="w-full cursor-pointer rowProductImage"
+                                                    class="w-full object-cover aspect-square border border-gray-200 cursor-pointer rowProductImage"
                                                     onclick="openModal('{{ asset('storage/' . $image) }}')">
                                             </div>
                                         @endforeach
@@ -481,8 +503,8 @@
                 reader.onload = function(e) {
                     const imgElement = document.createElement('img');
                     imgElement.src = e.target.result;
-                    imgElement.classList.add('img-fluid', 'border', 'border-gray-200');
-                    imgElement.style.maxWidth = '100%';
+                    imgElement.classList.add('w-full', 'object-cover', 'aspect-square' , 'border', 'border-gray-200', 'mt-4');
+                    // imgElement.style.maxWidth = '100%';
                     previewElement.appendChild(imgElement);
                 };
                 reader.readAsDataURL(file);

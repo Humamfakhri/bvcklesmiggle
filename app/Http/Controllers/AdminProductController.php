@@ -58,6 +58,7 @@ class AdminProductController extends Controller
             'category' => 'required|string|max:255',
             'linkShopee' => 'string',
             'linkTokopedia' => 'string',
+            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
             'productImage.*' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
             'issue' => 'required|string',
             'details' => 'required|string'
@@ -65,12 +66,26 @@ class AdminProductController extends Controller
 
         // Simpan multiple product images
         $productImages = [];
-        if ($request->hasfile('productImage')) {
-            foreach ($request->file('productImage') as $image) {
-                $path = $image->store('product_images', 'public');
-                $productImages[] = $path;
+
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail = $request->file('thumbnail');
+            $thumbnailPath = $thumbnail->store('product_images', 'public');
+            $productImages[] = $thumbnailPath;
+        }
+
+        if ($request->hasFile('productImage')) {
+            foreach ($request->file('productImage') as $detailImage) {
+                $detailPath = $detailImage->store('product_images', 'public');
+                $productImages[] = $detailPath;
             }
         }
+
+        // if ($request->hasfile('productImage')) {
+        //     foreach ($request->file('productImage') as $image) {
+        //         $path = $image->store('product_images', 'public');
+        //         $productImages[] = $path;
+        //     }
+        // }
 
         // // Simpan detail image
         // $detailImagePath = null;
@@ -86,7 +101,8 @@ class AdminProductController extends Controller
         $product->details = $validatedData['details'];
         $product->link_shopee = $validatedData['linkShopee'];
         $product->link_tokopedia = $validatedData['linkTokopedia'];
-        $product->product_images = json_encode($productImages); // Simpan array images sebagai JSON
+        $product->product_images = json_encode($productImages); // Simpan dalam format JSON
+        // $product->product_images = json_encode($productImages); // Simpan array images sebagai JSON
         // $product->detail_image = $detailImagePath;
         $product->save();
 
