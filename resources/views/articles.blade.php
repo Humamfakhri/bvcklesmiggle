@@ -52,8 +52,9 @@
         <div class="flex flex-col lg:flex-row gap-4 items-start">
             <div class="articles flex flex-col gap-5 lg:gap-7 grow">
                 <div class="sticky top-[70px] lg:hidden">
-                    <form action="" class="flex items-stretch mb-2">
-                        <input type="text" placeholder="Cari Artikel (judul, nama band, dll.)"
+                    <form method="GET" action="" class="flex items-stretch mb-2">
+                        <input type="text" name="keyword" id="keyword" placeholder="Cari Artikel"
+                        value="{{ request()->input('keyword') ? request()->input('keyword') : '' }}"
                             class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-xl text-gray-200 text-sm">
                         <button class="self-auto px-3 border border-[#ff00ff] bg-dark rounded-r-xl"><i
                                 class="fa-solid fa-magnifying-glass text-gray-200"></i></button>
@@ -105,7 +106,7 @@
                                         class="color-primary">{{ $article->author }}</a></p>
                             </div>
                         </div>
-                        <img src="{{ asset('storage/' . $article->image) }}" alt="" class="img-fluid mt-7">
+                        <img src="{{ asset('storage/' . $article->image) }}" alt="" class="img-fluid w-full mt-7">
                         <div class="article-body leading-relaxed mt-3 line-clamp-3">
                             {!! $article->body !!}
                         </div>
@@ -156,8 +157,9 @@
                 </div> --}}
             </div>
             <div class="aside">
-                <form action="" class="hidden lg:flex items-stretch mb-4">
-                    <input type="text" placeholder="Cari Artikel (judul, nama band, dll.)"
+                <form method="GET" action="" class="hidden lg:flex items-stretch mb-4">
+                    <input type="text" placeholder="Cari Artikel" name="keyword" id="keyword"
+                        value="{{ request()->input('keyword') ? request()->input('keyword') : '' }}"
                         class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-xl text-gray-200 text-sm">
                     <button class="self-auto px-3 border border-[#ff00ff] bg-dark rounded-r-xl"><i
                             class="fa-solid fa-magnifying-glass text-gray-200"></i></button>

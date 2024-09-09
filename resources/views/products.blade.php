@@ -21,43 +21,11 @@
                     </div>
                     <div class="flex flex-col lg:grid lg:grid-cols-10 lg:gap-4">
                         <div id="product-image" class="col-span-6 pb-3">
-                            <!-- Carousel Wrapper -->
-                            <div class="relative w-auto max-h-[500px] overflow-hidden">
-                                <div id="carousel" class="flex transition-transform duration-300 ease-out w-auto max-h-[500px]">
-                                    <!-- Images will be inserted here dynamically -->
-                                </div>
-
-                                <!-- Previous Button -->
-                                <button id="prevButton"
-                                    class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-700/50 rounded-lg text-white px-4 py-2">
-                                    <i class="fa-solid fa-chevron-left"></i>
-                                </button>
-
-                                <!-- Next Button -->
-                                <button id="nextButton"
-                                    class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-700/50 rounded-lg text-white px-4 py-2">
-                                    <i class="fa-solid fa-chevron-right"></i>
-                                </button>
-
-                                <!-- Dots Indicator -->
-                                <div id="dotsContainer"
-                                    class="space-x-2 mt-3">
-                                    {{-- class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"> --}}
-                                    <!-- Dots will be inserted here dynamically -->
-                                </div>
-
-                                <!-- Image Counter -->
-                                <div
-                                    class="hidden absolute bottom-4 right-4 bg-gray-700 bg-opacity-50 text-white px-2 py-1 rounded">
-                                    <span id="currentImage">1</span> / <span id="totalImages">0</span>
-                                </div>
-                            </div>
-
-                            {{-- <div class="md:grid grid-cols-2 gap-4 px-[1px]">
-                                <img src="/img/blckruby2.jpg" alt=""
+                            <div id="productImageModal" class="md:grid grid-cols-2 gap-4 px-[1px]">
+                                {{-- <img src="/img/blckruby2.jpg" alt=""
                                     class="img-fluid border border-black hidden md:block">
-                                <img src="/img/blckruby3.jpg" alt="" class="img-fluid border border-black">
-                            </div> --}}
+                                <img src="/img/blckruby3.jpg" alt="" class="img-fluid border border-black"> --}}
+                            </div>
                         </div>
                         <div id="product-info" class="col-span-4 flex flex-col">
                             <div id="product-category">

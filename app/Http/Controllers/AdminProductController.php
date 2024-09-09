@@ -132,6 +132,7 @@ class AdminProductController extends Controller
                 'categoryEdit' => 'required|string|max:255',
                 'linkShopeeEdit' => 'nullable|string',
                 'linkTokopediaEdit' => 'nullable|string',
+                'thumbnailEdit.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
                 'productImageEdit.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
                 // 'detailImageEdit' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
                 'issueEdit' => 'required|string',
@@ -159,13 +160,13 @@ class AdminProductController extends Controller
 
             // Simpan atau update detail image
             // $detailImagePathEdit = $product->detail_image; // Ambil gambar detail lama
-            // if ($request->hasFile('detailImageEdit')) {
-            //     // Hapus gambar detail lama dari storage
-            //     Storage::disk('public')->delete($product->detail_image);
+            if ($request->hasFile('detailImageEdit')) {
+                // Hapus gambar detail lama dari storage
+                Storage::disk('public')->delete($product->detail_image);
 
-            //     // Simpan gambar detail baru
-            //     $detailImagePathEdit = $request->file('detailImageEdit')->store('detail_images', 'public');
-            // }
+                // Simpan gambar detail baru
+                $detailImagePathEdit = $request->file('detailImageEdit')->store('detail_images', 'public');
+            }
 
             // Update data produk di database
             $product->name = $validatedData['nameEdit'];

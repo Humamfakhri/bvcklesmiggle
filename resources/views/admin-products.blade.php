@@ -101,8 +101,22 @@
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
                             <div class="col-span-2">
-                                <label class="block text-xs mb-1 font-bold" for="productImageEdit">New Product's
-                                    Image</label>
+                                <label class="block text-xs mb-1 font-bold" for="thumbnailEdit">New Thumbnail</label>
+                                <input type="file" name="thumbnailEdit[]" id="thumbnailEdit" multiple
+                                    accept=".jpeg,.jpg,.png,.webp"
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
+                                    onchange="validateFiles('thumbnailEdit', 'thumbnailsPreviewEdit', 'thumbnailEditError')">
+                                @error('image')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                                <div class="text-red-500 text-xs pt-2" id="thumbnailEditError"></div>
+                                <!-- Tempat error message -->
+                                <div class="grid grid-cols-3 gap-3 pt-4" id="thumbnailsPreviewEdit"></div>
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-xs mb-1 font-bold" for="productImageEdit">New Product Image</label>
                                 <input type="file" name="productImageEdit[]" id="productImageEdit" multiple
                                     accept=".jpeg,.jpg,.png,.webp"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent @error('image') is-invalid @enderror"
