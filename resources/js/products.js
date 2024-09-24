@@ -109,13 +109,26 @@ cardPopup.addEventListener('click', () => {
   cardPopupContent.classList.remove('scale-100');
 });
 
+// if (document.querySelector('.categoryBtn')) {
+//   const categoryBtn = document.querySelector('.categoryBtn');
+//   const categoryChevron = document.querySelector('.categoryChevron');
+//   const categoryContainer = document.querySelector('.categoryContainer');
+//   categoryBtn.addEventListener('click', () => {
+//     categoryChevron.classList.toggle('-rotate-180');
+//     categoryContainer.classList.toggle('h-0');
+//     categoryContainer.classList.toggle("h-[316px]");
+//   });
+// }
+
 if (document.querySelector('.categoryBtn')) {
-  const categoryBtn = document.querySelector('.categoryBtn');
-  const categoryChevron = document.querySelector('.categoryChevron');
-  const categoryContainer = document.querySelector('.categoryContainer');
-  categoryBtn.addEventListener('click', () => {
-    categoryChevron.classList.toggle('-rotate-180');
-    categoryContainer.classList.toggle('h-0');
-    categoryContainer.classList.toggle("h-[316px]");
+  const categoryBtns = document.querySelectorAll('.categoryBtn');
+  categoryBtns.forEach(categoryBtn => {
+    const categoryChevron = categoryBtn.querySelector('.categoryChevron');
+    const categoryContainer = categoryBtn.nextElementSibling;
+    categoryBtn.addEventListener('click', () => {
+      categoryChevron.classList.toggle('-rotate-180');
+      categoryContainer.classList.toggle('h-0');
+      categoryContainer.classList.toggle("h-[316px]");
+    });
   });
 }

@@ -65,6 +65,7 @@ const inputDetailsEdit = document.querySelector('#detailsEdit2');
 editBtns.forEach(editBtn => {
   const tr = editBtn.parentElement.parentElement.parentElement.parentElement.parentElement
   editBtn.addEventListener('click', () => {
+    clearEditFields();
     const rowId = tr.querySelector('#rowId').value;
     const rowName = tr.querySelector('#rowName').innerHTML;
     const rowCategory = tr.querySelector('#rowCategory').innerHTML;
@@ -77,7 +78,6 @@ editBtns.forEach(editBtn => {
 
     editProductForm.action = "/sipalingadminB$/products/" + rowId;
 
-    clearEditFields();
     document.body.classList.add('overflow-hidden');
     editModal.classList.remove('opacity-0');
     editModal.classList.add('opacity-100');
@@ -96,19 +96,19 @@ editBtns.forEach(editBtn => {
     inputCategoryEdit.value = rowCategory;
 
     // console.log('.rowProductImage');
-    rowProductImages.forEach(rowProductImage => {
-      // console.log(rowProductImage.src);
-      const tagImgProduct = document.createElement('img');
-      tagImgProduct.src = rowProductImage.src;
-      // console.log(tagImgProduct.src);
-      tagImgProduct.classList.add('mt-3');
-      tagImgProduct.classList.add('img-fluid');
-      tagImgProduct.classList.add('border');
-      tagImgProduct.classList.add('border-gray-200');
-      tagImgProduct.style.maxWidth = '100%';
-      // console.log(productImagesPreviewEdit);
-      productImagesPreviewEdit.appendChild(tagImgProduct);
-    })
+    // rowProductImages.forEach(rowProductImage => {
+    //   // console.log(rowProductImage.src);
+    //   const tagImgProduct = document.createElement('img');
+    //   tagImgProduct.src = rowProductImage.src;
+    //   // console.log(tagImgProduct.src);
+    //   tagImgProduct.classList.add('mt-3');
+    //   tagImgProduct.classList.add('img-fluid');
+    //   tagImgProduct.classList.add('border');
+    //   tagImgProduct.classList.add('border-gray-200');
+    //   tagImgProduct.style.maxWidth = '100%';
+    //   // console.log(productImagesPreviewEdit);
+    //   productImagesPreviewEdit.appendChild(tagImgProduct);
+    // })
 
     inputIssueEdit.value = rowIssue;
     

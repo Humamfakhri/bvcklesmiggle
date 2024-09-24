@@ -100,7 +100,7 @@
                                     placeholder="https://www.tokopedia.com/..."
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-500 bg-transparent">
                             </div>
-                            <div class="col-span-2">
+                            {{-- <div class="col-span-2">
                                 <label class="block text-xs mb-1 font-bold" for="thumbnailEdit">New Thumbnail</label>
                                 <input type="file" name="thumbnailEdit[]" id="thumbnailEdit" multiple
                                     accept=".jpeg,.jpg,.png,.webp"
@@ -114,7 +114,7 @@
                                 <div class="text-red-500 text-xs pt-2" id="thumbnailEditError"></div>
                                 <!-- Tempat error message -->
                                 <div class="grid grid-cols-3 gap-3 pt-4" id="thumbnailsPreviewEdit"></div>
-                            </div>
+                            </div> --}}
                             <div class="col-span-2">
                                 <label class="block text-xs mb-1 font-bold" for="productImageEdit">New Product Image</label>
                                 <input type="file" name="productImageEdit[]" id="productImageEdit" multiple
@@ -211,24 +211,7 @@
 
 
         <div class="flex">
-            <div class="sidebar h-screen py-6 bg-dark flex flex-col padding-container sticky top-0">
-                <img src="/img/logo.png" alt="" class="h-auto max-w-52">
-                <ul class="flex flex-col gap-5 mt-5 grow">
-                    {{-- <li><x-nav-link href="/">HOME</x-nav-link></li> --}}
-                    <li><x-nav-link href="sipalingadminB$/articles">ARTICLES</x-nav-link></li>
-                    <li><x-nav-link href="sipalingadminB$/products">PRODUCTS</x-nav-link></li>
-                    {{-- <li><x-nav-link href="partnership">PARTNERSHIP</x-nav-link></li> --}}
-                </ul>
-                <div class="flex justify-between items-end border border-gray-500 px-3 py-2 rounded-lg">
-                    <div>
-                        <small class="text-gray-400">You are logged in as:</small>
-                        <h3 class="text-light font-bold">Admin</h3>
-                    </div>
-                    <button><a href="/logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket color-primary text-2xl rotate-180"></i>
-                        </a></button>
-                </div>
-            </div>
+            <x-sidebar/>
             <div class="content grow padding-container pt-5">
                 <h1 class="font-bold text-3xl mb-4">Products</h1>
                 {{-- <button id="addProductBtn"
@@ -290,7 +273,7 @@
                             <!-- Tempat error message -->
                             <div class="grid grid-cols-4 gap-3 pt-4" id="productImagesPreview"></div>
                         </div> --}}
-                        <div class="col-span-2">
+                        {{-- <div class="col-span-2">
                             <!-- Input untuk Thumbnail -->
                             <label class="block text-xs mb-1 font-bold">Product Thumbnail</label>
                             <input type="file" name="thumbnail" id="thumbnail" accept=".jpeg,.jpg,.png,.webp"
@@ -298,7 +281,7 @@
                                 onchange="validateFiles('thumbnail', 'thumbnailPreview', 'thumbnailError')">
                             <div class="text-red-500 text-xs" id="thumbnailError"></div>
                             <div class="grid grid-cols-1 gap-3" id="thumbnailPreview"></div>
-                        </div>
+                        </div> --}}
                         
                         <div class="col-span-2">
                             <!-- Input untuk Gambar Detail -->

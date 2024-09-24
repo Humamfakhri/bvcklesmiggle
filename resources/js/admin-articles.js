@@ -97,8 +97,8 @@ const inputTitleEdit = document.querySelector('#titleEdit');
 const inputAuthorEdit = document.querySelector('#authorEdit');
 const inputCategoryEdit = document.querySelector('#categoryEdit');
 const inputArticleImageEdit = document.querySelector('#articleImageEdit');
-const inputBodyEdit = document.querySelector('#bodyEdit2');
-
+const inputBodyEdit = document.querySelector('#bodyEditTrix');
+  
 editBtns.forEach(editBtn => {
   const tr = editBtn.parentElement.parentElement.parentElement.parentElement.parentElement
   editBtn.addEventListener('click', () => {
@@ -108,6 +108,8 @@ editBtns.forEach(editBtn => {
     const rowCategory = tr.querySelector('#rowCategory').innerHTML;
     const rowArticleImages = tr.querySelector('.rowArticleImage');
     const rowBody = tr.querySelector('#rowBody').innerHTML;
+    console.log(rowBody);
+    
 
     editArticleForm.action = "/sipalingadminB$/articles/" + rowId;
 

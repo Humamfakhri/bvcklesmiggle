@@ -14,20 +14,25 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->input('category')) {
-            $category = $request->input('category');
-            return view('products', [
-                'products' =>
-                Product::where('category', $category)->get(),
-                'categories' => Product::distinct()->pluck('category')
-            ]);
-        } else {
-            return view('products', [
-                'products' =>
-                Product::get(),
-                'categories' => Product::distinct()->pluck('category')
-            ]);
-        }
+        return view('products', [
+            'products' => Product::filter(request(['category', 'search', 'sort']))->paginate(12),
+            // 'products' => Product::filter(request(['category', 'search', 'sort']))->paginate(1)->withQueryString(),
+            'categories' => Product::distinct()->pluck('category')
+        ]);
+        // if ($request->input('category')) {   
+        //     $category = $request->input('category');
+        //     return view('products', [
+        //         'products' =>
+        //         Product::where('category', $category)->get(),
+        //         'categories' => Product::distinct()->pluck('category')
+        //     ]);
+        // } else {
+        //     return view('products', [
+        //         'products' =>
+        //         Product::get(),
+        //         'categories' => Product::distinct()->pluck('category')
+        //     ]);
+        // }
     }
 
     public function getProduct(Request $request)

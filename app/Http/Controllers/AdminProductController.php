@@ -52,62 +52,70 @@ class AdminProductController extends Controller
             }
         }
 
-        // Validasi data input
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'linkShopee' => 'string',
-            'linkTokopedia' => 'string',
-            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-            'productImage.*' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-            'issue' => 'required|string',
-            'details' => 'required|string'
-        ]);
+        try {
+            // Validasi data input
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'category' => 'required|string|max:255',
+                'linkShopee' => 'string',
+                'linkTokopedia' => 'string',
+                // 'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
+                'productImage.*' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
+                'issue' => 'required|string',
+                'details' => 'required|string'
+            ]);
 
-        // Simpan multiple product images
-        $productImages = [];
+            // Simpan multiple product images
+            $productImages = [];
 
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = $request->file('thumbnail');
-            $thumbnailPath = $thumbnail->store('product_images', 'public');
-            $productImages[] = $thumbnailPath;
-        }
-
-        if ($request->hasFile('productImage')) {
-            foreach ($request->file('productImage') as $detailImage) {
-                $detailPath = $detailImage->store('product_images', 'public');
-                $productImages[] = $detailPath;
+            if ($request->hasFile('thumbnail')) {
+                $thumbnail = $request->file('thumbnail');
+                $thumbnailPath = $thumbnail->store('product_images', 'public');
+                $productImages[] = $thumbnailPath;
             }
+
+            if ($request->hasFile('productImage')) {
+                foreach ($request->file('productImage') as $detailImage) {
+                    $detailPath = $detailImage->store('product_images', 'public');
+                    $productImages[] = $detailPath;
+                }
+            }
+
+            // if ($request->hasfile('productImage')) {
+            //     foreach ($request->file('productImage') as $image) {
+            //         $path = $image->store('product_images', 'public');
+            //         $productImages[] = $path;
+            //     }
+            // }
+
+            // // Simpan detail image
+            // $detailImagePath = null;
+            // if ($request->hasFile('detailImage')) {
+            //     $detailImagePath = $request->file('detailImage')->store('detail_images', 'public');
+            // }
+
+            // Simpan data ke database
+            $product = new Product();
+            $product->name = $validatedData['name'];
+            $product->category = $validatedData['category'];
+            $product->issue = $validatedData['issue'];
+            $product->details = $validatedData['details'];
+            $product->link_shopee = $validatedData['linkShopee'];
+            $product->link_tokopedia = $validatedData['linkTokopedia'];
+            $product->product_images = json_encode($productImages); // Simpan dalam format JSON
+            // $product->product_images = json_encode($productImages); // Simpan array images sebagai JSON
+            // $product->detail_image = $detailImagePath;
+            $product->save();
+
+            // Redirect kembali ke halaman admin dengan pesan sukses
+            return redirect()->route('admin-products')->with('success', 'Product has been added successfully!');
+        } catch (Exception $e) {
+            // Log error untuk debugging
+            Log::error('Error adding product: ' . $e->getMessage());
+
+            // Tampilkan pesan error ke user
+            return redirect()->back()->with('error', 'An error occurred while updating the product. Please try again.');
         }
-
-        // if ($request->hasfile('productImage')) {
-        //     foreach ($request->file('productImage') as $image) {
-        //         $path = $image->store('product_images', 'public');
-        //         $productImages[] = $path;
-        //     }
-        // }
-
-        // // Simpan detail image
-        // $detailImagePath = null;
-        // if ($request->hasFile('detailImage')) {
-        //     $detailImagePath = $request->file('detailImage')->store('detail_images', 'public');
-        // }
-
-        // Simpan data ke database
-        $product = new Product();
-        $product->name = $validatedData['name'];
-        $product->category = $validatedData['category'];
-        $product->issue = $validatedData['issue'];
-        $product->details = $validatedData['details'];
-        $product->link_shopee = $validatedData['linkShopee'];
-        $product->link_tokopedia = $validatedData['linkTokopedia'];
-        $product->product_images = json_encode($productImages); // Simpan dalam format JSON
-        // $product->product_images = json_encode($productImages); // Simpan array images sebagai JSON
-        // $product->detail_image = $detailImagePath;
-        $product->save();
-
-        // Redirect kembali ke halaman admin dengan pesan sukses
-        return redirect()->route('admin-products')->with('success', 'Product has been added successfully!');
     }
 
     /**
@@ -132,7 +140,7 @@ class AdminProductController extends Controller
                 'categoryEdit' => 'required|string|max:255',
                 'linkShopeeEdit' => 'nullable|string',
                 'linkTokopediaEdit' => 'nullable|string',
-                'thumbnailEdit.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+                // 'thumbnailEdit.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
                 'productImageEdit.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
                 // 'detailImageEdit' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
                 'issueEdit' => 'required|string',

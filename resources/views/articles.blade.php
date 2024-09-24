@@ -1,5 +1,13 @@
 <x-layout>
-    <main class="max-container padding-container">
+    @isset($article)
+        @section('head')
+            <meta property="og:title" content="{{ $article->title }}">
+            {{-- <meta property="og:description" content="Deskripsi singkat artikel Anda."> --}}
+            <meta property="og:image" content="{{ asset('storage/' . $article->image) }}">
+            <meta property="og:url" content="https://bvcklesmiggle.com/articles/{{ $article->id }}">
+        @endsection
+    @endisset
+    <main class="max-container padding-container min-h-screen">
         @if (session('success'))
             <x-success-alert>{{ session('success') }}</x-success-alert>
         @elseif (session('error'))
@@ -11,36 +19,38 @@
                 onclick="event.stopPropagation()">
                 <div id="cardPopupBody" class="card-popup-body">
                     <form method="POST" action="{{ route('articlesComment.store') }}" class="flex-col gap-5 p-4"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <div class="flex flex-col gap-3">
-                        <input id="articleIdModal" name="articleId" type="hidden">
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="name">Name</label>
-                            <input type="text" name="name" id="name"
-                                oninput="checkInputFilled(this)" placeholder="Enter your name"
-                                class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="flex flex-col gap-3">
+                            <input id="articleIdModal" name="articleId" type="hidden">
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="name">Name</label>
+                                <input type="text" name="name" id="name" oninput="checkInputFilled(this)"
+                                    placeholder="Enter your name"
+                                    class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="email">Email<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="email" name="email" id="email"
+                                    oninput="checkInputFilled(this)" placeholder="Enter your email"
+                                    class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs mb-1 font-bold" for="comment">Comment<span
+                                        class="text-red-600">*</span></label>
+                                <input required type="text" name="content" id="content"
+                                    oninput="checkInputFilled(this)" placeholder="Enter your comment"
+                                    class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
+                            </div>
+                            <div class="flexBetween mt-2">
+                                <button type="button"
+                                    class="w-fit px-4 py-1 text-white font-bold border-2 border-gray-500 bg-gray-500 rounded-md closePopup">Cancel</button>
+                                <button id="saveAddCommentBtn" disabled
+                                    class="w-fit px-4 py-1  text-white font-bold bg-primary rounded-md border-2 border-black flexCenter gap-2 disabled:cursor-not-allowed disabled:opacity-30">Send</button>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="email">Email<span
-                                    class="text-red-600">*</span></label>
-                            <input required type="email" name="email" id="email"
-                                oninput="checkInputFilled(this)" placeholder="Enter your email"
-                                class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-xs mb-1 font-bold" for="comment">Comment<span
-                                    class="text-red-600">*</span></label>
-                            <input required type="text" name="content" id="content"
-                                oninput="checkInputFilled(this)" placeholder="Enter your comment"
-                                class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
-                        </div>
-                        <div class="flexBetween mt-2">
-                            <button type="button" class="w-fit px-4 py-1 text-white font-bold border-2 border-gray-500 bg-gray-500 rounded-md closePopup">Cancel</button>
-                            <button id="saveAddCommentBtn" disabled class="w-fit px-4 py-1  text-white font-bold bg-primary rounded-md border-2 border-black flexCenter gap-2 disabled:cursor-not-allowed disabled:opacity-30">Send</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
                 </div>
             </div>
         </div>
@@ -51,12 +61,12 @@
             class="hidden lg:block img-fluid w-full my-4 border-2 border-gray-200">
         <div class="flex flex-col lg:flex-row gap-4 items-start">
             <div class="articles flex flex-col gap-5 lg:gap-7 grow">
-                <div class="sticky top-[70px] lg:hidden">
+                <div class="sticky top-[70px] lg:hidden {{ $articles->count() == 0 && !request()->input('search') ? 'hidden' : '' }}">
                     <form method="GET" action="" class="flex items-stretch mb-2">
-                        <input type="text" name="keyword" id="keyword" placeholder="Cari Artikel"
-                        value="{{ request()->input('keyword') ? request()->input('keyword') : '' }}"
-                            class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-xl text-gray-200 text-sm">
-                        <button class="self-auto px-3 border border-[#ff00ff] bg-dark rounded-r-xl"><i
+                        <input type="text" name="search" id="search" placeholder="Search for Articles"
+                            value="{{ request()->input('search') ? request()->input('search') : '' }}"
+                            class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-md text-gray-200 text-sm">
+                        <button class="self-auto px-3 border border-[#ff00ff] bg-dark rounded-r-md"><i
                                 class="fa-solid fa-magnifying-glass text-gray-200"></i></button>
                         {{-- <button class="self-auto px-3 border border-[#ff00ff] rounded-r-xl"><i class="fa-solid fa-magnifying-glass text-gray-200"></i></button> --}}
                     </form>
@@ -65,25 +75,25 @@
                     <h2 class="font-bold text-gray-200 mb-3">CATEGORIES:</h2>
                     <ul class="flex items-center gap-2">
                         @foreach ($categories as $category)
-                            <li><a href="#"
-                                    class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-full text-[#ff00ff]">{{ $category->name }}</a>
+                            <li><a href="articles?category={{ $category->name }}"
+                                    class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-md text-[#ff00ff]">{{ $category->name }}</a>
                             </li>
                         @endforeach
                         {{-- <li><a href="#"
-                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-full text-[#ff00ff]">Event</a>
+                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-md text-[#ff00ff]">Event</a>
                         </li>
                         <li><a href="#"
-                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-full text-[#ff00ff]">Music</a>
+                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-md text-[#ff00ff]">Music</a>
                         </li>
                         <li><a href="#"
-                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-full text-[#ff00ff]">Popstore</a>
+                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-md text-[#ff00ff]">Popstore</a>
                         </li> --}}
                     </ul>
                 </div>
                 {{-- <div class="ads-container flexCenter lg:hidden">
                     <div class="ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">336 x 280 atau 6:5<br>Ads Placement</div>
                 </div> --}}
-                <div class="ads-container flexCenter lg:hidden">
+                <div class="ads-container hidden justify-center items-center lg:hidden">
                     {{-- <img src="your-image-url.jpg" alt="336 x 280 (6:5 ratio) Ads Placement" class="ads-image bg-gray-200"> --}}
                     <div class="ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">300 x 250 atau
                         6:5<br>Ads
@@ -92,57 +102,95 @@
                         Placement</div> --}}
                 </div>
                 @foreach ($articles as $article)
-                    <div class="article px-4 lg:px-10 pt-4 lg:pt-7 pb-4 bg-white rounded-xl grow">
+                    <div class="article px-4 lg:px-10 pt-4 lg:pt-7 pb-4 bg-white rounded-md grow">
                         <h1 class="article-title font-bold text-lg lg:text-xl">{{ $article->title }}</h1>
                         <div class="flex flex-col lg:flex-row justify-between mt-2">
                             <div class="leading-tight">
-                                <p class="article-date">Posted on
+                                <p class="article-date text-sm lg:text-base">Posted on
                                     {{ \Carbon\Carbon::parse($article->created_at)->format('M d, Y') }}</p>
-                                <p class="article-categories">Categories: <a href="#"
+                                <p class="article-categories text-sm lg:text-base">Categories: <a href="articles?category={{ $article->categories->implode('name', ', ') }}"
                                         class="color-primary">{{ $article->categories->implode('name', ', ') }}</a></p>
                             </div>
                             <div>
-                                <p class="article-author">Author: <a href="#"
+                                <p class="article-author text-sm lg:text-base">Author: <a href="#"
                                         class="color-primary">{{ $article->author }}</a></p>
                             </div>
                         </div>
-                        <img src="{{ asset('storage/' . $article->image) }}" alt="" class="img-fluid w-full mt-7">
+                        <img src="{{ asset('storage/' . $article->image) }}" alt=""
+                            class="img-fluid w-full mt-7">
+                        {{-- <div class="flexCenter my-5">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/OqEc_169ywY"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                            </iframe>
+                        </div> --}}
+
+                        {{-- <video width="320" height="240" controls>
+                            <source src="https://www.youtube.com/embed/watch?v=OqEc_169ywY&list=RDDP2RgqiA-bQ&index=2">
+                            Error Message
+                          </video> --}}
+                        {{-- <video src="https://youtu.be/OqEc_169ywY?si=MUNMqwba057N0_2V"></video> --}}
+                        <div class="flex gap-3 py-3">
+                            <span class="font-bold text-sm lg:text-base">Share: </span>
+                            <a href="https://api.whatsapp.com/send?text={{ $article->title }}:+https://bvcklesmiggle.com/articles/{{ $article->id }}"
+                                target="_blank">
+                                <i class="fa fa-whatsapp text-lg lg:text-2xl color-dark hover:color-primary"></i>
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=https://bvcklesmiggle.com/articles/{{ $article->id }}"
+                                target="_blank">
+                                <i class="fa fa-facebook text-lg lg:text-2xl color-dark hover:color-primary"></i>
+                            </a>
+                            <button id="copyLinkButton" class="flex items-center space-x-2 outline-none">
+                                <div class="small shareLink hidden">
+                                    https://bvcklesmiggle.com/articles/{{ $article->id }}</div>
+                                <i class="fa-solid fa-copy text-lg lg:text-2xl color-dark hover:color-primary"></i>
+                            </button>
+                        </div>
                         <div class="article-body leading-relaxed mt-3 line-clamp-3">
                             {!! $article->body !!}
                         </div>
                         {{-- <hr class="border-zinc-400 my-3"> --}}
                         <div class="text-end mt-2 lg:mt-5">
-                            <button id="addCommentBtn" data-article-id="{{ $article->id }}"
-                                class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-full hidden">Add
-                                a comment</button>
+                            {{-- <button id="addCommentBtn" data-article-id="{{ $article->id }}"
+                                class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md hidden">Add
+                                a comment</button> --}}
                             <button
-                                class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-full"
+                                class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md"
                                 onclick="toggleShowArticle(this)">Show more</button>
                         </div>
                         <div class="hidden">
                             <h5 class="text-lg font-bold">Comments</h5>
                             <hr class="my-3">
-                            <ul class="flex flex-col gap-3 mt-3">    
+                            <button id="addCommentBtn" data-article-id="{{ $article->id }}"
+                                class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md hidden">Add
+                                a comment</button>
+                            <ul class="flex flex-col gap-3 mt-3">
                                 {{-- {{ $article->comments }} --}}
                                 @foreach ($article->comments as $comment)
-                                <li>
-                                    <div class="flex gap-1">
-                                        @if ($comment->user->name)
-                                            <small class="font-bold">{{ $comment->user->name }}</small>
-                                        @else
-                                            <small class="font-bold italic">Anonymous</small>
-                                        @endif
-                                    </div>
-                                    <p class="text-sm">
-                                        {{ $comment->content }}
-                                    </p>
-                                </li>
+                                    <li>
+                                        <div class="flex gap-1">
+                                            @if ($comment->user->name)
+                                                <small class="font-bold">{{ $comment->user->name }}</small>
+                                            @else
+                                                <small class="font-bold italic">Anonymous</small>
+                                            @endif
+                                            <small class="text-gray-500">•</small>
+                                            <small> {{ $comment->created_at->diffForHumans(['parts' => 1]) }}</small>
+                                            {{-- <small>{{ $comment->created_at->diffForHumans(['parts' => 1]) }}</small> --}}
+                                        </div>
+                                        <p class="text-sm">
+                                            {{ $comment->content }}
+                                        </p>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
                     </div>
                 @endforeach
-                {{ $articles->links() }}
+                @if ($articles->count() > 3)
+                    {{ $articles->links() }}
+                @endif
                 {{-- <div class="pagination flex items-center justify-between lg:justify-center gap-10 mt-7">
                     <a href="#" class="font-bold text-light text-xs lg:text-base color-primary">First page</a>
                     <div class="flexCenter gap-3">
@@ -157,11 +205,12 @@
                 </div> --}}
             </div>
             <div class="aside">
-                <form method="GET" action="" class="hidden lg:flex items-stretch mb-4">
-                    <input type="text" placeholder="Cari Artikel" name="keyword" id="keyword"
-                        value="{{ request()->input('keyword') ? request()->input('keyword') : '' }}"
-                        class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-xl text-gray-200 text-sm">
-                    <button class="self-auto px-3 border border-[#ff00ff] bg-dark rounded-r-xl"><i
+                <form method="GET" action=""
+                    class="hidden lg:flex {{ $articles->count() == 0 && !request()->input('search') ? 'lg:hidden' : '' }} items-stretch mb-4">
+                    <input type="text" placeholder="Search for Articles" name="search" id="search"
+                        value="{{ request()->input('search') ? request()->input('search') : '' }}"
+                        class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-md text-gray-200 text-sm">
+                    <button class="self-auto px-3 border border-[#ff00ff] bg-dark rounded-r-md"><i
                             class="fa-solid fa-magnifying-glass text-gray-200"></i></button>
                     {{-- <button class="self-auto px-3 border border-[#ff00ff] rounded-r-xl"><i class="fa-solid fa-magnifying-glass text-gray-200"></i></button> --}}
                 </form>
@@ -174,7 +223,7 @@
                         <h2 class="font-bold text-gray-200">CATEGORIES:</h2>
                         <ul>
                             @foreach ($categories as $category)
-                                <li><a href="#" class="text-[#ff00ff]">> {{ $category->name }}</a></li>
+                                <li><a href="articles?category={{ $category->name }}" class="text-[#ff00ff]">> {{ $category->name }}</a></li>
                             @endforeach
                             {{-- <li><a href="#" class="text-[#ff00ff]">> Event</a></li>
                         <li><a href="#" class="text-[#ff00ff]">> Music</a></li>
@@ -183,19 +232,22 @@
                     </div>
                 @endif
                 {{-- <hr class="border-t-1 border-gray-200 border-dashed my-2 lg:mt-2 lg:mb-0"> --}}
-                <div class="ads-container mt-4 flexCenter lg:hidden">
+                <div class="ads-container mt-4 hidden justify-center items-center lg:hidden">
                     {{-- <img src="your-image-url.jpg" alt="336 x 280 (6:5 ratio) Ads Placement" class="ads-image bg-gray-200"> --}}
                     <div class="ads-image-s lg:ads-image ads-1 flexCenter bg-white text-gray-500 text-center text-xs">
                         4:3<br>Ads
                         Placement</div>
                 </div>
-                <div class="download-pdf mt-3 leading-loose hidden">
+                <div class="download-pdf mt-3 leading-loose {{ $downloads->count() == 0 ? 'hidden' : '' }}">
                     <h2 class="font-bold text-gray-200">DOWNLOAD OUR ZINE (pdf):</h2>
                     <ul>
-                        <li><a href="#" class="text-[#ff00ff]">#1 Issue "Goldie Old"</a></li>
+                        @foreach ($downloads as $download)
+                            <li><a href="#" class="text-[#ff00ff]">{{ $download->title }}</a></li>
+                        @endforeach
+                        {{-- <li><a href="#" class="text-[#ff00ff]">#1 Issue "Goldie Old"</a></li>
                         <li><a href="#" class="text-[#ff00ff]">#2 Issue "Never TooEmo"</a></li>
                         <li><a href="#" class="text-[#ff00ff]">#3 Issue "AnotherVeil"</a></li>
-                        <li class="text-gray-500">#4 Issue (soon)</li>
+                        <li class="text-gray-500">#4 Issue (soon)</li> --}}
                     </ul>
                 </div>
                 <div class="flex flex-col gap-4 mt-8">
@@ -221,8 +273,11 @@
             el.parentElement.previousElementSibling.classList.toggle('line-clamp-3');
             el.innerHTML = el.innerHTML === 'Show Less' ? 'Show More' : 'Show Less';
             el.classList.toggle('border');
-            el.previousElementSibling.classList.toggle('hidden');
+            // el.previousElementSibling.classList.toggle('hidden');
             el.parentElement.nextElementSibling.classList.toggle('hidden');
+            el.parentElement.nextElementSibling.querySelector('#addCommentBtn').classList.toggle('hidden')
+            console.log(el.parentElement.nextElementSibling.querySelector('#addCommentBtn'));
+
         }
 
         const modal = document.querySelector('.modal');
@@ -284,5 +339,49 @@
                 saveAddCommentBtn.setAttribute('disabled', true);
             }
         }
+
+        const articleBody = document.querySelector('.article-body');
+        const divs = articleBody.querySelectorAll('div');
+
+        // Iterasi setiap elemen div
+        divs.forEach(div => {
+            let content = div.innerHTML;
+
+            // Cek apakah teks mengandung URL YouTube embed (mendukung beberapa URL)
+            const youtubeUrlRegex = /https:\/\/www\.youtube\.com\/embed\/[a-zA-Z0-9_-]+/g;
+            const foundUrls = content.match(youtubeUrlRegex);
+
+            if (foundUrls) {
+                // Ganti setiap URL yang ditemukan dengan iframe
+                foundUrls.forEach(url => {
+                    const iframe = `
+        <div class="flexCenter my-5">
+          <iframe width="560" height="315" src="${url}" title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>`;
+
+                    // Gantikan URL dengan iframe dalam konten
+                    content = content.replace(url, iframe);
+                });
+
+                // Set kembali konten ke elemen div
+                div.innerHTML = content;
+            }
+        });
+
+        const copyLinkBtns = document.querySelectorAll('#copyLinkButton')
+        copyLinkBtns.forEach(copyLinkBtn => {
+            const shareLink = copyLinkBtn.querySelector('.shareLink').innerHTML.trim()
+            copyLinkBtn.addEventListener('click', () => {
+                const url = shareLink;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy text', err);
+                });
+            });
+        })
     </script>
 </x-layout>

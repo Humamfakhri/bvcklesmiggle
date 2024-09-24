@@ -31,12 +31,12 @@
                     @enderror
                     <div>
                         <label class="block mb-2 text-gray-300" for="username">Username</label>
-                        <input required type="text" name="username" id="username" placeholder="Enter your username"
+                        <input required autocomplete="off" type="text" name="username" id="username" placeholder="Enter your username"
                             class="w-full rounded-lg px-3 py-2 bg-dark border border-gray-500 text-gray-200">
                     </div>
                     <div>
                         <label class="block mb-2 text-gray-300" for="password">Password</label>
-                        <input required type="password" name="password" id="password" placeholder="Enter your password"
+                        <input required autocomplete="off" type="password" name="password" id="password" placeholder="Enter your password"
                             class="w-full rounded-lg px-3 py-2 bg-dark border border-gray-500 text-gray-200">
                     </div>
                     <div class="mt-4">

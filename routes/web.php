@@ -1,36 +1,48 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PartnershipController;
 use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminDownloadController;
+use App\Http\Controllers\AdminPartnershipController;
 
-Route::get('/tes', function() {
+Route::get('/tes', function () {
     Artisan::call('storage:link');
     return "Storage Link have been run successfully!";
 });
 
-// HOME
-Route::get('/', function () {
-    return view('home'); // The home page view
-})->name('home');
+// Route::middleware('checkLaunchDate')->group(function () {
+    // HOME
+    Route::get('/', function () {
+        // return view('waiting'); // The home page view
+        return view('home');
+    })->name('home');
 
-// ARTICLES
-Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
-Route::post('/articles', [ArticleController::class, 'storeComment'])->name('articlesComment.store');
-Route::get('/get-article', [ArticleController::class, 'getArticle']);
+    // ARTICLES
+    Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::post('/articles', [ArticleController::class, 'storeComment'])->name('articlesComment.store');
+    Route::get('/get-article', [ArticleController::class, 'getArticle']);
 
-// PRODUCTS
-Route::get('/products', [ProductController::class, 'index'])->name('products');
-Route::get('/get-product', [ProductController::class, 'getProduct']);
+    // PRODUCTS
+    Route::get('/products', [ProductController::class, 'index'])->name('products');
+    Route::get('/get-product', [ProductController::class, 'getProduct']);
 
-// PARTNERSHIP
-Route::get('/partnership', function () {
-    return view('partnership');
-})->name('partnership');
+    // PARTNERSHIP
+    Route::get('/partnership', [PartnershipController::class, 'index'])->name('partnership');
+    // Route::get('/partnership', function () {
+    //     return view('partnership');
+    // })->name('partnership');
+// });
 
+Route::get('/waiting', function () {
+    return view('waiting');
+})->name('waiting');
 
 // === ADMIN === //
 Route::middleware('auth')->group(function () {
@@ -44,9 +56,23 @@ Route::middleware('admin')->group(function () {
         Route::put('/sipalingadminB$/articles/{id}', 'update')->name('admin-articles.update');
         Route::delete('/sipalingadminB$/articles/{id}', 'destroy')->name('admin-articles.destroy');
     });
-    Route::get('/sipalingadminB$/products', [AdminProductController::class, 'index'])->name('admin-products');
-    Route::post('/sipalingadminB$/products', [AdminProductController::class, 'store'])->name('admin-products.store');
-    Route::put('/sipalingadminB$/products/{id}', [AdminProductController::class, 'update'])->name('admin-products.update');
-    Route::delete('/sipalingadminB$/products/{id}', [AdminProductController::class, 'destroy'])->name('admin-products.destroy');
+    Route::controller(AdminProductController::class)->group(function () {
+        Route::get('/sipalingadminB$/products', 'index')->name('admin-products');
+        Route::post('/sipalingadminB$/products', 'store')->name('admin-products.store');
+        Route::put('/sipalingadminB$/products/{id}', 'update')->name('admin-products.update');
+        Route::delete('/sipalingadminB$/products/{id}', 'destroy')->name('admin-products.destroy');
+    });
+    Route::controller(AdminPartnershipController::class)->group(function () {
+        Route::get('/sipalingadminB$/partnership', 'index')->name('admin-partnerships');
+        Route::post('/sipalingadminB$/partnership', 'store')->name('admin-partnerships.store');
+        Route::put('/sipalingadminB$/partnership/{id}', 'update')->name('admin-partnerships.update');
+        Route::delete('/sipalingadminB$/partnership/{id}', 'destroy')->name('admin-partnerships.destroy');
+    });
+    Route::controller(AdminDownloadController::class)->group(function () {
+        Route::get('/sipalingadminB$/downloads', 'index')->name('admin-downloads');
+        Route::post('/sipalingadminB$/downloads', 'store')->name('admin-downloads.store');
+        Route::put('/sipalingadminB$/downloads/{id}', 'update')->name('admin-downloads.update');
+        Route::delete('/sipalingadminB$/downloads/{id}', 'destroy')->name('admin-downloads.destroy');
+    });
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

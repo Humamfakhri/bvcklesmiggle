@@ -83,7 +83,7 @@
                                     <div class="grid grid-cols-2 gap-3">
                                         <button
                                             class="bg-white p-1 border-2 border-black shadow-[-3px_3px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition">
-                                            <a id="linkShopeeModal" target="_blank" href="#"
+                                            <a id="linkShopeeModal" target="_blank" href="https://shopee.co.id/bvcklesmiggle"
                                                 class="flex items-center gap-1">
                                                 <img src="/img/shopee.jpg" alt="" width="25">
                                                 <small class="font-segoe font-bold text-xs">bvcklesmiggle</small>
@@ -114,7 +114,8 @@
                 <div class="sidebar hidden lg:flex flex-col max-h-screen sticky top-0 pt-16 -mt-16 pb-2">
                     {{-- max-h-[90vh] --}}
                     <ul class="flex flex-col items-start gap-2 grow">
-                        <li><a class="font-bold font-segoe hover:color-primary {{ !request()->input('category') ? 'color-primary' : 'text-gray-200' }}" href="/products">ALL</a>
+                        <li><a class="font-bold font-segoe hover:color-primary {{ !request()->input('category') ? 'color-primary' : 'text-gray-200' }}"
+                                href="/products">ALL</a>
                         </li>
                         <li>
                             <div class="flex">
@@ -177,7 +178,8 @@
                                 {{-- LINK UNTUK KE TOKO UTAMA --}}
                                 {{-- UBAH HREF MISAL JADI https://shopee.co.id/bvcklesmiggle  --}}
 
-                                <a href="https://shopee.co.id/" target="_blank" class="flex items-center gap-1">
+                                <a href="https://shopee.co.id/bvcklesmiggle" target="_blank"
+                                    class="flex items-center gap-1">
                                     <img src="/img/shopee.jpg" alt="" width="25">
                                     <small class="font-semibold text-[10px]">bvcklesmiggle</small>
                                 </a>
@@ -193,24 +195,83 @@
                     </div>
                 </div>
                 <div class="products">
-                    <div class="sticky top-[70px]">
-                        <form action="" class="flex items-stretch mb-3 lg:hidden">
-                            <input type="text" placeholder="Search for Product"
-                                class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-full text-light text-sm">
-                            <button class="self-auto px-3 border border-primary bg-dark rounded-r-full"><i
-                                    class="fa-solid fa-magnifying-glass text-light"></i></button>
-                            {{-- <button class="self-auto px-3 border border-primary rounded-r-xl"><i class="fa-solid fa-magnifying-glass text-light"></i></button> --}}
-                        </form>
+                    <div class="sticky top-[70px] z-50">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="items-stretch grow">
+                                <form action="" method="GET" class="flex items-stretch grow">
+                                    <input type="text" placeholder="Search for Product" name="search"
+                                        id="search" value="{{ request()->input('search') ?? '' }}"
+                                        class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 text-light text-sm">
+                                    <button class="self-auto px-3 border border-primary bg-dark"><i
+                                            class="fa-solid fa-magnifying-glass text-light"></i></button>
+                                    {{-- <button class="self-auto px-3 border border-primary rounded-r-xl"><i class="fa-solid fa-magnifying-glass text-light"></i></button> --}}
+                                </form>
+                            </div>
+                            <div class="relative hidden lg:block self-stretch">
+                                <button
+                                    class="categoryBtn flexCenter h-full gap-1 bg-dark border border-primary text-light px-3 py-1">
+                                    Sort
+                                    <i class="categoryChevron fa-solid fa-chevron-down text-light duration-200"></i>
+                                </button>
+                                <div
+                                    class="categoryContainer absolute top-full right-0 h-0 overflow-hidden duration-300 mt-1">
+                                    <ul class="leading-loose px-5 py-3 border border-gray-500 bg-dark rounded-xl">
+                                        <li>
+                                            @if (request()->input('search'))    
+                                            <a class="font-semibold font-segoe hover:color-primary {{ !request()->input('sort') ? 'color-primary' : 'text-light' }}"
+                                                href="products{{ request()->input('search') ? '?search=' . request()->input('search') : '' }}">Latest</a>
+                                            @elseif (request()->input('category'))
+                                            <a class="font-semibold font-segoe hover:color-primary {{ !request()->input('sort') ? 'color-primary' : 'text-light' }}"
+                                                href="products{{ request()->input('category') ? '?category=' . request()->input('category') : '' }}">Latest</a>
+                                            @endif
+                                        </li>
+                                        <li>
+                                            @if (request()->input('search'))    
+                                            <a class="font-semibold font-segoe hover:color-primary {{ request()->input('sort') ? 'color-primary' : 'text-light' }}"
+                                                href="products{{ request()->input('search') ? '?search=' . request()->input('search') : '' }}&sort=oldest">Oldest</a>
+                                            @elseif (request()->input('category'))
+                                            <a class="font-semibold font-segoe hover:color-primary {{ request()->input('sort') ? 'color-primary' : 'text-light' }}"
+                                                href="products{{ request()->input('category') ? '?category=' . request()->input('category') : '' }}&sort=oldest">Oldest</a>
+                                            @endif
+                                        </li>
+                                        {{-- @foreach ($categories as $category)
+                                            <li><a class="text-light font-semibold font-segoe hover:color-primary {{ request()->input('category') === $category ? 'color-primary' : '' }}"
+                                                    href="products?category={{ $category }}">{{ $category }}</a>
+                                            </li>
+                                        @endforeach --}}
+                                        {{-- <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Body
+                                                Armor</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Hand
+                                                Wear</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Foot
+                                                Wear</a></li>
+                                        <li>
+                                            <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
+                                        </li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Storage</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Extended</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Items</a></li> --}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- TOOLBAR MOBILE --}}
                         <div class="flexBetween gap-3 mb-6">
                             <div class="relative lg:hidden">
                                 <button
-                                    class="categoryBtn flexCenter gap-1 bg-dark border border-primary text-light rounded-full px-3 py-1">
+                                    class="categoryBtn flexCenter gap-1 bg-dark border border-primary text-light px-3 py-1">
                                     Category
                                     <i class="categoryChevron fa-solid fa-chevron-down text-light duration-200"></i>
                                 </button>
                                 <div class="categoryContainer absolute top-full mt-1 h-0 overflow-hidden duration-300">
                                     <ul class="leading-loose px-5 py-3 border border-gray-500 bg-dark rounded-xl">
-                                        <li><a class="font-bold font-segoe color-primary" href="#">ALL</a>
+                                        <li><a class="font-bold font-segoe hover:color-primary {{ !request()->input('category') ? 'color-primary' : 'text-light' }}" href="products">ALL</a>
                                         <li>
                                             <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
                                         </li>
@@ -240,39 +301,88 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="relative lg:hidden self-stretch">
+                                <button
+                                    class="categoryBtn flexCenter h-full gap-1 bg-dark border border-primary text-light px-3 py-1">
+                                    Sort
+                                    <i class="categoryChevron fa-solid fa-chevron-down text-light duration-200"></i>
+                                </button>
+                                <div
+                                    class="categoryContainer absolute top-full right-0 h-0 overflow-hidden duration-300 mt-1">
+                                    <ul class="leading-loose px-5 py-3 border border-gray-500 bg-dark rounded-xl">
+                                        <li>
+                                            <a class="font-semibold font-segoe hover:color-primary {{ !request()->input('sort') ? 'color-primary' : 'text-light' }}"
+                                                href="products?category={{ request()->input('category') ?? '' }}">Latest</a>
+                                        </li>
+                                        <li>
+                                            <a class="font-semibold font-segoe hover:color-primary {{ request()->input('sort') ? 'color-primary' : 'text-light' }}"
+                                                href="products?sort=oldest{{ request()->input('category') ? '&category=' . request()->input('category') : '' }}">Oldest</a>
+                                        </li>
+                                        {{-- @foreach ($categories as $category)
+                                            <li><a class="text-light font-semibold font-segoe hover:color-primary {{ request()->input('category') === $category ? 'color-primary' : '' }}"
+                                                    href="products?category={{ $category }}">{{ $category }}</a>
+                                            </li>
+                                        @endforeach --}}
+                                        {{-- <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Body
+                                                Armor</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Hand
+                                                Wear</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Foot
+                                                Wear</a></li>
+                                        <li>
+                                            <hr class="border-t-1 border-gray-200 border-dashed my-2 px-16">
+                                        </li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Storage</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Extended</a></li>
+                                        <li><a class="text-light font-semibold font-segoe hover:color-primary"
+                                                href="#">Items</a></li> --}}
+                                    </ul>
+                                </div>
+                            </div>
                             <div class="grid grid-cols-2 gap-3 lg:hidden">
-                                <button class="bg-white px-3 py-1 rounded-full">
-                                    <a href="#" target="_blank" class="flex items-center gap-1">
+                                <button class="bg-white px-3 py-1 border border-gray-400">
+                                    <a href="https://shopee.co.id/bvcklesmiggle" target="_blank" class="flex items-center gap-1">
                                         <img src="/img/shopee.jpg" alt="" width="25">
-                                        <small class="font-semibold text-[10px] leading-none">bvckle<br>smiggle</small>
+                                        {{-- <small class="font-semibold text-[10px] leading-none">bvckle<br>smiggle</small> --}}
                                     </a>
                                 </button>
-                                <button class="bg-white px-3 py-1 rounded-full">
+                                <button class="bg-white px-3 py-1 border border-gray-400">
                                     <a href="#" target="_blank" class="flex items-center gap-1">
                                         <img src="/img/tokopedia.png" alt="" width="25">
-                                        <small class="font-semibold text-[10px] leading-none">bvckle<br>smiggle</small>
+                                        {{-- <small class="font-semibold text-[10px] leading-none">bvckle<br>smiggle</small> --}}
                                     </a>
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 min-h-[50vh]">
-                        {{-- @for ($i = 0; $i < 12; $i++)
+                        {{-- @for ($i = 0; $i <div 12; $i++)
                             <div class="card hover:brightness-50 hover:cursor-pointer">
                                 <img src="/img/blckruby3.jpg" alt="" class="img-fluid rounded-2xl">
                             </div>
                             @endfor --}}
                         @foreach ($products as $product)
-                            <div class="card hover:brightness-50 hover:cursor-pointer">
+                            <div class="card hover:brightness-50 hover:cursor-pointer h-fit z-0">
                                 {{-- <h1 class="text-white text-2xl"></h1> --}}
                                 {{-- @foreach (json_decode($product->product_images) as $image) --}}
                                 {{-- @endforeach --}}
                                 <img data-id="{{ $product->id }}"
                                     src="{{ asset('storage/' . json_decode($product->product_images)[0]) }}"
-                                    alt="" class="img-fluid rounded-2xl">
+                                    alt="" class="img-fluid rounded-md">
                             </div>
                         @endforeach
                     </div>
+                    @if ($products->hasPages())
+                        <div class="mt-10"></div>
+                        {{ $products->links() }}
+                    @endif
+                    {{-- @if ($products->count() > 2)
+                    @endif --}}
                     {{-- <div class="pagination flex items-center justify-between lg:justify-center gap-10 mt-7">
                         <a href="#" class="font-bold text-light text-xs lg:text-base color-primary">First page</a>
                         <div class="flexCenter gap-3">

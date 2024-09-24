@@ -7,9 +7,9 @@
             <div class="xIcon w-7 hidden"><i class="fa-solid fa-xmark text-gray-200 hover:text-[#ff00ff] text-2xl"></i>
             </div>
         </button>
-        <img src="/img/logo.png" alt="" class="h-auto max-h-[35px] lg:max-h-full max-w-64">
+        <img src="/img/logo.png" alt="" class="h-auto max-h-[35px] max-w-40 lg:max-h-full lg:max-w-64">
         <div class="leading-none grow text-end lg:hidden">
-            <small class="font-bold font-segoe text-gray-200">Bvck<br>Yourself!</small>
+            <small class="font-bold font-segoe text-gray-200 text-xs">NOT JUST A GEAR,<br>A STATEMENT!</small>
         </div>
     </div>
     <div class="navbar-content transition-all duration-300 h-0 overflow-hidden padding-container mt-3 border-gray-200 bg-dark">
@@ -29,7 +29,7 @@
                         class="fa-brands fa-tiktok text-gray-200 text-2xl hover:text-[#ff00ff]"></i></a></li>
         </ul>
     </div>
-    <h2 class="font-bold font-segoe text-gray-200 text-2xl text-end hidden lg:block">Bvck<br>Yourself!</h2>
+    <h2 class="font-bold font-segoe text-gray-200 text-2xl text-end hidden lg:block">NOT JUST A GEAR,<br>A STATEMENT!</h2>
 </div>
 
 @vite('resources/js/header.js')

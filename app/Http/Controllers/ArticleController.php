@@ -9,34 +9,54 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
 use App\Models\ArticleWithComment;
+use App\Models\Download;
 use Illuminate\Support\Facades\Log;
 
 class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->input('keyword')) {
-            $keyword = $request->input('keyword');
-            // dd($keyword);
-            return view('articles', [
-                'articles' => Article::with('comments.user')
-                    ->where('title', 'LIKE', '%'.$keyword.'%')
-                    ->orWhere('author', 'LIKE', '%'.$keyword.'%')
-                    ->orWhere('body', 'LIKE', '%'.$keyword.'%')
-                    // ->orWhereLike('author', $keyword)
-                    // ->orWhereLike('body', $keyword)
-                    ->orWhereHas('categories', function ($query) use ($keyword) {
-                        $query->where('name', 'LIKE', '%'.$keyword.'%');
-                    })
-                    ->paginate(3),
-                'categories' => ArticleCategory::get()
-            ]);
-        } else {
-            return view('articles', [
-                'articles' => Article::with('comments.user')->paginate(3),
-                'categories' => ArticleCategory::get()
-            ]);
-        }
+        return view('articles', [
+            'articles' => Article::filter(request(['category', 'search', 'sort']))->paginate(3)->withQueryString(),
+            'categories' => ArticleCategory::get(),
+            'downloads' => Download::get()
+        ]);
+        // if ($request->input('keyword')) {
+        //     $keyword = $request->input('keyword');
+        //     // dd($keyword);
+        //     return view('articles', [
+        //         'articles' => Article::with('comments.user')
+        //             ->where('title', 'LIKE', '%'.$keyword.'%')
+        //             ->orWhere('author', 'LIKE', '%'.$keyword.'%')
+        //             ->orWhere('body', 'LIKE', '%'.$keyword.'%')
+        //             // ->orWhereLike('author', $keyword)
+        //             // ->orWhereLike('body', $keyword)
+        //             ->orWhereHas('categories', function ($query) use ($keyword) {
+        //                 $query->where('name', 'LIKE', '%'.$keyword.'%');
+        //             })
+        //             ->paginate(3),
+        //         'categories' => ArticleCategory::get(),
+        //         'downloads' => Download::get()
+        //     ]);
+        // } else {
+        //     return view('articles', [
+        //         'articles' => Article::with('comments.user')->paginate(3),
+        //         'categories' => ArticleCategory::get(),
+        //         'downloads' => Download::get()
+        //     ]);
+        // }
+    }
+
+    public function show($id) 
+    {
+        // $article = Article::findOrFail($id);
+        return view('articles', [
+            'articles' => Article::where('id', $id)->get(),
+            'article' => Article::find($id),
+            // 'articles' => Article::where('id', $id)->with('comments.user')->get(),
+            'categories' => ArticleCategory::get(),
+            'downloads' => Download::get()
+        ]);
     }
 
     public function getArticle(Request $request)
