@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
     <script src="https://kit.fontawesome.com/cce5ebab8a.js" crossorigin="anonymous"></script>
-    <title>bvcklesmiggle.com</title>
+    <title>bvcklesmiggle</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="bvcklesmiggle.com" />
     <meta name="description" content="bvcklesmiggle.com" />

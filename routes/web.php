@@ -10,46 +10,54 @@ use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminDownloadController;
 use App\Http\Controllers\AdminPartnershipController;
+use App\Http\Controllers\UserController;
 
 Route::get('/tes', function () {
     Artisan::call('storage:link');
     return "Storage Link have been run successfully!";
 });
 
-// Route::middleware('checkLaunchDate')->group(function () {
-    // HOME
-    Route::get('/', function () {
-        // return view('waiting'); // The home page view
-        return view('home');
-    })->name('home');
+// AUTHENTICATION
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [UserController::class, 'loginForm'])->name('loginForm');
+    Route::get('/register', [UserController::class, 'registerForm'])->name('registerForm');
+    Route::post('/register', [UserController::class, 'register'])->name('register');
+    Route::post('/login', [UserController::class, 'login'])->name('login');
+});
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
-    // ARTICLES
-    Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
-    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
-    Route::post('/articles', [ArticleController::class, 'storeComment'])->name('articlesComment.store');
-    Route::get('/get-article', [ArticleController::class, 'getArticle']);
+// HOME
+Route::get('/', function () {
+    // return view('waiting'); // The home page view
+    return view('home');
+})->name('home');
 
-    // PRODUCTS
-    Route::get('/products', [ProductController::class, 'index'])->name('products');
-    Route::get('/get-product', [ProductController::class, 'getProduct']);
+// ARTICLES
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
+Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+Route::post('/articles', [ArticleController::class, 'storeComment'])->name('articlesComment.store');
+Route::get('/get-article', [ArticleController::class, 'getArticle']);
 
-    // PARTNERSHIP
-    Route::get('/partnership', [PartnershipController::class, 'index'])->name('partnership');
-    // Route::get('/partnership', function () {
-    //     return view('partnership');
-    // })->name('partnership');
-// });
+// PRODUCTS
+Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/get-product', [ProductController::class, 'getProduct']);
+
+// PARTNERSHIP
+Route::get('/partnership', [PartnershipController::class, 'index'])->name('partnership');
+// Route::get('/partnership', function () {
+//     return view('partnership');
+// })->name('partnership');
 
 Route::get('/waiting', function () {
     return view('waiting');
 })->name('waiting');
 
 // === ADMIN === //
-Route::middleware('auth')->group(function () {
+Route::middleware('auth-admin')->group(function () {
     Route::get('/sipalingadminB$', [AuthController::class, 'index']);
-    Route::post('/sipalingadminB$', [AuthController::class, 'login'])->name('login');
+    Route::post('/sipalingadminB$', [AuthController::class, 'login'])->name('login-admin');
 });
-Route::middleware('admin')->group(function () {
+Route::middleware('only-admin')->group(function () {
     Route::controller(AdminArticleController::class)->group(function () {
         Route::get('/sipalingadminB$/articles', 'index')->name('admin-articles');
         Route::post('/sipalingadminB$/articles', 'store')->name('admin-articles.store');
@@ -74,5 +82,5 @@ Route::middleware('admin')->group(function () {
         Route::put('/sipalingadminB$/downloads/{id}', 'update')->name('admin-downloads.update');
         Route::delete('/sipalingadminB$/downloads/{id}', 'destroy')->name('admin-downloads.destroy');
     });
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout-admin', [AuthController::class, 'logout'])->name('logout-admin');
 });

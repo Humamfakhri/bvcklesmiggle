@@ -13,7 +13,7 @@
             <small class="text-gray-400">You are logged in as:</small>
             <h3 class="text-light font-bold">Admin</h3>
         </div>
-        <button><a href="/logout">
+        <button><a href="/logout-admin">
                 <i class="fa-solid fa-arrow-right-from-bracket color-primary text-2xl rotate-180"></i>
             </a></button>
     </div>

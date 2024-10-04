@@ -14,7 +14,7 @@
                 </div>
                 <div id="loadingSpinner" class="loading-spinner p-20"></div>
                 <div id="cardPopupBody" class="card-popup-body">
-                    <div class="hidden lg:grid grid-cols-10 items-end gap-4 mt-3">
+                    <div class="lg:grid lg:grid-cols-10 lg:items-end lg:gap-4 mt-3">
                         <div class="col-end-11 col-span-4 border-b-2 border-black py-2">
                             <h1 id="productNameModal" class="font-bold text-2xl text-black font-segoe">//[JUDUL]</h1>
                         </div>
@@ -195,7 +195,7 @@
                     </div>
                 </div>
                 <div class="products">
-                    <div class="sticky top-[70px] z-50">
+                    <div class="sticky top-[70px] z-30">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="items-stretch grow">
                                 <form action="" method="GET" class="flex items-stretch grow">

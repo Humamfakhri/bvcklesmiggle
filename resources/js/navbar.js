@@ -21,3 +21,20 @@ window.addEventListener("scroll", function () {
     navContent.classList.add("border-y-2");
   }
 });
+
+// POPUP PROFILE
+if (document.querySelector('#profileBtn')) {
+  const profileBtn = document.querySelector('#profileBtn');
+  const profileModal = document.querySelector('#profileModal');
+  profileBtn.addEventListener('click', () => {
+    profileModal.classList.toggle('scale-100');
+  })
+
+  // Close modal when clicking outside the modal content
+  document.addEventListener('click', (event) => {
+    if (!profileModal.contains(event.target) && !profileBtn.contains(event.target)) {
+      profileModal.classList.remove('scale-100');
+      profileModal.classList.add('scale-0');
+    }
+  });
+}

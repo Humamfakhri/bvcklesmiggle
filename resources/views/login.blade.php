@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
     <script src="https://kit.fontawesome.com/cce5ebab8a.js" crossorigin="anonymous"></script>
-    <title>bvcklesmiggle | Login</title>
+    <title>Admin | bvcklesmiggle</title>
 </head>
 {{-- <body class="bg-fixed"> --}}
 
@@ -20,46 +20,42 @@
     </nav> --}}
 
     <main class="h-full flexCenter">
-        <div class="w-1/2 padding-container h-full flexCenter">
-            <div>
+        <div class="w-full lg:w-1/2 max-w-lg padding-container h-full flexCenter">
+            <div class="w-full">
                 <img src="img/home.png" alt="" class="h-auto max-w-52 mb-5 block mx-auto">
-                <h1 class="text-light font-bold text-2xl mb-4">Welcome Back, Admin!</h1>
+                <h1 class="text-center text-light font-bold text-2xl mb-4">Login</h1>
                 <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-5">
                     @csrf
                     @error('login')
-                        <div class="w-full rounded-lg px-3 py-2 border border-red-500 bg-red-950/50 text-red-500 text-sm">{{ $message }}</div>
+                        <div class="w-full rounded-lg px-3 py-2 border border-red-500 bg-red-950/50 text-red-500 text-sm">
+                            {{ $message }}</div>
                     @enderror
                     <div>
                         <label class="block mb-2 text-gray-300" for="username">Username</label>
-                        <input required autocomplete="off" type="text" name="username" id="username" placeholder="Enter your username"
+                        <input required autofocus type="text" name="username" id="username"
+                            placeholder="Enter your username"
                             class="w-full rounded-lg px-3 py-2 bg-dark border border-gray-500 text-gray-200">
                     </div>
                     <div>
                         <label class="block mb-2 text-gray-300" for="password">Password</label>
-                        <input required autocomplete="off" type="password" name="password" id="password" placeholder="Enter your password"
+                        <input required type="password" name="password" id="password"
+                            placeholder="Enter your password"
                             class="w-full rounded-lg px-3 py-2 bg-dark border border-gray-500 text-gray-200">
                     </div>
                     <div class="mt-4">
-                        {{-- <button class="w-full bg-primary text-light rounded">Login</button> --}}
                         <button type="submit"
-                            class="w-full py-2 bg-primary rounded-lg border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition"><a
+                            class="w-full py-2 bg-primary rounded-lg border-2 border-black shadow-[-6px_6px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-x-1 hover:translate-y-1 transition"><small
                                 href="{{ route('admin-products') }}"
-                                class="font-bold text-lg text-white">Login</a></button>
+                                class="font-bold text-lg text-white">Login</small></button>
                     </div>
                 </form>
+              <div class="mt-5 text-center">
+                    <small class="text-gray-400">Don't have an account yet? <a href="{{ route('registerForm') }}"
+                            class="text-white">Register</a></small>
+                </div>
             </div>
         </div>
     </main>
-
-    {{-- <div class="border border-gray-500 p-5 rounded-2xl">
-    <img src="img/logo.png" alt="" class="h-auto max-w-64 mb-5">
-    <h1 class="font-bold text-xl text-light mb-8">Login</h1>
-    <form action="">
-      <label class="block mb-1 text-light" for="username">Username</label>
-      <input type="text" name="username" id="username" placeholder="Enter your username" class="w-full rounded-xl px-3 py-2 border border-gray-500 text-gray-200 bg-transparent">
-    </form>
-  </div> --}}
-
 </body>
 
 </html>

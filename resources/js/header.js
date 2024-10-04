@@ -25,3 +25,20 @@ toggleNavbar.onclick = function () {
   barIcon.classList.toggle("flexCenter");
   xIcon.classList.toggle("flexCenter");
 };
+
+// POPUP PROFILE
+if (document.querySelector('#profileBtnMobile')) {
+  const profileBtn = document.querySelector('#profileBtnMobile');
+  const profileModal = document.querySelector('#profileModalMobile');
+  profileBtn.addEventListener('click', () => {
+    profileModal.classList.toggle('scale-100');
+  })
+
+  // Close modal when clicking outside the modal content
+  document.addEventListener('click', (event) => {
+    if (!profileModal.contains(event.target) && !profileBtn.contains(event.target)) {
+      profileModal.classList.remove('scale-100');
+      profileModal.classList.add('scale-0');
+    }
+  });
+}

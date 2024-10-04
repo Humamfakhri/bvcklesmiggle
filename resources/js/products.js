@@ -61,7 +61,7 @@ cards.forEach(card => {
         // Show modal
         productNameModal.innerHTML = `//${data.name}`;
         productCategoryModal.innerHTML = data.category;
-        productCategoryModal.href = data.category;
+        productCategoryModal.href = `products?category=${data.category}`;
         productIssueModal.innerHTML = data.issue;
         productDetailsModal.innerHTML = data.details;
         linkShopeeModal.href = data.link_shopee;

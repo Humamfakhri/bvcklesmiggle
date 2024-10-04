@@ -15,33 +15,35 @@
         @endif
         <div class="modal fixed inset-0 flex opacity-100 -z-10 transition-opacity items-center justify-center">
             {{-- <div class="cardPopupContent transition ease-in-out duration-300 bg-white border-2 border-black w-[85%] max-h-[80%] p-3 mt-12" onclick="event.stopPropagation()"> --}}
-            <div class="modalContent transition ease-in-out duration-300 scale-0 bg-white border-2 border-black rounded-md w-full max-w-[500px] max-h-[85%] px-3 overflow-y-auto"
+            <div class="modalContent transition ease-in-out duration-300 scale-0 bg-white border-2 border-black rounded-md w-[95%] max-w-[500px] max-h-[85%] px-3 overflow-y-auto"
                 onclick="event.stopPropagation()">
                 <div id="cardPopupBody" class="card-popup-body">
-                    <form method="POST" action="{{ route('articlesComment.store') }}" class="flex-col gap-5 p-4"
-                        enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('articlesComment.store') }}" class="flex-col gap-5 p-4">
                         @csrf
                         <div class="flex flex-col gap-3">
                             <input id="articleIdModal" name="articleId" type="hidden">
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="name">Name</label>
+                                <label class="block  mb-1 font-bold" for="name">Name</label>
                                 <input type="text" name="name" id="name" oninput="checkInputFilled(this)"
                                     placeholder="Enter your name"
-                                    class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
+                                    class=" w-full rounded-md px-3 py-2 border border-gray-400">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="email">Email<span
+                                <label class="block  mb-1 font-bold" for="email">Email<span
                                         class="text-red-600">*</span></label>
                                 <input required type="email" name="email" id="email"
                                     oninput="checkInputFilled(this)" placeholder="Enter your email"
-                                    class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
+                                    class=" w-full rounded-md px-3 py-2 border border-gray-400">
                             </div>
                             <div>
-                                <label class="block text-xs mb-1 font-bold" for="comment">Comment<span
+                                <label class="block  mb-1 font-bold" for="comment">Comment<span
                                         class="text-red-600">*</span></label>
                                 <input required type="text" name="content" id="content"
                                     oninput="checkInputFilled(this)" placeholder="Enter your comment"
-                                    class="text-xs w-full rounded-md px-3 py-2 border border-gray-400">
+                                    class=" w-full rounded-md px-3 py-2 border border-gray-400">
+                            </div>
+                            <div>
+                                Or <a href="/login" class="color-primary text-dark">Login</a> once and comment with ease!
                             </div>
                             <div class="flexBetween mt-2">
                                 <button type="button"
@@ -61,7 +63,8 @@
             class="hidden lg:block img-fluid w-full my-4 border-2 border-gray-200">
         <div class="flex flex-col lg:flex-row gap-4 items-start">
             <div class="articles flex flex-col gap-5 lg:gap-7 grow">
-                <div class="sticky top-[70px] lg:hidden {{ $articles->count() == 0 && !request()->input('search') ? 'hidden' : '' }}">
+                <div
+                    class="sticky top-[70px] lg:hidden {{ $articles->count() == 0 && !request()->input('search') ? 'hidden' : '' }}">
                     <form method="GET" action="" class="flex items-stretch mb-2">
                         <input type="text" name="search" id="search" placeholder="Search for Articles"
                             value="{{ request()->input('search') ? request()->input('search') : '' }}"
@@ -108,7 +111,8 @@
                             <div class="leading-tight">
                                 <p class="article-date text-sm lg:text-base">Posted on
                                     {{ \Carbon\Carbon::parse($article->created_at)->format('M d, Y') }}</p>
-                                <p class="article-categories text-sm lg:text-base">Categories: <a href="articles?category={{ $article->categories->implode('name', ', ') }}"
+                                <p class="article-categories text-sm lg:text-base">Categories: <a
+                                        href="articles?category={{ $article->categories->implode('name', ', ') }}"
                                         class="color-primary">{{ $article->categories->implode('name', ', ') }}</a></p>
                             </div>
                             <div>
@@ -155,17 +159,34 @@
                             {{-- <button id="addCommentBtn" data-article-id="{{ $article->id }}"
                                 class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md hidden">Add
                                 a comment</button> --}}
+                                {{-- <button class="text-sm lg:text-base text-white bg-primary px-4 py-1 rounded-md">Send</button> --}}
                             <button
                                 class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md"
                                 onclick="toggleShowArticle(this)">Show more</button>
                         </div>
                         <div class="hidden">
-                            <h5 class="text-lg font-bold">Comments</h5>
-                            <hr class="my-3">
-                            <button id="addCommentBtn" data-article-id="{{ $article->id }}"
-                                class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md hidden">Add
-                                a comment</button>
-                            <ul class="flex flex-col gap-3 mt-3">
+                            <h5 class="text-lg font-bold mb-3">Comments</h5>
+                            {{-- <hr class="my-3"> --}}
+                            @auth
+                                <form method="POST" action="{{ route('articlesComment.store') }}">
+                                    @csrf
+                                    {{-- <label for="comment">Komentar:</label><br> --}}
+                                    <input value="{{ $article->id }}" name="articleId" type="hidden">
+                                    <input value="{{ Auth::user()->name }}" name="name" type="hidden">
+                                    <input value="{{ Auth::user()->email }}" name="email" type="hidden">
+                                    <textarea id="comment" class="comment-box outline-none border-b border-gray-300 focus:border-primary text-sm w-full py-2 resize-none overflow-hidden min-h-10"
+                                        name="content" rows="1" maxlength="200" placeholder="Add a comment ..."></textarea>
+                                    <div class="flexBetween mt-1">
+                                        <div id="charCount" class="character-count">0 / 200</div>
+                                        <button id="saveCommentBtn" disabled class="text-sm lg:text-base text-white bg-primary px-4 py-1 rounded-md disabled:opacity-30">Send</button>
+                                    </div>
+                                </form>
+                            @else
+                                <button id="addCommentBtn" data-article-id="{{ $article->id }}"
+                                    class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md hidden mb-3">Add
+                                    a comment</button>
+                            @endauth
+                            <ul class="flex flex-col gap-5 mt-3">
                                 {{-- {{ $article->comments }} --}}
                                 @foreach ($article->comments as $comment)
                                     <li>
@@ -175,8 +196,8 @@
                                             @else
                                                 <small class="font-bold italic">Anonymous</small>
                                             @endif
-                                            <small class="text-gray-500">•</small>
-                                            <small> {{ $comment->created_at->diffForHumans(['parts' => 1]) }}</small>
+                                            <small class="text-gray-300 font-light text-xs">•</small>
+                                            <small class="text-gray-400 font-light text-xs"> {{ $comment->created_at->diffForHumans(['parts' => 1]) }}</small>
                                             {{-- <small>{{ $comment->created_at->diffForHumans(['parts' => 1]) }}</small> --}}
                                         </div>
                                         <p class="text-sm">
@@ -223,7 +244,8 @@
                         <h2 class="font-bold text-gray-200">CATEGORIES:</h2>
                         <ul>
                             @foreach ($categories as $category)
-                                <li><a href="articles?category={{ $category->name }}" class="text-[#ff00ff]">> {{ $category->name }}</a></li>
+                                <li><a href="articles?category={{ $category->name }}" class="text-[#ff00ff]">>
+                                        {{ $category->name }}</a></li>
                             @endforeach
                             {{-- <li><a href="#" class="text-[#ff00ff]">> Event</a></li>
                         <li><a href="#" class="text-[#ff00ff]">> Music</a></li>
@@ -275,9 +297,9 @@
             el.classList.toggle('border');
             // el.previousElementSibling.classList.toggle('hidden');
             el.parentElement.nextElementSibling.classList.toggle('hidden');
-            el.parentElement.nextElementSibling.querySelector('#addCommentBtn').classList.toggle('hidden')
-            console.log(el.parentElement.nextElementSibling.querySelector('#addCommentBtn'));
-
+            if (el.parentElement.nextElementSibling.querySelector('#addCommentBtn')) {
+                el.parentElement.nextElementSibling.querySelector('#addCommentBtn').classList.toggle('hidden')
+            }
         }
 
         const modal = document.querySelector('.modal');
@@ -383,5 +405,26 @@
                 });
             });
         })
+
+        // KOMENTAR
+        const commentBox = document.getElementById('comment');
+        const charCount = document.getElementById('charCount');
+        const saveCommentBtn = document.getElementById('saveCommentBtn');
+
+        // Auto resize textarea
+        commentBox.addEventListener('input', function() {
+            this.style.height = 'auto'; // Reset height to auto to recalculate height
+            this.style.height = (this.scrollHeight) + 'px'; // Adjust height based on content
+
+            // Update character count
+            const currentLength = this.value.length;
+            charCount.textContent = `${currentLength} / 200`;
+        
+            if (commentBox.value.length > 0) {
+                saveCommentBtn.removeAttribute('disabled');
+            } else {
+                saveCommentBtn.setAttribute('disabled', true);
+            }
+        });
     </script>
 </x-layout>

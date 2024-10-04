@@ -33,7 +33,7 @@ class AdminArticleController extends Controller
                 // Simpan data ke database
                 $articleCategory = new ArticleCategory();
                 $articleCategory->name = $validatedData['name'];
-                $articleCategory->save();
+                $articleCategory->save();   
 
                 // Redirect kembali ke halaman admin dengan pesan sukses
                 return redirect()->route('admin-articles')->with('success', 'Article Category has been added successfully!');
