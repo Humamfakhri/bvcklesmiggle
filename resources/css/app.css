@@ -258,6 +258,10 @@ p {
 
   .border-primary {
     border-color: var(--primary);
+  
+  }
+  .border-dark {
+    border-color: var(--dark);
   }
 
   .btn_white {

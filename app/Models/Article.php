@@ -12,6 +12,8 @@ class Article extends Model
 
     protected $fillable = [
         'title',
+        'pure_title',
+        'slug',
         'author',
         'image',
         'body',
@@ -34,7 +36,7 @@ class Article extends Model
             $filters['search'] ?? false,
             fn($query, $search) =>
             $query->with('comments.user')
-                ->where('title', 'LIKE', '%' . $search . '%')
+                ->where('pure_title', 'LIKE', '%' . $search . '%')
                 ->orWhere('author', 'LIKE', '%' . $search . '%')
                 ->orWhere('body', 'LIKE', '%' . $search . '%')
                 ->orWhereHas('categories', function ($query) use ($search) {

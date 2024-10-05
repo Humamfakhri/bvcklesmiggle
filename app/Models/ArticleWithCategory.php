@@ -13,4 +13,6 @@ class ArticleWithCategory extends Model
         'article_id',
         'category_id'
     ];
+
+    protected $primaryKey = 'article_id';
 }

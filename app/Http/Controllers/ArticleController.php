@@ -8,9 +8,10 @@ use App\Models\Article;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
-use App\Models\ArticleWithComment;
 use App\Models\Download;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+
 
 class ArticleController extends Controller
 {
@@ -47,17 +48,38 @@ class ArticleController extends Controller
         // }
     }
 
-    public function show($id) 
+    public function show($slug) 
     {
-        // $article = Article::findOrFail($id);
         return view('articles', [
-            'articles' => Article::where('id', $id)->get(),
-            'article' => Article::find($id),
-            // 'articles' => Article::where('id', $id)->with('comments.user')->get(),
+            'articles' => Article::where('slug', $slug)->paginate(3),
+            'article' => Article::where('slug', $slug)->firstOrFail(),
             'categories' => ArticleCategory::get(),
             'downloads' => Download::get()
         ]);
     }
+
+    // public function show($slug) 
+    // {
+    //     // $slug = Str::slug($title);
+    //     return view('articles', [
+    //         'articles' => Article::whereRaw("LOWER(REPLACE(title, ' ', '-')) = ?", [$slug])->get(),
+    //         'article' => Article::whereRaw("LOWER(REPLACE(title, ' ', '-')) = ?", [$slug])->firstOrFail(),
+    //         'categories' => ArticleCategory::get(),
+    //         'downloads' => Download::get()
+    //     ]);
+    // }
+
+    // public function show($id) 
+    // {
+    //     // $article = Article::findOrFail($id);
+    //     return view('articles', [
+    //         'articles' => Article::where('id', $id)->get(),
+    //         'article' => Article::find($id),
+    //         // 'articles' => Article::where('id', $id)->with('comments.user')->get(),
+    //         'categories' => ArticleCategory::get(),
+    //         'downloads' => Download::get()
+    //     ]);
+    // }
 
     public function getArticle(Request $request)
     {

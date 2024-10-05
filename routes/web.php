@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminDownloadController;
 use App\Http\Controllers\AdminPartnershipController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\UserController;
 
 Route::get('/tes', function () {
@@ -34,7 +35,8 @@ Route::get('/', function () {
 
 // ARTICLES
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
-Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
+// Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
 Route::post('/articles', [ArticleController::class, 'storeComment'])->name('articlesComment.store');
 Route::get('/get-article', [ArticleController::class, 'getArticle']);
 
@@ -81,6 +83,11 @@ Route::middleware('only-admin')->group(function () {
         Route::post('/sipalingadminB$/downloads', 'store')->name('admin-downloads.store');
         Route::put('/sipalingadminB$/downloads/{id}', 'update')->name('admin-downloads.update');
         Route::delete('/sipalingadminB$/downloads/{id}', 'destroy')->name('admin-downloads.destroy');
+    });
+    Route::controller(AdminUserController::class)->group(function () {
+        Route::get('/sipalingadminB$/users', 'index')->name('admin-users.index');
+        Route::post('/sipalingadminB$/users', 'store')->name('admin-users.store');
+        Route::delete('/sipalingadminB$/users/{id}', 'destroy')->name('admin-users.destroy');
     });
     Route::get('/logout-admin', [AuthController::class, 'logout'])->name('logout-admin');
 });

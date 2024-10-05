@@ -93,14 +93,14 @@ const editModal = document.querySelector('.editModal');
 const editModalContent = document.querySelector('.editModalContent');
 
 const editArticleForm = document.querySelector('#editArticleForm');
-const inputTitleEdit = document.querySelector('#titleEdit');
+const inputTitleEdit = document.querySelector('#titleEditTrix');
 const inputAuthorEdit = document.querySelector('#authorEdit');
 const inputCategoryEdit = document.querySelector('#categoryEdit');
 const inputArticleImageEdit = document.querySelector('#articleImageEdit');
 const inputBodyEdit = document.querySelector('#bodyEditTrix');
   
 editBtns.forEach(editBtn => {
-  const tr = editBtn.parentElement.parentElement.parentElement.parentElement.parentElement
+  const tr = editBtn.parentElement.parentElement.parentElement.parentElement
   editBtn.addEventListener('click', () => {
     const rowId = tr.querySelector('#rowId').value;
     const rowTitle = tr.querySelector('#rowTitle').innerHTML;
@@ -108,7 +108,7 @@ editBtns.forEach(editBtn => {
     const rowCategory = tr.querySelector('#rowCategory').innerHTML;
     const rowArticleImages = tr.querySelector('.rowArticleImage');
     const rowBody = tr.querySelector('#rowBody').innerHTML;
-    console.log(rowBody);
+    console.log(tr);
     
 
     editArticleForm.action = "/sipalingadminB$/articles/" + rowId;

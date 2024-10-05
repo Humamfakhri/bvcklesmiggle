@@ -27,6 +27,17 @@
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/images/152x152/10231534/iconBbl-Copy.png">
     <link rel="preconnect" href="" />
     <meta name="facebook-domain-verification" content="eszr5qfwh5m28etsu7byq1kfchdsgz" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T37QK6QBH0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-T37QK6QBH0');
+    </script>
     @yield('head')
     <title>bvcklesmiggle</title>
 </head>

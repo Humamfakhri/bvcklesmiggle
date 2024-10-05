@@ -1,10 +1,10 @@
 <x-layout>
     @isset($article)
         @section('head')
-            <meta property="og:title" content="{{ $article->title }}">
+            <meta property="og:title" content="{{ $article->pure_title }}">
             {{-- <meta property="og:description" content="Deskripsi singkat artikel Anda."> --}}
             <meta property="og:image" content="{{ asset('storage/' . $article->image) }}">
-            <meta property="og:url" content="https://bvcklesmiggle.com/articles/{{ $article->id }}">
+            <meta property="og:url" content="https://bvcklesmiggle.com/articles/{{ $article->slug }}">
         @endsection
     @endisset
     <main class="max-container padding-container min-h-screen">
@@ -18,32 +18,33 @@
             <div class="modalContent transition ease-in-out duration-300 scale-0 bg-white border-2 border-black rounded-md w-[95%] max-w-[500px] max-h-[85%] px-3 overflow-y-auto"
                 onclick="event.stopPropagation()">
                 <div id="cardPopupBody" class="card-popup-body">
-                    <form method="POST" action="{{ route('articlesComment.store') }}" class="flex-col gap-5 p-4">
+                    <form method="POST" action="{{ route('articlesComment.store') }}" class="flex-col gap-5 px-2 py-4">
                         @csrf
                         <div class="flex flex-col gap-3">
                             <input id="articleIdModal" name="articleId" type="hidden">
                             <div>
-                                <label class="block  mb-1 font-bold" for="name">Name</label>
+                                <label class="block text-sm mb-1 font-bold" for="name">Name</label>
                                 <input type="text" name="name" id="name" oninput="checkInputFilled(this)"
                                     placeholder="Enter your name"
-                                    class=" w-full rounded-md px-3 py-2 border border-gray-400">
+                                    class="text-sm w-full rounded-md px-3 py-2 border border-gray-400">
                             </div>
                             <div>
-                                <label class="block  mb-1 font-bold" for="email">Email<span
+                                <label class="block text-sm mb-1 font-bold" for="email">Email<span
                                         class="text-red-600">*</span></label>
                                 <input required type="email" name="email" id="email"
                                     oninput="checkInputFilled(this)" placeholder="Enter your email"
-                                    class=" w-full rounded-md px-3 py-2 border border-gray-400">
+                                    class="text-sm w-full rounded-md px-3 py-2 border border-gray-400">
                             </div>
                             <div>
-                                <label class="block  mb-1 font-bold" for="comment">Comment<span
+                                <label class="block text-sm mb-1 font-bold" for="comment">Comment<span
                                         class="text-red-600">*</span></label>
                                 <input required type="text" name="content" id="content"
                                     oninput="checkInputFilled(this)" placeholder="Enter your comment"
-                                    class=" w-full rounded-md px-3 py-2 border border-gray-400">
+                                    class="text-sm w-full rounded-md px-3 py-2 border border-gray-400">
                             </div>
-                            <div>
-                                Or <a href="/login" class="color-primary text-dark">Login</a> once and comment with ease!
+                            <div class="text-sm">
+                                Or <a href="/login" class="color-primary text-dark">Login</a> once and comment with
+                                ease!
                             </div>
                             <div class="flexBetween mt-2">
                                 <button type="button"
@@ -106,7 +107,7 @@
                 </div>
                 @foreach ($articles as $article)
                     <div class="article px-4 lg:px-10 pt-4 lg:pt-7 pb-4 bg-white rounded-md grow">
-                        <h1 class="article-title font-bold text-lg lg:text-xl">{{ $article->title }}</h1>
+                        <h1 class="article-title font-bold text-lg lg:text-xl">{!! $article->title !!}</h1>
                         <div class="flex flex-col lg:flex-row justify-between mt-2">
                             <div class="leading-tight">
                                 <p class="article-date text-sm lg:text-base">Posted on
@@ -121,7 +122,7 @@
                             </div>
                         </div>
                         <img src="{{ asset('storage/' . $article->image) }}" alt=""
-                            class="img-fluid w-full mt-7">
+                            class="w-auto h-full max-w-3xl max-h-96 mt-7 block mx-auto rounded-md">
                         {{-- <div class="flexCenter my-5">
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/OqEc_169ywY"
                                 title="YouTube video player" frameborder="0"
@@ -135,20 +136,29 @@
                             Error Message
                           </video> --}}
                         {{-- <video src="https://youtu.be/OqEc_169ywY?si=MUNMqwba057N0_2V"></video> --}}
-                        <div class="flex gap-3 py-3">
-                            <span class="font-bold text-sm lg:text-base">Share: </span>
-                            <a href="https://api.whatsapp.com/send?text={{ $article->title }}:+https://bvcklesmiggle.com/articles/{{ $article->id }}"
-                                target="_blank">
-                                <i class="fa fa-whatsapp text-lg lg:text-2xl color-dark hover:color-primary"></i>
-                            </a>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u=https://bvcklesmiggle.com/articles/{{ $article->id }}"
-                                target="_blank">
-                                <i class="fa fa-facebook text-lg lg:text-2xl color-dark hover:color-primary"></i>
-                            </a>
-                            <button id="copyLinkButton" class="flex items-center space-x-2 outline-none">
+                        <div
+                            class="relative flex items-center gap-5 px-3 pb-2 pt-4 border-2 border-gray-400  w-fit rounded-md mx-auto mt-4">
+                            <div
+                                class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary rounded-full text-white px-5 py-1 text-xs">
+                                Share</div>
+                            {{-- <i class="fa-solid fa-share-from-square text-2xl color-primary"></i>  --}}
+                            <button>
+                                <a href="https://api.whatsapp.com/send?text={{ $article->pure_title }}:+https://bvcklesmiggle.com/articles/{{ $article->slug }}"
+                                    target="_blank" class="flex flexCenter p-1 rounded-lg w-9">
+                                    <i
+                                        class="fa-brands fa-square-whatsapp text-gray-600 text-3xl hover:text-[#ff00ff]"></i>
+                                </a>
+                            </button>
+                            <button>
+                                <a target="_blank"
+                                    href="https://www.facebook.com/sharer/sharer.php?u=https://bvcklesmiggle.com/articles/{{ $article->slug }}"
+                                    class="flex flexCenter p-1 rounded-lg w-9"><i
+                                        class="fa-brands fa-square-facebook text-gray-600 text-3xl hover:text-[#ff00ff]"></i></a>
+                            </button>
+                            <button id="copyLinkButton" class="flex items-center space-x-2">
                                 <div class="small shareLink hidden">
-                                    https://bvcklesmiggle.com/articles/{{ $article->id }}</div>
-                                <i class="fa-solid fa-copy text-lg lg:text-2xl color-dark hover:color-primary"></i>
+                                    https://bvcklesmiggle.com/articles/{{ $article->slug }}</div>
+                                <i class="fa-solid fa-clone text-lg lg:text-2xl text-gray-600 hover:color-primary"></i>
                             </button>
                         </div>
                         <div class="article-body leading-relaxed mt-3 line-clamp-3">
@@ -159,7 +169,7 @@
                             {{-- <button id="addCommentBtn" data-article-id="{{ $article->id }}"
                                 class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md hidden">Add
                                 a comment</button> --}}
-                                {{-- <button class="text-sm lg:text-base text-white bg-primary px-4 py-1 rounded-md">Send</button> --}}
+                            {{-- <button class="text-sm lg:text-base text-white bg-primary px-4 py-1 rounded-md">Send</button> --}}
                             <button
                                 class="text-sm lg:text-base color-primary border border-primary px-3 py-1 rounded-md"
                                 onclick="toggleShowArticle(this)">Show more</button>
@@ -174,11 +184,13 @@
                                     <input value="{{ $article->id }}" name="articleId" type="hidden">
                                     <input value="{{ Auth::user()->name }}" name="name" type="hidden">
                                     <input value="{{ Auth::user()->email }}" name="email" type="hidden">
-                                    <textarea id="comment" class="comment-box outline-none border-b border-gray-300 focus:border-primary text-sm w-full py-2 resize-none overflow-hidden min-h-10"
+                                    <textarea id="comment"
+                                        class="comment-box outline-none border-b border-gray-300 focus:border-primary text-sm w-full py-2 resize-none overflow-hidden min-h-10"
                                         name="content" rows="1" maxlength="200" placeholder="Add a comment ..."></textarea>
                                     <div class="flexBetween mt-1">
                                         <div id="charCount" class="character-count">0 / 200</div>
-                                        <button id="saveCommentBtn" disabled class="text-sm lg:text-base text-white bg-primary px-4 py-1 rounded-md disabled:opacity-30">Send</button>
+                                        <button id="saveCommentBtn" disabled
+                                            class="text-sm lg:text-base text-white bg-primary px-4 py-1 rounded-md disabled:opacity-30">Send</button>
                                     </div>
                                 </form>
                             @else
@@ -197,7 +209,8 @@
                                                 <small class="font-bold italic">Anonymous</small>
                                             @endif
                                             <small class="text-gray-300 font-light text-xs">•</small>
-                                            <small class="text-gray-400 font-light text-xs"> {{ $comment->created_at->diffForHumans(['parts' => 1]) }}</small>
+                                            <small class="text-gray-400 font-light text-xs">
+                                                {{ $comment->created_at->diffForHumans(['parts' => 1]) }}</small>
                                             {{-- <small>{{ $comment->created_at->diffForHumans(['parts' => 1]) }}</small> --}}
                                         </div>
                                         <p class="text-sm">
@@ -209,7 +222,7 @@
                         </div>
                     </div>
                 @endforeach
-                @if ($articles->count() > 3)
+                @if ($articles->hasPages())
                     {{ $articles->links() }}
                 @endif
                 {{-- <div class="pagination flex items-center justify-between lg:justify-center gap-10 mt-7">
@@ -228,11 +241,17 @@
             <div class="aside">
                 <form method="GET" action=""
                     class="hidden lg:flex {{ $articles->count() == 0 && !request()->input('search') ? 'lg:hidden' : '' }} items-stretch mb-4">
-                    <input type="text" placeholder="Search for Articles" name="search" id="search"
-                        value="{{ request()->input('search') ? request()->input('search') : '' }}"
-                        class="grow px-3 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-md text-gray-200 text-sm">
+                    <div class="relative">
+                        <input type="text" placeholder="Search for Articles" name="search" id="search"
+                            value="{{ request()->input('search') ? request()->input('search') : '' }}"
+                            class="grow pl-3 pr-8 py-2 outline-none bg-dark border border-gray-200 border-r-0 rounded-l-md text-gray-200 text-sm">
+                        @if (request()->input('search'))
+                            <button onclick="clearSearchField()" type="button" class="absolute right-3 top-1/2 -translate-y-1/2"><i
+                                    class="fa-solid fa-xmark text-xl text-light"></i></button>
+                        @endif
+                    </div>
                     <button class="self-auto px-3 border border-[#ff00ff] bg-dark rounded-r-md"><i
-                            class="fa-solid fa-magnifying-glass text-gray-200"></i></button>
+                            class="fa-solid fa-magnifying-glass text-gray-200 mb-1"></i></button>
                     {{-- <button class="self-auto px-3 border border-[#ff00ff] rounded-r-xl"><i class="fa-solid fa-magnifying-glass text-gray-200"></i></button> --}}
                 </form>
                 <div class="ads-container hidden lg:block">
@@ -419,12 +438,19 @@
             // Update character count
             const currentLength = this.value.length;
             charCount.textContent = `${currentLength} / 200`;
-        
+
             if (commentBox.value.length > 0) {
                 saveCommentBtn.removeAttribute('disabled');
             } else {
                 saveCommentBtn.setAttribute('disabled', true);
             }
         });
+
+        function clearSearchField() {
+            const searchFields = document.querySelectorAll('#search');
+            searchFields.forEach(searchField => {
+                searchField.value = '';
+            })
+        }
     </script>
 </x-layout>

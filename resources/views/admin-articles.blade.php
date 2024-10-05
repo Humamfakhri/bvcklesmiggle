@@ -93,7 +93,7 @@
         <div class="editModal fixed inset-0 flex -z-10 opacity-100 transition-opacity items-center justify-center">
             <div class="editModalContent scale-0 transition ease-in-out duration-300 bg-white border-2 border-black max-w-[60%] max-h-[85%] px-5 overflow-y-auto w-full"
                 onclick="event.stopPropagation()">
-                <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white">
+                <div class="card-popup-header flexBetween border-b-2 border-black sticky top-0 pt-5 pb-3 bg-white z-40">
                     <h1 class="font-bold text-2xl text-black font-segoe">Edit Article</h1>
                     <button>
                         <i class="closePopupArticle text-3xl text-black fa-solid fa-xmark"></i>
@@ -108,9 +108,12 @@
                             <div class="col-span-2">
                                 <label class="block text-xs mb-1 font-bold" for="titleEdit">Title<span
                                         class="text-red-600">*</span></label>
-                                <input required type="text" name="titleEdit" id="titleEdit"
+                                <input required id="titleEdit" type="hidden" name="titleEdit">
+                                <trix-editor required id="titleEditTrix" input="titleEdit"
+                                    oninput="checkInputFilled(this)"></trix-editor>
+                                {{-- <input required type="text" name="titleEdit" id="titleEdit"
                                     oninput="checkInputFilled(this)" placeholder="Enter article's title"
-                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                                    class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400"> --}}
                             </div>
                             <div>
                                 <label class="block text-xs mb-1 font-bold" for="authorEdit">Author<span
@@ -212,9 +215,9 @@
                         <div class="col-span-2">
                             <label class="block text-xs mb-1 font-bold" for="title">Title<span
                                     class="text-red-600">*</span></label>
-                            <input required type="text" name="title" id="title"
-                                oninput="checkInputFilled(this)" placeholder="Enter article's title"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                            <input type="hidden" name="title" id="title">
+                                <trix-editor required id="titleTrix" input="title"
+                                    oninput="checkInputFilled(this)"></trix-editor>
                         </div>
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="author">Author<span
@@ -321,7 +324,7 @@
                                 <tr>
                                     <input type="hidden" id="rowId" value="{{ $article->id }}">
                                     <td id="rowNo">No.</td>
-                                    <td id="rowTitle">{{ $article->title }}</td>
+                                    <td id="rowTitle">{!! $article->title !!}</td>
                                     <td id="rowAuthor">{{ $article->author }}</td>
                                     <td id="rowCategory">{{ $article->categories->implode('name', ', ') }}</td>
                                     <td>
@@ -631,7 +634,7 @@
 
         function checkInputFilled(e) {
             // console.log(e.value);
-            const title = document.querySelector('#title');
+            const title = document.querySelector('#titleTrix');
             const author = document.querySelector('#author');
             const category = document.querySelector('#category');
             const body = document.querySelector('#bodyTrix');

@@ -6,6 +6,7 @@
         <li><x-nav-link href="sipalingadminB$/products">PRODUCTS</x-nav-link></li>  
         <li><x-nav-link href="sipalingadminB$/partnership">PARTNERSHIP</x-nav-link></li>  
         <li><x-nav-link href="sipalingadminB$/downloads">DOWNLOADS</x-nav-link></li>  
+        <li><x-nav-link href="sipalingadminB$/users">USERS</x-nav-link></li>  
         {{-- <li><x-nav-link href="partnership">PARTNERSHIP</x-nav-link></li> --}}
     </ul>
     <div class="flex justify-between items-end border border-gray-500 px-3 py-2 rounded-lg">

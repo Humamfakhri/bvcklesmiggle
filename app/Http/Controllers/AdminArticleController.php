@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Article;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
 use App\Models\ArticleWithCategory;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class AdminArticleController extends Controller
 {
@@ -33,7 +34,7 @@ class AdminArticleController extends Controller
                 // Simpan data ke database
                 $articleCategory = new ArticleCategory();
                 $articleCategory->name = $validatedData['name'];
-                $articleCategory->save();   
+                $articleCategory->save();
 
                 // Redirect kembali ke halaman admin dengan pesan sukses
                 return redirect()->route('admin-articles')->with('success', 'Article Category has been added successfully!');
@@ -53,9 +54,14 @@ class AdminArticleController extends Controller
                     $articleImagePath = $request->file('articleImage')->store('article_images', 'public');
                 }
 
+                $pureTitle = strip_tags($validatedData['title']); // "Judul Artikel"
+                $slug = Str::slug($pureTitle); // "judul-artikel"
+
                 // Simpan data ke database
                 $article = new Article();
                 $article->title = $validatedData['title'];
+                $article->pure_title = $pureTitle;
+                $article->slug = $slug;
                 $article->author = $validatedData['author'];
                 $article->image = $articleImagePath;
                 $article->body = $validatedData['body'];
@@ -97,6 +103,11 @@ class AdminArticleController extends Controller
 
             // Cari produk berdasarkan ID
             $article = Article::findOrFail($id);
+            // $articleWithCategory = ArticleWithCategory::where('article_id', $id)->first();
+            $articleWithCategory = ArticleWithCategory::firstOrNew(['article_id' => $id]);
+            // dd($articleWithCategory);
+            $categoryId = ArticleCategory::where('name', $validatedData['categoryEdit'])->value('id');
+            // dd($categoryId);
 
             // Simpan atau update detail image
             $articleImagePathEdit = $article->image; // Ambil gambar article lama
@@ -108,8 +119,16 @@ class AdminArticleController extends Controller
                 $articleImagePathEdit = $request->file('articleImageEdit')->store('article_images', 'public');
             }
 
-            // Update data produk di database
+
+            $pureTitle = strip_tags($validatedData['titleEdit']); // "Judul Artikel"
+            $slug = Str::slug($pureTitle); // "judul-artikel"
+
+            $articleWithCategory->category_id = $categoryId;
+            $articleWithCategory->save();
+
             $article->title = $validatedData['titleEdit'];
+            $article->pure_title = $pureTitle;
+            $article->slug = $slug;
             $article->author = $validatedData['authorEdit'];
             $article->body = $validatedData['bodyEdit'];
             $article->image = $articleImagePathEdit;
