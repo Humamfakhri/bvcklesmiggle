@@ -7,6 +7,7 @@ use App\Models\Partnership;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class AdminPartnershipController extends Controller
 {
@@ -61,6 +62,8 @@ class AdminPartnershipController extends Controller
 
             // Redirect kembali ke halaman admin dengan pesan sukses
             return redirect()->route('admin-partnerships')->with('success', 'Partnership has been added successfully!');
+        } catch (ValidationException $e) {
+            throw $e;
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error adding partnership: ' . $e->getMessage());
@@ -125,6 +128,8 @@ class AdminPartnershipController extends Controller
 
             // Redirect kembali ke halaman admin dengan pesan sukses
             return redirect()->route('admin-partnerships')->with('success', 'Partnership has been updated successfully!');
+        } catch (ValidationException $e) {
+            throw $e;
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error updating partnership: ' . $e->getMessage());

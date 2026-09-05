@@ -11,6 +11,7 @@ use App\Models\ArticleWithCategory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Support\HtmlSanitizer;
+use Illuminate\Validation\ValidationException;
 
 class AdminArticleController extends Controller
 {
@@ -90,6 +91,8 @@ class AdminArticleController extends Controller
                 // Redirect kembali ke halaman admin dengan pesan sukses
                 return redirect()->route('admin-articles')->with('success', 'Article has been added successfully!');
             }
+        } catch (ValidationException $e) {
+            throw $e;
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error updating article: ' . $e->getMessage());
@@ -131,8 +134,10 @@ class AdminArticleController extends Controller
             // Simpan atau update detail image
             $articleImagePathEdit = $article->image; // Ambil gambar article lama
             if ($request->hasFile('articleImageEdit')) {
-                // Hapus gambar article lama dari storage
-                Storage::disk('public')->delete($article->image);
+                // Hapus gambar article lama dari storage jika ada
+                if ($article->image) {
+                    Storage::disk('public')->delete($article->image);
+                }
 
                 // Simpan gambar article baru
                 $articleImagePathEdit = $request->file('articleImageEdit')->store('article_images', 'public');
@@ -156,6 +161,8 @@ class AdminArticleController extends Controller
 
             // Redirect kembali ke halaman admin dengan pesan sukses
             return redirect()->route('admin-articles')->with('success', 'Article has been updated successfully!');
+        } catch (ValidationException $e) {
+            throw $e;
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error updating article: ' . $e->getMessage());

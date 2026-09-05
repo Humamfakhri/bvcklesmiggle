@@ -1,5 +1,5 @@
 <div class="sidebar h-screen py-6 bg-dark flex flex-col padding-container sticky top-0">
-    <img src="/img/logo.png" alt="" class="h-auto max-w-52">
+    <a href="/"><img src="/img/logo.png" alt="" class="h-auto max-w-52"></a>
     <ul class="flex flex-col gap-5 mt-5 grow">
         {{-- <li><x-nav-link href="/">HOME</x-nav-link></li> --}}
         <li><x-nav-link href="/admin/articles">ARTICLES</x-nav-link></li>

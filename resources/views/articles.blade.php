@@ -65,7 +65,7 @@
         <div class="flex flex-col lg:flex-row gap-4 items-start">
             <div class="articles flex flex-col gap-5 lg:gap-7 grow">
                 <div
-                    class="sticky top-[70px] lg:hidden {{ $articles->count() == 0 && !request()->input('search') ? 'hidden' : '' }}">
+                    class="sticky top-[70px] lg:hidden z-10 {{ $articles->count() == 0 && !request()->input('search') ? 'hidden' : '' }}">
                     <form method="GET" action="" class="flex items-stretch mb-2">
                         <input type="text" name="search" id="search" placeholder="Search for Articles"
                             value="{{ request()->input('search') ? request()->input('search') : '' }}"
@@ -77,21 +77,12 @@
                 </div>
                 <div class="categories lg:hidden">
                     <h2 class="font-bold text-gray-200 mb-3">CATEGORIES:</h2>
-                    <ul class="flex items-center gap-2">
+                    <ul class="flex items-center gap-4 flex-wrap">
                         @foreach ($categories as $category)
-                            <li><a href="articles?category={{ $category->name }}"
+                            <li class="shrink-0"><a href="articles?category={{ $category->name }}"
                                     class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-md text-[#ff00ff]">{{ $category->name }}</a>
                             </li>
                         @endforeach
-                        {{-- <li><a href="#"
-                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-md text-[#ff00ff]">Event</a>
-                        </li>
-                        <li><a href="#"
-                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-md text-[#ff00ff]">Music</a>
-                        </li>
-                        <li><a href="#"
-                                class="bg-dark border border-[#ff00ff]  px-3 py-1 rounded-md text-[#ff00ff]">Popstore</a>
-                        </li> --}}
                     </ul>
                 </div>
                 {{-- <div class="ads-container flexCenter lg:hidden">
@@ -122,7 +113,7 @@
                             </div>
                         </div>
                         <img src="{{ asset('storage/' . $article->image) }}" alt=""
-                            class="w-auto h-full max-w-3xl max-h-96 mt-7 block mx-auto rounded-md">
+                            class="w-auto h-full max-h-96 mt-7 block mx-auto rounded-md">
                         {{-- <div class="flexCenter my-5">
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/OqEc_169ywY"
                                 title="YouTube video player" frameborder="0"

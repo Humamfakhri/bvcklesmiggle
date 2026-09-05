@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class AdminDownloadController extends Controller
 {
@@ -53,6 +54,8 @@ class AdminDownloadController extends Controller
 
             // Redirect kembali ke halaman admin dengan pesan sukses
             return redirect()->route('admin-downloads')->with('success', 'Download has been added successfully!');
+        } catch (ValidationException $e) {
+            throw $e;
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error adding download: ' . $e->getMessage());
@@ -105,6 +108,8 @@ class AdminDownloadController extends Controller
 
             // Redirect kembali ke halaman admin dengan pesan sukses
             return redirect()->route('admin-downloads')->with('success', 'Download has been updated successfully!');
+        } catch (ValidationException $e) {
+            throw $e;
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error updating download: ' . $e->getMessage());

@@ -9,6 +9,7 @@ use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Support\HtmlSanitizer;
+use Illuminate\Validation\ValidationException;
 
 class AdminProductController extends Controller
 {
@@ -47,6 +48,8 @@ class AdminProductController extends Controller
 
                 // Redirect kembali ke halaman admin dengan pesan sukses
                 return redirect('/admin/products')->with('success', 'Product Category has been added successfully!');
+            } catch (ValidationException $e) {
+                throw $e;
             } catch (Exception $e) {
                 // Log error untuk debugging
                 Log::error('Error updating product: ' . $e->getMessage());
@@ -124,6 +127,8 @@ class AdminProductController extends Controller
 
             // Redirect kembali ke halaman admin dengan pesan sukses
             return redirect()->route('admin-products')->with('success', 'Product has been added successfully!');
+        } catch (ValidationException $e) {
+            throw $e;
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error adding product: ' . $e->getMessage());
@@ -166,8 +171,8 @@ class AdminProductController extends Controller
             $product = Product::findOrFail($id);
 
             // Simpan atau update multiple product images
-            $productImagesEdit = json_decode($product->product_images, true); // Ambil gambar lama
-            if ($request->hasfile('productImageEdit')) {
+            $productImagesEdit = json_decode($product->product_images ?? '[]', true) ?? []; // Ambil gambar lama
+            if ($request->hasFile('productImageEdit')) {
                 // Hapus gambar lama dari storage
                 foreach ($productImagesEdit as $image) {
                     Storage::disk('public')->delete($image);
@@ -194,8 +199,8 @@ class AdminProductController extends Controller
             // Update data produk di database
             $product->name = strip_tags($validatedData['nameEdit']);
             $product->category = strip_tags($validatedData['categoryEdit']);
-            $product->link_shopee = $validatedData['linkShopeeEdit'];
-            $product->link_tokopedia = $validatedData['linkTokopediaEdit'];
+            $product->link_shopee = $validatedData['linkShopeeEdit'] ?? null;
+            $product->link_tokopedia = $validatedData['linkTokopediaEdit'] ?? null;
             $product->product_images = json_encode($productImagesEdit); // Simpan array images sebagai JSON
             $product->issue = HtmlSanitizer::sanitize($validatedData['issueEdit']);
             $product->details = HtmlSanitizer::sanitize($validatedData['detailsEdit']);
@@ -204,6 +209,8 @@ class AdminProductController extends Controller
 
             // Redirect kembali ke halaman admin dengan pesan sukses
             return redirect()->route('admin-products')->with('success', 'Product has been updated successfully!');
+        } catch (ValidationException $e) {
+            throw $e;
         } catch (Exception $e) {
             // Log error untuk debugging
             Log::error('Error updating product: ' . $e->getMessage());
