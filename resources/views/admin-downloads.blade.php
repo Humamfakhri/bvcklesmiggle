@@ -80,15 +80,23 @@
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="title">Title<span
                                     class="text-red-600">*</span></label>
-                            <input required type="text" name="title" id="title"
+                            <input required type="text" name="title" id="title" value="{{ old('title') }}"
                                 oninput="checkInputFilled(this)" placeholder="Enter download title"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('title') border-red-500 @enderror">
+                            <small class="mt-1 block text-gray-500">Use a clear file title for the download entry.</small>
+                            @error('title')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="link">Link</label>
-                            <input required type="text" name="link" id="link"
+                            <input type="url" name="link" id="link" value="{{ old('link') }}"
                                 oninput="checkInputFilled(this)" placeholder="Enter download link"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('link') border-red-500 @enderror">
+                            <small class="mt-1 block text-gray-500">Required. Provide a valid URL pointing to the downloadable file.</small>
+                            @error('link')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="flexEnd">

@@ -42,11 +42,20 @@ class AdminArticleController extends Controller
             } else {
                 // ARTICLE
                 $validatedData = $request->validate([
-                    'title' => 'required|string|max:255',
-                    'author' => 'required|string|max:255',
-                    'category' => 'required|string|max:255',
-                    'articleImage' => 'image|mimes:jpeg,jpg,png,webp|max:2048',
-                    'body' => 'required|string',
+                    'title' => 'required|string|min:3|max:255',
+                    'author' => 'required|string|min:2|max:255',
+                    'category' => 'required|string|min:2|max:255',
+                    'articleImage' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+                    'body' => 'required|string|min:20',
+                ], [
+                    'title.required' => 'Article title is required.',
+                    'title.min' => 'Article title must be at least 3 characters.',
+                    'author.required' => 'Author name is required.',
+                    'author.min' => 'Author name must be at least 2 characters.',
+                    'category.required' => 'Please select an article category.',
+                    'body.required' => 'Article content is required.',
+                    'body.min' => 'Article body must be at least 20 characters long.',
+                    'articleImage.image' => 'The article image must be a valid image file.',
                 ]);
 
                 // Simpan detail image
@@ -95,11 +104,20 @@ class AdminArticleController extends Controller
         try {
             // Validasi data input
             $validatedData = $request->validate([
-                'titleEdit' => 'required|string|max:255',
-                'authorEdit' => 'required|string|max:255',
-                'categoryEdit' => 'required|string|max:255',
-                'articleImageEdit' => 'image|mimes:jpeg,jpg,png,webp|max:2048',
-                'bodyEdit' => 'required|string',
+                'titleEdit' => 'required|string|min:3|max:255',
+                'authorEdit' => 'required|string|min:2|max:255',
+                'categoryEdit' => 'required|string|min:2|max:255',
+                'articleImageEdit' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+                'bodyEdit' => 'required|string|min:20',
+            ], [
+                'titleEdit.required' => 'Article title is required.',
+                'titleEdit.min' => 'Article title must be at least 3 characters.',
+                'authorEdit.required' => 'Author name is required.',
+                'authorEdit.min' => 'Author name must be at least 2 characters.',
+                'categoryEdit.required' => 'Please select an article category.',
+                'bodyEdit.required' => 'Article content is required.',
+                'bodyEdit.min' => 'Article body must be at least 20 characters long.',
+                'articleImageEdit.image' => 'The article image must be a valid image file.',
             ]);
 
             // Cari produk berdasarkan ID

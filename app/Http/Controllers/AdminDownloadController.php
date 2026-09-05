@@ -36,8 +36,13 @@ class AdminDownloadController extends Controller
         try {
             // Validasi data input
             $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
-                'link' => 'string',
+                'title' => 'required|string|min:3|max:255',
+                'link' => ['required', 'url', 'max:255'],
+            ], [
+                'title.required' => 'Download title is required.',
+                'title.min' => 'Download title must be at least 3 characters.',
+                'link.required' => 'Download link is required.',
+                'link.url' => 'Download link must be a valid URL.',
             ]);
 
             // Simpan data ke database
@@ -81,8 +86,13 @@ class AdminDownloadController extends Controller
         try {
             // Validasi data input
             $validatedData = $request->validate([
-                'titleEdit' => 'required|string|max:255',
-                'linkEdit' => 'string',
+                'titleEdit' => 'required|string|min:3|max:255',
+                'linkEdit' => ['required', 'url', 'max:255'],
+            ], [
+                'titleEdit.required' => 'Download title is required.',
+                'titleEdit.min' => 'Download title must be at least 3 characters.',
+                'linkEdit.required' => 'Download link is required.',
+                'linkEdit.url' => 'Download link must be a valid URL.',
             ]);
 
             // Cari produk berdasarkan ID

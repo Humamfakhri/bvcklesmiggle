@@ -144,6 +144,7 @@
                                     accept=".jpeg,.jpg,.png,.webp"
                                     class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('image') is-invalid @enderror"
                                     onchange="validateFiles('articleImage', 'articleImagesPreview', 'articleImageError')">
+                                <small class="text-gray-500">JPEG/JPG/PNG/WEBP - Max. 2MB</small>
                                 @error('image')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -218,28 +219,40 @@
                             <input type="hidden" name="title" id="title">
                                 <trix-editor required id="titleTrix" input="title"
                                     oninput="checkInputFilled(this)"></trix-editor>
+                            <small class="mt-1 block text-gray-500">Use a clear article title with at least 3 characters.</small>
+                            @error('title')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="author">Author<span
                                     class="text-red-600">*</span></label>
-                            <input required type="text" name="author" id="author"
+                            <input required type="text" name="author" id="author" value="{{ old('author') }}"
                                 oninput="checkInputFilled(this)" placeholder="Enter article's author"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('author') border-red-500 @enderror">
+                            <small class="mt-1 block text-gray-500">Add the writer or editor name.</small>
+                            @error('author')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="relative">
                             <label class="block text-xs mb-1 font-bold" for="category">Category<span
                                     class="text-red-600">*</span></label>
                             <div class="relative">
                                 <select name="category" id="category" oninput="checkInputFilled(this)"
-                                    class="w-full px-3 py-2 rounded-lg appearance-none border border-gray-400 text-xs cursor-pointer">
+                                    class="w-full px-3 py-2 rounded-lg appearance-none border border-gray-400 text-xs cursor-pointer @error('category') border-red-500 @enderror">
                                     <option value="">-- Select Category --</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->name }}" {{ old('category') == $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="absolute top-0 right-0 h-full flexCenter pe-3"><i
                                         class="fa-solid fa-chevron-down"></i></div>
                             </div>
+                            <small class="mt-1 block text-gray-500">Choose the category that matches the article topic.</small>
+                            @error('category')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                             {{-- <div
                                 class="categoryContainer absolute top-full mt-1 h-0 overflow-hidden duration-300 z-50">
                                 <ul class="leading-loose px-5 py-3 border border-gray-400 bg-dark rounded-xl">
@@ -277,6 +290,7 @@
                                 accept=".jpeg,.jpg,.png,.webp"
                                 class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('image') is-invalid @enderror"
                                 onchange="validateFiles('articleImage', 'articleImagesPreview', 'articleImageError')">
+                            <small class="text-gray-500">JPEG/JPG/PNG/WEBP - Max. 2MB</small>
                             @error('image')
                                 <div class="invalid-feedback">
                                     {{ $message }}

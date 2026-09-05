@@ -105,26 +105,33 @@
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="name">Name<span
                                     class="text-red-600">*</span></label>
-                            <input required type="text" name="name" id="name"
+                            <input required type="text" name="name" id="name" value="{{ old('name') }}"
                                 oninput="checkInputFilled(this)" placeholder="Enter partnership name"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('name') border-red-500 @enderror">
+                            <small class="mt-1 block text-gray-500">Use the official partnership name.</small>
+                            @error('name')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="link">Link</label>
-                            <input required type="text" name="link" id="link"
+                            <input type="url" name="link" id="link" value="{{ old('link') }}"
                                 oninput="checkInputFilled(this)" placeholder="Enter partnership link"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('link') border-red-500 @enderror">
+                            <small class="mt-1 block text-gray-500">Optional. Include the full URL, for example https://example.com.</small>
+                            @error('link')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <label class="block text-xs mb-1 font-bold">Partnership's Image</label>
                             <input type="file" name="image" id="image" accept=".jpeg,.jpg,.png,.webp"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('image') is-invalid @enderror"
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('image') border-red-500 @enderror"
                                 onchange="validateFiles('image', 'imagesPreview', 'imageError')"
                                 oninput="checkInputFilled(this)">
+                            <small class="mt-1 block text-gray-500">JPEG/JPG/PNG/WEBP - Max. 2MB</small>
                             @error('image')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
                             @enderror
                             <div class="text-red-500 text-xs pt-2" id="imageError"></div>
                             <!-- Tempat error message -->

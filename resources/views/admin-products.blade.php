@@ -227,36 +227,50 @@
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="name">Name<span
                                     class="text-red-600">*</span></label>
-                            <input required type="text" name="name" id="name"
+                            <input required type="text" name="name" id="name" value="{{ old('name') }}"
                                 oninput="addProductValidation(this)" placeholder="Enter product name"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('name') border-red-500 @enderror">
+                            <small class="mt-1 block text-gray-500">Use a product name between 3 and 255 characters.</small>
+                            @error('name')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="relative">
                             <label class="block text-xs mb-1 font-bold" for="category">Category<span
                                     class="text-red-600">*</span></label>
                             <div class="relative">
                                 <select name="category" id="category" oninput="addProductValidation(this)"
-                                    class="w-full px-3 py-2 rounded-lg appearance-none border border-gray-400 text-xs cursor-pointer">
+                                    class="w-full px-3 py-2 rounded-lg appearance-none border border-gray-400 text-xs cursor-pointer @error('category') border-red-500 @enderror">
                                     <option value="">-- Select Category --</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->name }}" {{ old('category') == $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="absolute top-0 right-0 h-full flexCenter pe-3"><i
                                         class="fa-solid fa-chevron-down"></i></div>
                             </div>
+                            <small class="mt-1 block text-gray-500">Choose the product category before saving.</small>
+                            @error('category')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="linkShopee">Link Shopee</label>
-                            <input required type="text" name="linkShopee" id="linkShopee"
-                                oninput="addProductValidation(this)" placeholder="Enter Shopee product link"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                            <input type="url" name="linkShopee" id="linkShopee" value="{{ old('linkShopee') }}"
+                                oninput="addProductValidation(this)" placeholder="https://shopee.co.id/..."
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('linkShopee') border-red-500 @enderror">
+                            @error('linkShopee')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-xs mb-1 font-bold" for="linkTokopedia">Link Tokopedia</label>
-                            <input required type="text" name="linkTokopedia" id="linkTokopedia"
-                                oninput="addProductValidation(this)" placeholder="Enter Tokopedia product link"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400">
+                            <input type="url" name="linkTokopedia" id="linkTokopedia" value="{{ old('linkTokopedia') }}"
+                                oninput="addProductValidation(this)" placeholder="https://www.tokopedia.com/..."
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('linkTokopedia') border-red-500 @enderror">
+                            @error('linkTokopedia')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         {{-- <div class="col-span-2">
                             <label class="block text-xs mb-1 font-bold">Product Images</label>
@@ -285,10 +299,14 @@
                         
                         <div class="col-span-2">
                             <!-- Input untuk Gambar Detail -->
-                            <label class="block text-xs mb-1 font-bold">Product Images</label>
+                            <label class="block text-xs mb-1 font-bold">Product Images<span class="text-red-600">*</span></label>
                             <input type="file" name="productImage[]" id="productImage" multiple accept=".jpeg,.jpg,.png,.webp"
-                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white"
+                                class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 bg-white @error('productImage') border-red-500 @enderror"
                                 onchange="validateFiles('productImage', 'productImagesPreview', 'productImageError')">
+                            <small class="mt-1 block text-gray-500">JPEG/JPG/PNG/WEBP - Max. 2MB each.</small>
+                            @error('productImage')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                             <div class="text-red-500 text-xs" id="productImageError"></div>
                             <div class="grid grid-cols-4 gap-3" id="productImagesPreview">
                                 {{-- <img src="/img/blckruby1.jpg" alt="" class="w-full object-cover aspect-square border border-gray-200 mt-4"> --}}
@@ -299,11 +317,19 @@
                             <label class="block text-xs mb-1 font-bold">Issue</label>
                             <input id="issue" type="hidden" name="issue">
                             <trix-editor input="issue" oninput="addProductValidation(this)"></trix-editor>
+                            <small class="mt-1 block text-gray-500">Describe the core issue or value proposition in <b>at least 20 characters</b>.</small>
+                            @error('issue')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <label class="block text-xs mb-1 font-bold">Details</label>
                             <input id="details" type="hidden" name="details">
                             <trix-editor input="details" oninput="addProductValidation(this)"></trix-editor>
+                            <small class="mt-1 block text-gray-500">Add full product details, features, and specifications <b>at least 20 characters</b>.</small>
+                            @error('details')
+                                <div class="mt-1 text-xs text-red-600">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="flexBetween">

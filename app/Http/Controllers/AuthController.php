@@ -31,12 +31,17 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+            'username' => ['required', 'string', 'min:3', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
+        ], [
+            'username.required' => 'Username is required.',
+            'username.min' => 'Username must be at least 3 characters.',
+            'password.required' => 'Password is required.',
+            'password.min' => 'Password must be at least 8 characters.',
         ]);
 
         $credentials = [
-            'username' => $request->username,
+            'username' => trim($request->username),
             'password' => $request->password,
         ];
 
@@ -48,7 +53,7 @@ class AuthController extends Controller
             Auth::logout();
         }
 
-        return redirect()->back()->withErrors(['login' => 'Incorrect admin credentials.']);
+        return redirect()->back()->withErrors(['login' => 'Incorrect admin credentials.'])->withInput();
     }
 
     public function logout()

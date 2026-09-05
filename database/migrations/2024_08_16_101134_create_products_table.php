@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('link_tokopedia');
             // $table->boolean('is_active_tokopedia');
             $table->json('product_images'); // Menyimpan beberapa product images dalam format JSON
-            $table->text('issue'); // Menyimpan detail image
-            $table->text('details'); // Menyimpan detail image
+            $table->text('issue');
+            $table->text('details');
             // $table->foreign('category')->references('id')->on('product_categories');
             $table->timestamps();
         });

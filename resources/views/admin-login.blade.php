@@ -26,18 +26,26 @@
                 <h1 class="text-light font-bold text-2xl mb-4">Welcome Back, Admin!</h1>
                 <form method="POST" action="{{ route('login-admin') }}" class="flex flex-col gap-5">
                     @csrf
-                    @error('login-admin')
+                    @error('login')
                         <div class="w-full rounded-lg px-3 py-2 border border-red-500 bg-red-950/50 text-red-500 text-sm">{{ $message }}</div>
                     @enderror
                     <div>
                         <label class="block mb-2 text-gray-300" for="username">Username</label>
-                        <input required autocomplete="off" type="text" name="username" id="username" placeholder="Enter your username"
-                            class="w-full rounded-lg px-3 py-2 bg-dark border border-gray-500 text-gray-200">
+                        <input required autocomplete="off" type="text" name="username" id="username" value="{{ old('username') }}" placeholder="Enter your username"
+                            class="w-full rounded-lg px-3 py-2 bg-dark border border-gray-500 text-gray-200 @error('username') border-red-500 @enderror">
+                        <small class="mt-1 block text-gray-400">Use the administrator username created for this website.</small>
+                        @error('username')
+                            <div class="mt-1 text-sm text-red-400">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div>
                         <label class="block mb-2 text-gray-300" for="password">Password</label>
                         <input required autocomplete="off" type="password" name="password" id="password" placeholder="Enter your password"
-                            class="w-full rounded-lg px-3 py-2 bg-dark border border-gray-500 text-gray-200">
+                            class="w-full rounded-lg px-3 py-2 bg-dark border border-gray-500 text-gray-200 @error('password') border-red-500 @enderror">
+                        <small class="mt-1 block text-gray-400">Password must be at least 8 characters long.</small>
+                        @error('password')
+                            <div class="mt-1 text-sm text-red-400">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mt-4">
                         <button type="submit"

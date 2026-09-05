@@ -34,7 +34,10 @@ class AdminProductController extends Controller
             try {
                 // Validasi data input
                 $validatedData = $request->validate([
-                    'categoryName' => 'required|string|max:255',
+                    'categoryName' => 'required|string|min:2|max:255',
+                ], [
+                    'categoryName.required' => 'Category name is required.',
+                    'categoryName.min' => 'Category name must be at least 2 characters.',
                 ]);
 
                 // Simpan data ke database
@@ -56,14 +59,25 @@ class AdminProductController extends Controller
         try {
             // Validasi data input
             $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'category' => 'required|string|max:255',
-                'linkShopee' => 'string',
-                'linkTokopedia' => 'string',
-                // 'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-                'productImage.*' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-                'issue' => 'required|string',
-                'details' => 'required|string'
+                'name' => 'required|string|min:3|max:255',
+                'category' => 'required|string|min:2|max:255',
+                'linkShopee' => ['nullable', 'url', 'max:255'],
+                'linkTokopedia' => ['nullable', 'url', 'max:255'],
+                'productImage' => 'required|array|min:1',
+                'productImage.*' => 'image|mimes:jpeg,jpg,png,webp|max:2048',
+                'issue' => 'required|string|min:20',
+                'details' => 'required|string|min:20'
+            ], [
+                'name.required' => 'Product name is required.',
+                'name.min' => 'Product name must be at least 3 characters.',
+                'category.required' => 'Please select a product category.',
+                'linkShopee.url' => 'Shopee link must be a valid URL.',
+                'linkTokopedia.url' => 'Tokopedia link must be a valid URL.',
+                'productImage.required' => 'Please upload at least one product image.',
+                'issue.required' => 'Product issue/overview is required.',
+                'issue.min' => 'Product issue must be at least 20 characters long.',
+                'details.required' => 'Product details are required.',
+                'details.min' => 'Product details must be at least 20 characters long.',
             ]);
 
             // Simpan multiple product images

@@ -36,9 +36,14 @@ class AdminPartnershipController extends Controller
         try {
             // Validasi data input
             $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
+                'name' => 'required|string|min:2|max:255',
                 'image' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-                'link' => 'string',
+                'link' => ['nullable', 'url', 'max:255'],
+            ], [
+                'name.required' => 'Partnership name is required.',
+                'name.min' => 'Partnership name must be at least 2 characters.',
+                'image.required' => 'A partnership image is required.',
+                'link.url' => 'Partnership link must be a valid URL.',
             ]);
 
             // Simpan detail image
@@ -89,9 +94,14 @@ class AdminPartnershipController extends Controller
         try {
             // Validasi data input
             $validatedData = $request->validate([
-                'nameEdit' => 'required|string|max:255',
-                'imageEdit.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
-                'linkEdit' => 'string',
+                'nameEdit' => 'required|string|min:2|max:255',
+                'imageEdit' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+                'linkEdit' => ['nullable', 'url', 'max:255'],
+            ], [
+                'nameEdit.required' => 'Partnership name is required.',
+                'nameEdit.min' => 'Partnership name must be at least 2 characters.',
+                'imageEdit.image' => 'The partnership image must be a valid image file.',
+                'linkEdit.url' => 'Partnership link must be a valid URL.',
             ]);
 
             // Cari produk berdasarkan ID
