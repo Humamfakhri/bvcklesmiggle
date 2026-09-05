@@ -312,7 +312,7 @@
                             Add Category
                             <i class="fa-solid fa-plus color-primary"></i>
                         </button>
-                        <button id="addArticleBtn"
+                        <button id="addArticleBtn" disabled
                             class="w-fit px-4 py-1 my-6  text-white font-bold bg-primary rounded border-2 border-black flexCenter gap-2 disabled:cursor-not-allowed disabled:opacity-30">
                             Add Article
                             <i class="fa-solid fa-plus text-white"></i>
@@ -628,31 +628,40 @@
         const addArticleBtn = document.querySelector('#addArticleBtn');
         addArticleBtn.setAttribute('disabled', true);
 
-        document.getElementById('bodyTrix').addEventListener('trix-paste', function(event) {
-            // Dapatkan konten yang dipaste
-            // const pastedContent = event.paste;
+        function isValidUrl(value) {
+            if (!value || !value.trim()) return true;
+            try {
+                const url = new URL(value);
+                return ['http:', 'https:'].includes(url.protocol);
+            } catch (error) {
+                return false;
+            }
+        }
 
-            // Lakukan sesuatu dengan konten yang dipaste
-            // console.log('Content pasted:', pastedContent);
-            checkInputFilled()
+        function getTextContent(value) {
+            return (value || '').replace(/<[^>]*>/g, '').trim();
+        }
+
+        document.getElementById('bodyTrix').addEventListener('trix-paste', function() {
+            checkInputFilled();
         });
 
-        document.getElementById('bodyEditTrix').addEventListener('trix-paste', function(event) {
-            // Dapatkan konten yang dipaste
-            // const pastedContent = event.paste;
-
-            // Lakukan sesuatu dengan konten yang dipaste
-            // console.log('Content pasted:', pastedContent);
-            checkInputFilled()
+        document.getElementById('bodyEditTrix').addEventListener('trix-paste', function() {
+            checkInputFilled();
         });
 
-        function checkInputFilled(e) {
-            // console.log(e.value);
-            const title = document.querySelector('#titleTrix');
+        function checkInputFilled() {
+            const title = document.querySelector('#title');
             const author = document.querySelector('#author');
             const category = document.querySelector('#category');
-            const body = document.querySelector('#bodyTrix');
-            if (title.value && author.value && category.value && body.value) {
+            const body = document.querySelector('#body');
+
+            const isTitleValid = getTextContent(title.value).length >= 3;
+            const isAuthorValid = author.value.trim().length >= 2;
+            const isCategoryValid = category.value && category.value.trim().length > 0;
+            const isBodyValid = getTextContent(body.value).length >= 20;
+
+            if (isTitleValid && isAuthorValid && isCategoryValid && isBodyValid) {
                 addArticleBtn.removeAttribute('disabled');
             } else {
                 addArticleBtn.setAttribute('disabled', true);

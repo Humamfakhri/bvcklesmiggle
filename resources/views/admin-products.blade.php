@@ -650,6 +650,20 @@
         const addProductBtn = document.querySelector('#addProductBtn');
         addProductBtn.setAttribute('disabled', true);
 
+        function isValidUrl(value) {
+            if (!value || !value.trim()) return true;
+            try {
+                const url = new URL(value);
+                return ['http:', 'https:'].includes(url.protocol);
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function stripHtml(value) {
+            return (value || '').replace(/<[^>]*>/g, '').trim();
+        }
+
         function addProductValidation() {
             const name = document.querySelector('#name');
             const category = document.querySelector('#category');
@@ -658,7 +672,16 @@
             const productImage = document.querySelector('#productImage');
             const issue = document.querySelector('#issue');
             const details = document.querySelector('#details');
-            if (name.value && category.value && productImage.value && issue.value && details.value) {
+
+            const isNameValid = name.value.trim().length >= 3;
+            const isCategoryValid = category.value && category.value.trim().length > 0;
+            const isImageValid = productImage.files && productImage.files.length > 0;
+            const isIssueValid = stripHtml(issue.value).length >= 20;
+            const isDetailsValid = stripHtml(details.value).length >= 20;
+            const isShopeeValid = isValidUrl(linkShopee.value);
+            const isTokopediaValid = isValidUrl(linkTokopedia.value);
+
+            if (isNameValid && isCategoryValid && isImageValid && isIssueValid && isDetailsValid && isShopeeValid && isTokopediaValid) {
                 addProductBtn.removeAttribute('disabled');
             } else {
                 addProductBtn.setAttribute('disabled', true);

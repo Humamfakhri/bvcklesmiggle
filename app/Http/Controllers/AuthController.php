@@ -18,7 +18,7 @@ class AuthController extends Controller
 
     //     if (Auth::attempt($credentials)) {
     //         // Authentication passed
-    //         return redirect()->intended('/sipalingadminB$/articles'); // redirect to intended page
+    //         return redirect()->intended('/admin/articles'); // redirect to intended page
     //     } else {
     //         // Authentication failed
     //         return back()->withErrors([

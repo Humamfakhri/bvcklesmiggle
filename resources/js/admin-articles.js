@@ -111,7 +111,7 @@ editBtns.forEach(editBtn => {
     console.log(tr);
     
 
-    editArticleForm.action = "/sipalingadminB$/articles/" + rowId;
+    editArticleForm.action = "/admin/articles/" + rowId;
 
     document.body.classList.add('overflow-hidden');
     editModal.classList.remove('opacity-0');

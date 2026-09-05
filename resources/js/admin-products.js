@@ -76,7 +76,7 @@ editBtns.forEach(editBtn => {
     const rowLinkShopee = tr.querySelector('#rowLinkShopee').href;
     const rowLinkTokopedia = tr.querySelector('#rowLinkTokopedia').href;
 
-    editProductForm.action = "/sipalingadminB$/products/" + rowId;
+    editProductForm.action = "/admin/products/" + rowId;
 
     document.body.classList.add('overflow-hidden');
     editModal.classList.remove('opacity-0');

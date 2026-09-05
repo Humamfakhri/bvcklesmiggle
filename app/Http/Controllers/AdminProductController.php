@@ -46,7 +46,7 @@ class AdminProductController extends Controller
                 $productCategory->save();
 
                 // Redirect kembali ke halaman admin dengan pesan sukses
-                return redirect('/sipalingadminB$/products')->with('success', 'Product Category has been added successfully!');
+                return redirect('/admin/products')->with('success', 'Product Category has been added successfully!');
             } catch (Exception $e) {
                 // Log error untuk debugging
                 Log::error('Error updating product: ' . $e->getMessage());

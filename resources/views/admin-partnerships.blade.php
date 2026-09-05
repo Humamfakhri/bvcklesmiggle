@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <div class="flexEnd">
-                        <button id="addPartnershipBtn"
+                        <button id="addPartnershipBtn" disabled
                             class="w-fit px-4 py-1 my-6  text-white font-bold bg-primary rounded border-2 border-black flexCenter gap-2 disabled:cursor-not-allowed disabled:opacity-30">
                             Add Partnership
                             <i class="fa-solid fa-plus text-white"></i>
@@ -336,12 +336,26 @@
         const addPartnershipBtn = document.querySelector('#addPartnershipBtn');
         addPartnershipBtn.setAttribute('disabled', true);
 
-        function checkInputFilled(e) {
-            // console.log(e.value);
+        function isValidUrl(value) {
+            if (!value || !value.trim()) return true;
+            try {
+                const url = new URL(value);
+                return ['http:', 'https:'].includes(url.protocol);
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function checkInputFilled() {
             const name = document.querySelector('#name');
             const link = document.querySelector('#link');
             const image = document.querySelector('#image');
-            if (name.value && link.value && image.value) {
+
+            const isNameValid = name.value.trim().length >= 2;
+            const isImageValid = image.files && image.files.length > 0;
+            const isLinkValid = isValidUrl(link.value);
+
+            if (isNameValid && isImageValid && isLinkValid) {
                 addPartnershipBtn.removeAttribute('disabled');
             } else {
                 addPartnershipBtn.setAttribute('disabled', true);
@@ -376,7 +390,7 @@
                 const rowImage = tr.querySelector('#rowImage');
                 const rowLink = tr.querySelector('#rowLink').innerHTML;
 
-                editPartnershipForm.action = "/sipalingadminB$/partnership/" + rowId;
+                editPartnershipForm.action = "/admin/partnership/" + rowId;
 
                 document.body.classList.add('overflow-hidden');
                 editModal.classList.remove('opacity-0');

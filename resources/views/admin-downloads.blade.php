@@ -89,7 +89,7 @@
                             @enderror
                         </div>
                         <div>
-                            <label class="block text-xs mb-1 font-bold" for="link">Link</label>
+                            <label class="block text-xs mb-1 font-bold" for="link">Link<span class="text-red-600">*</span></label>
                             <input type="url" name="link" id="link" value="{{ old('link') }}"
                                 oninput="checkInputFilled(this)" placeholder="Enter download link"
                                 class="text-xs w-full rounded-lg px-3 py-2 border border-gray-400 @error('link') border-red-500 @enderror">
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <div class="flexEnd">
-                        <button id="addDownloadBtn"
+                        <button id="addDownloadBtn" disabled
                             class="w-fit px-4 py-1 my-6  text-white font-bold bg-primary rounded border-2 border-black flexCenter gap-2 disabled:cursor-not-allowed disabled:opacity-30">
                             Add Download
                             <i class="fa-solid fa-plus text-white"></i>
@@ -190,11 +190,24 @@
         const addDownloadBtn = document.querySelector('#addDownloadBtn');
         addDownloadBtn.setAttribute('disabled', true);
 
-        function checkInputFilled(e) {
-            // console.log(e.value);
+        function isValidUrl(value) {
+            if (!value || !value.trim()) return true;
+            try {
+                const url = new URL(value);
+                return ['http:', 'https:'].includes(url.protocol);
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function checkInputFilled() {
             const title = document.querySelector('#title');
             const link = document.querySelector('#link');
-            if (title.value && link.value) {
+
+            const isTitleValid = title.value.trim().length >= 3;
+            const isLinkValid = !!link.value && isValidUrl(link.value);
+
+            if (isTitleValid && isLinkValid) {
                 addDownloadBtn.removeAttribute('disabled');
             } else {
                 addDownloadBtn.setAttribute('disabled', true);
@@ -223,7 +236,7 @@
                 const rowTitle = tr.querySelector('#rowTitle').innerHTML;
                 const rowLink = tr.querySelector('#rowLink').innerHTML;
 
-                editDownloadForm.action = "/sipalingadminB$/downloads/" + rowId;
+                editDownloadForm.action = "/admin/downloads/" + rowId;
 
                 document.body.classList.add('overflow-hidden');
                 editModal.classList.remove('opacity-0');
