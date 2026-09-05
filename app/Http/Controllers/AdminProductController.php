@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Support\HtmlSanitizer;
 
 class AdminProductController extends Controller
 {
@@ -96,10 +97,10 @@ class AdminProductController extends Controller
 
             // Simpan data ke database
             $product = new Product();
-            $product->name = $validatedData['name'];
-            $product->category = $validatedData['category'];
-            $product->issue = $validatedData['issue'];
-            $product->details = $validatedData['details'];
+            $product->name = strip_tags($validatedData['name']);
+            $product->category = strip_tags($validatedData['category']);
+            $product->issue = HtmlSanitizer::sanitize($validatedData['issue']);
+            $product->details = HtmlSanitizer::sanitize($validatedData['details']);
             $product->link_shopee = $validatedData['linkShopee'];
             $product->link_tokopedia = $validatedData['linkTokopedia'];
             $product->product_images = json_encode($productImages); // Simpan dalam format JSON
@@ -177,13 +178,13 @@ class AdminProductController extends Controller
             }
 
             // Update data produk di database
-            $product->name = $validatedData['nameEdit'];
-            $product->category = $validatedData['categoryEdit'];
+            $product->name = strip_tags($validatedData['nameEdit']);
+            $product->category = strip_tags($validatedData['categoryEdit']);
             $product->link_shopee = $validatedData['linkShopeeEdit'];
             $product->link_tokopedia = $validatedData['linkTokopediaEdit'];
             $product->product_images = json_encode($productImagesEdit); // Simpan array images sebagai JSON
-            $product->issue = $validatedData['issueEdit'];
-            $product->details = $validatedData['detailsEdit'];
+            $product->issue = HtmlSanitizer::sanitize($validatedData['issueEdit']);
+            $product->details = HtmlSanitizer::sanitize($validatedData['detailsEdit']);
             // $product->detail_image = $detailImagePathEdit;
             $product->save();
 

@@ -17,8 +17,12 @@ class AuthenticatedAdminMiddleware
     public function handle(Request $request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            // Jika pengguna sudah login, redirect ke halaman lain
-            return redirect('/sipalingadminB$/articles'); // Ganti dengan rute tujuan Anda
+            if (Auth::guard($guard)->user()->is_admin) {
+                return redirect('/admin/articles');
+            }
+
+            Auth::guard($guard)->logout();
+            return redirect('/')->with('error', 'You do not have admin access.');
         }
 
         return $next($request);

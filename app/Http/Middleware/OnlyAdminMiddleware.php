@@ -16,14 +16,10 @@ class OnlyAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Periksa apakah pengguna adalah admin
-        if (Auth::check() && Auth::user()->username == 'adminB$') {
+        if (Auth::check() && Auth::user()->is_admin) {
             return $next($request);
         }
 
-        // Redirect jika bukan admin
-        return redirect('/');
-        // return redirect('/')->with('error', 'You do not have admin access.');
-        // return $next($request);
+        return redirect('/')->with('error', 'You do not have admin access.');
     }
 }

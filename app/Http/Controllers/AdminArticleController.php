@@ -10,6 +10,7 @@ use App\Models\ArticleCategory;
 use App\Models\ArticleWithCategory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Support\HtmlSanitizer;
 
 class AdminArticleController extends Controller
 {
@@ -59,12 +60,12 @@ class AdminArticleController extends Controller
 
                 // Simpan data ke database
                 $article = new Article();
-                $article->title = $validatedData['title'];
+                $article->title = strip_tags($validatedData['title']);
                 $article->pure_title = $pureTitle;
                 $article->slug = $slug;
-                $article->author = $validatedData['author'];
+                $article->author = strip_tags($validatedData['author']);
                 $article->image = $articleImagePath;
-                $article->body = $validatedData['body'];
+                $article->body = HtmlSanitizer::sanitize($validatedData['body']);
                 $article->save();
 
                 // Simpan kategori (atau bisa juga cari jika sudah ada)
@@ -126,11 +127,11 @@ class AdminArticleController extends Controller
             $articleWithCategory->category_id = $categoryId;
             $articleWithCategory->save();
 
-            $article->title = $validatedData['titleEdit'];
+            $article->title = strip_tags($validatedData['titleEdit']);
             $article->pure_title = $pureTitle;
             $article->slug = $slug;
-            $article->author = $validatedData['authorEdit'];
-            $article->body = $validatedData['bodyEdit'];
+            $article->author = strip_tags($validatedData['authorEdit']);
+            $article->body = HtmlSanitizer::sanitize($validatedData['bodyEdit']);
             $article->image = $articleImagePathEdit;
             $article->save();
             // $article->category = $validatedData['categoryEdit'];

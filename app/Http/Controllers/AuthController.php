@@ -30,26 +30,30 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Validate the login form data
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        // Attempt to log the user in using the provided credentials
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            // If successful, redirect to the intended location or the admin dashboard
-            return redirect()->intended('/sipalingadminB$/articles');
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
+
+        if (Auth::attempt($credentials) && Auth::user()->is_admin) {
+            return redirect()->intended('/admin/articles');
         }
 
-        // If login fails, redirect back with an error message
-        return redirect()->back()->withErrors(['login' => 'Incorrect credentials.']);
-    }
+        if (Auth::check()) {
+            Auth::logout();
+        }
 
+        return redirect()->back()->withErrors(['login' => 'Incorrect admin credentials.']);
+    }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('/sipalingadminB$');
+        return redirect('/admin');
     }
 }

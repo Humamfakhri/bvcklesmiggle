@@ -10,7 +10,7 @@ class AdminUserController extends Controller
     public function index()
     {
         return view('admin-users', [
-            'users' => User::where('name', '!=', 'adminB$')->get()
+            'users' => User::where('is_admin', false)->get()
         ]);
     }
 }

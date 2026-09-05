@@ -14,10 +14,21 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'name' => 'Admin',
-            'username' => 'adminB$',
-            'password' => Hash::make('bvckleB$321'), // Gantilah 'your-password' dengan password yang diinginkan
-        ]);
+        $username = env('ADMIN_USERNAME');
+        $password = env('ADMIN_PASSWORD');
+
+        if (! $username || ! $password) {
+            return;
+        }
+
+        User::firstOrCreate(
+            ['username' => $username],
+            [
+                'name' => 'Admin',
+                'email' => env('ADMIN_EMAIL', 'admin@example.com'),
+                'password' => Hash::make($password),
+                'is_admin' => true,
+            ]
+        );
     }
 }
